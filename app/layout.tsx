@@ -1,8 +1,15 @@
 import type { Metadata } from 'next';
+// @ts-ignore: Implicitly treat fontsource side-effect imports as any/module
 import '@fontsource-variable/fraunces';
+// @ts-ignore: Implicitly treat fontsource side-effect imports as any/module
 import '@fontsource-variable/cormorant-garamond';
+// @ts-ignore: Implicitly treat fontsource side-effect imports as any/module
 import '@fontsource-variable/inter';
+// @ts-ignore: Implicitly treat fontsource side-effect imports as any/module
 import '@fontsource-variable/jetbrains-mono';
+// Allow importing global CSS in environments where TypeScript doesn't
+// provide automatic declarations for side-effect CSS imports.
+// @ts-ignore: Implicitly treat CSS import as any/module
 import './globals.css';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
