@@ -1,0 +1,186 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #eff3f6;
+  color: #12151a;
+}
+
+::selection {
+  background-color: #4f7dff;
+  color: white;
+}
+
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* ---------------------------------------------------------------- */
+/* Article body typography — deliberately hand-rolled instead of a   */
+/* generic prose plugin, so headings/code/links match the site's     */
+/* serif-display + monospace-chrome pairing.                         */
+/* ---------------------------------------------------------------- */
+.prose-tech {
+  font-family: theme('fontFamily.body');
+  font-size: 17px;
+  line-height: 1.75;
+  color: #23272f;
+  max-width: 68ch;
+}
+
+.prose-tech > * + * {
+  margin-top: 1.35em;
+}
+
+.prose-tech h2 {
+  font-family: theme('fontFamily.display');
+  font-size: 1.55em;
+  line-height: 1.3;
+  color: #12151a;
+  margin-top: 2.1em;
+  padding-top: 0.2em;
+  scroll-margin-top: 1.5rem;
+}
+
+.prose-tech h3 {
+  font-family: theme('fontFamily.display');
+  font-size: 1.25em;
+  line-height: 1.35;
+  color: #12151a;
+  margin-top: 1.8em;
+  scroll-margin-top: 1.5rem;
+}
+
+.prose-tech p {
+  margin-top: 1.1em;
+}
+
+.prose-tech a {
+  color: #4f7dff;
+  text-underline-offset: 2px;
+}
+
+.prose-tech strong {
+  color: #12151a;
+  font-weight: 650;
+}
+
+.prose-tech ul,
+.prose-tech ol {
+  padding-left: 1.4em;
+}
+.prose-tech ul {
+  list-style: disc;
+}
+.prose-tech ol {
+  list-style: decimal;
+}
+.prose-tech li + li {
+  margin-top: 0.45em;
+}
+.prose-tech li::marker {
+  color: #4f7dff;
+}
+
+.prose-tech blockquote {
+  border-left: 3px solid var(--niche-accent, #4f7dff);
+  padding-left: 1em;
+  color: #5b6472;
+  font-style: italic;
+}
+
+.prose-tech table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92em;
+}
+.prose-tech th,
+.prose-tech td {
+  border: 1px solid #dbe1e6;
+  padding: 0.5em 0.75em;
+  text-align: left;
+}
+.prose-tech th {
+  font-family: theme('fontFamily.mono');
+  font-size: 0.85em;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  background: #f4f6f8;
+  border-bottom: 2px solid var(--niche-accent, #4f7dff);
+}
+
+.prose-tech :not(pre) > code {
+  font-family: theme('fontFamily.mono');
+  font-size: 0.86em;
+  background: #e7ebef;
+  border-radius: 4px;
+  padding: 0.15em 0.4em;
+}
+
+.prose-tech pre {
+  font-family: theme('fontFamily.mono');
+  font-size: 0.86em;
+  line-height: 1.65;
+  background: #09090b;
+  color: #e7ebef;
+  border-radius: 7px;
+  padding: 1.1em 1.2em;
+  overflow-x: auto;
+  border-left: 3px solid #4f7dff;
+}
+.prose-tech pre code {
+  background: transparent;
+  padding: 0;
+}
+
+/* Minimal highlight.js-compatible token colors (no external theme file) */
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal {
+  color: #7c9cff;
+}
+.hljs-string,
+.hljs-addition {
+  color: #a6e3a1;
+}
+.hljs-comment,
+.hljs-quote {
+  color: #7b8494;
+  font-style: italic;
+}
+.hljs-number,
+.hljs-attr {
+  color: #ffb86b;
+}
+.hljs-title,
+.hljs-title.function_,
+.hljs-built_in {
+  color: #79d4ff;
+}
+.hljs-variable,
+.hljs-template-variable,
+.hljs-params {
+  color: #e7ebef;
+}
+.hljs-tag,
+.hljs-name {
+  color: #ff8fb1;
+}
+.hljs-deletion {
+  color: #ff8f8f;
+}
+.hljs-emphasis {
+  font-style: italic;
+}
+.hljs-strong {
+  font-weight: 700;
+}
