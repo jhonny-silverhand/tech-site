@@ -7,6 +7,7 @@ import './globals.css';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { CommandPalette } from '@/components/CommandPalette';
+import { Analytics } from '@vercel/analytics/next';
 
 // Brand typefaces, matched to the tech//site logo, self-hosted via
 // Fontsource rather than next/font/google — same font files Google Fonts
@@ -39,6 +40,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main className="min-h-[60vh]">{children}</main>
         <Footer />
         <CommandPalette />
+        <Analytics />
       </body>
     </html>
   );
