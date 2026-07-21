@@ -1,20 +1,12 @@
 import type { Metadata } from 'next';
-// @ts-ignore: Implicitly treat fontsource side-effect imports as any/module
 import '@fontsource-variable/fraunces';
-// @ts-ignore: Implicitly treat fontsource side-effect imports as any/module
 import '@fontsource-variable/cormorant-garamond';
-// @ts-ignore: Implicitly treat fontsource side-effect imports as any/module
 import '@fontsource-variable/inter';
-// @ts-ignore: Implicitly treat fontsource side-effect imports as any/module
 import '@fontsource-variable/jetbrains-mono';
-// Allow importing global CSS in environments where TypeScript doesn't
-// provide automatic declarations for side-effect CSS imports.
-// @ts-ignore: Implicitly treat CSS import as any/module
 import './globals.css';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { CommandPalette } from '@/components/CommandPalette';
-import { Analytics } from '@vercel/analytics/next';
 
 // Brand typefaces, matched to the tech//site logo, self-hosted via
 // Fontsource rather than next/font/google — same font files Google Fonts
@@ -39,15 +31,26 @@ export const metadata: Metadata = {
     'Practical, no-fluff guides on AI tools, programming, Android, Windows & Linux, buying guides, gaming, careers, finance, and productivity.',
 };
 
+// Runs synchronously before paint, so the correct theme applies before
+// the browser ever renders a frame — without this, a saved 'dark'
+// preference would flash light for an instant on every load. Reads
+// localStorage first, falls back to OS preference if nothing's been
+// chosen yet. Wrapped in try/catch since localStorage can throw in some
+// privacy/incognito configurations, and a theme flash is a much smaller
+// problem than a broken page.
+const THEME_INIT_SCRIPT = `(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark');}}catch(e){}})();`;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className="font-body antialiased">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+      </head>
+      <body className="font-body antialiased bg-bg text-ink transition-colors">
         <Header />
         <main className="min-h-[60vh]">{children}</main>
         <Footer />
         <CommandPalette />
-        <Analytics />
       </body>
     </html>
   );

@@ -1,17 +1,24 @@
 import type { Config } from 'tailwindcss';
 
 const config: Config = {
+  darkMode: 'class',
   content: ['./app/**/*.{ts,tsx}', './components/**/*.{ts,tsx}', './lib/**/*.{ts,tsx}'],
   theme: {
     extend: {
       colors: {
-        bg: '#EFF3F6',
-        paper: '#FFFFFF',
-        ink: '#12151A',
+        // Backed by CSS variables (globals.css) that flip value under the
+        // .dark class — every existing bg-bg / text-ink / border-line
+        // usage across the codebase becomes theme-aware automatically.
+        // The <alpha-value> placeholder is Tailwind's own substitution
+        // for opacity modifiers (bg-paper/60 etc.) to keep working.
+        bg: 'rgb(var(--color-bg) / <alpha-value>)',
+        paper: 'rgb(var(--color-paper) / <alpha-value>)',
+        ink: 'rgb(var(--color-ink) / <alpha-value>)',
+        muted: 'rgb(var(--color-muted) / <alpha-value>)',
+        line: 'rgb(var(--color-line) / <alpha-value>)',
+        // Fixed — identical in both themes, see the comment in globals.css.
         void: '#09090B',
         mutedOnDark: '#9CA3AF',
-        muted: '#5B6472',
-        line: '#DBE1E6',
         accent: '#4F7DFF',
         warn: '#FF6B35',
       },

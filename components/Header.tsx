@@ -1,9 +1,11 @@
 import Link from 'next/link';
 import { NICHES } from '@/lib/niches';
+import { ThemeToggle } from '@/components/ThemeToggle';
+import { MobileNav } from '@/components/MobileNav';
 
 export function Header() {
   return (
-    <header className="bg-void text-white">
+    <header className="relative bg-void text-white">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center font-display text-[26px] tracking-tight">
@@ -14,20 +16,28 @@ export function Header() {
             </span>
             <span>site</span>
           </Link>
-          <nav className="hidden md:flex items-center gap-2 font-mono text-[12px]">
-            <Link href="/write" className="px-3 py-1.5 rounded-folder hover:bg-white/10 transition-colors">
-              Write
-            </Link>
-            <Link href="/login" className="px-3 py-1.5 rounded-folder hover:bg-white/10 transition-colors">
-              Sign in
-            </Link>
-            <Link
-              href="/admin/login"
-              className="px-3 py-1.5 rounded-folder border border-white/20 hover:bg-white/10 transition-colors"
-            >
-              Admin
-            </Link>
-          </nav>
+
+          <div className="flex items-center gap-1">
+            <nav className="hidden md:flex items-center gap-2 font-mono text-[12px]">
+              <Link href="/write" className="px-3 py-1.5 rounded-folder hover:bg-white/10 transition-colors">
+                Write
+              </Link>
+              <Link href="/login" className="px-3 py-1.5 rounded-folder hover:bg-white/10 transition-colors">
+                Sign in
+              </Link>
+              <Link href="/signup" className="px-3 py-1.5 rounded-folder hover:bg-white/10 transition-colors">
+                Sign up
+              </Link>
+              <Link
+                href="/admin/login"
+                className="px-3 py-1.5 rounded-folder border border-white/20 hover:bg-white/10 transition-colors"
+              >
+                Admin
+              </Link>
+            </nav>
+            <ThemeToggle />
+            <MobileNav />
+          </div>
         </div>
         <div className="flex gap-1 overflow-x-auto pb-3 -mt-1 scrollbar-none">
           {NICHES.map((niche) => (

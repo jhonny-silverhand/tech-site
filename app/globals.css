@@ -2,13 +2,39 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
-  scroll-behavior: smooth;
+/* ------------------------------------------------------------------ */
+/* Theme variables. Every color below that should differ between light  */
+/* and dark mode is defined once here (as space-separated RGB, so       */
+/* Tailwind's rgb(var(--x) / <alpha-value>) pattern can still do        */
+/* opacity modifiers like bg-paper/50) and consumed via the color       */
+/* tokens in tailwind.config.ts — bg/paper/ink/muted/line. That means   */
+/* almost every existing bg-bg / text-ink / border-line class in the    */
+/* whole codebase becomes dark-mode-aware automatically, with no need   */
+/* to hunt down and add dark: variants file by file.                    */
+/*                                                                      */
+/* void, accent, and warn are NOT theme variables — they're the same    */
+/* color in both modes on purpose (accent blue has enough contrast on   */
+/* both; void is "intentionally always-dark chrome" like the header,    */
+/* code blocks, and footer, which is why it doesn't need to invert).    */
+/* ------------------------------------------------------------------ */
+:root {
+  --color-bg: 239 243 246;
+  --color-paper: 255 255 255;
+  --color-ink: 18 21 26;
+  --color-muted: 91 100 114;
+  --color-line: 219 225 230;
 }
 
-body {
-  background-color: #eff3f6;
-  color: #12151a;
+.dark {
+  --color-bg: 9 9 11;
+  --color-paper: 17 17 19;
+  --color-ink: 237 238 240;
+  --color-muted: 156 163 175;
+  --color-line: 39 39 42;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 ::selection {
@@ -33,7 +59,7 @@ body {
   font-family: theme('fontFamily.body');
   font-size: 17px;
   line-height: 1.75;
-  color: #23272f;
+  color: rgb(var(--color-ink) / 0.88);
   max-width: 68ch;
 }
 
@@ -45,7 +71,7 @@ body {
   font-family: theme('fontFamily.display');
   font-size: 1.55em;
   line-height: 1.3;
-  color: #12151a;
+  color: rgb(var(--color-ink));
   margin-top: 2.1em;
   padding-top: 0.2em;
   scroll-margin-top: 1.5rem;
@@ -55,7 +81,7 @@ body {
   font-family: theme('fontFamily.display');
   font-size: 1.25em;
   line-height: 1.35;
-  color: #12151a;
+  color: rgb(var(--color-ink));
   margin-top: 1.8em;
   scroll-margin-top: 1.5rem;
 }
@@ -70,7 +96,7 @@ body {
 }
 
 .prose-tech strong {
-  color: #12151a;
+  color: rgb(var(--color-ink));
   font-weight: 650;
 }
 
@@ -94,7 +120,7 @@ body {
 .prose-tech blockquote {
   border-left: 3px solid var(--niche-accent, #4f7dff);
   padding-left: 1em;
-  color: #5b6472;
+  color: rgb(var(--color-muted));
   font-style: italic;
 }
 
@@ -105,7 +131,7 @@ body {
 }
 .prose-tech th,
 .prose-tech td {
-  border: 1px solid #dbe1e6;
+  border: 1px solid rgb(var(--color-line));
   padding: 0.5em 0.75em;
   text-align: left;
 }
@@ -114,18 +140,22 @@ body {
   font-size: 0.85em;
   text-transform: uppercase;
   letter-spacing: 0.03em;
-  background: #f4f6f8;
+  background: rgb(var(--color-ink) / 0.04);
   border-bottom: 2px solid var(--niche-accent, #4f7dff);
 }
 
 .prose-tech :not(pre) > code {
   font-family: theme('fontFamily.mono');
   font-size: 0.86em;
-  background: #e7ebef;
+  background: rgb(var(--color-ink) / 0.08);
   border-radius: 4px;
   padding: 0.15em 0.4em;
 }
 
+/* Code blocks stay a fixed dark surface regardless of site theme, on
+   purpose (see design-research/3.0) — code should read the same whether
+   the reader is in light or dark mode, so this doesn't use the theme
+   variables above. */
 .prose-tech pre {
   font-family: theme('fontFamily.mono');
   font-size: 0.86em;
@@ -142,7 +172,41 @@ body {
   padding: 0;
 }
 
-/* Minimal highlight.js-compatible token colors (no external theme file) */
+/* Finance-only (see MarkdownContent's highlightFigures prop): currency
+   amounts and percentages set apart in mono, Stripe-style — precise
+   figures, not decorative ones. */
+.figure-number {
+  font-family: theme('fontFamily.mono');
+  font-size: 1.05em;
+  font-weight: 550;
+  color: rgb(var(--color-ink));
+  letter-spacing: -0.01em;
+}
+
+/* AI Tools-only (see MarkdownContent's citationStyle prop): external
+   source links read as citations, not regular inline navigation. */
+.citation-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2em;
+  color: rgb(var(--color-ink));
+  background: rgb(var(--color-ink) / 0.06);
+  border-radius: 5px;
+  padding: 0.05em 0.4em;
+  text-decoration: none;
+  font-size: 0.92em;
+  transition: background-color 0.15s ease;
+}
+.citation-link:hover {
+  background: rgb(var(--color-ink) / 0.12);
+}
+.citation-icon {
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+
+/* Minimal highlight.js-compatible token colors (no external theme file).
+   Fixed regardless of site theme — same reasoning as .prose-tech pre. */
 .hljs-keyword,
 .hljs-selector-tag,
 .hljs-literal {

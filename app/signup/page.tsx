@@ -73,7 +73,7 @@ export default function SignupPage() {
       <p className="mt-2 text-[14.5px] text-muted">Publish under your own name, no AI tools attached.</p>
       <form onSubmit={handleSubmit} className="mt-8">
         {error && (
-          <div className="mb-4 rounded-folder border border-red-200 bg-red-50 px-4 py-3 text-[13.5px] text-red-700">
+          <div className="mb-4 rounded-folder border border-red-200 bg-red-50 px-4 py-3 text-[13.5px] text-red-700 dark:border-red-900/40 dark:bg-red-950/40 dark:text-red-400">
             {error}
           </div>
         )}

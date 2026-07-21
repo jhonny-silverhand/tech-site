@@ -29,7 +29,7 @@ export function AdminNav() {
             href={link.href}
             className={cn(
               'px-3 py-2 rounded-folder transition-colors',
-              pathname === link.href ? 'bg-ink text-white' : 'text-ink/70 hover:bg-black/[0.04]'
+              pathname === link.href ? 'bg-void text-white' : 'text-ink/70 hover:bg-ink/5'
             )}
           >
             {link.label}

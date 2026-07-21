@@ -9,8 +9,12 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const VARIANTS: Record<Variant, string> = {
   primary: 'bg-accent text-white hover:bg-accent/90 focus-visible:outline-accent',
-  secondary: 'bg-ink text-white hover:bg-ink/90 focus-visible:outline-ink',
-  ghost: 'bg-transparent text-ink border border-line hover:bg-black/[0.03] focus-visible:outline-accent',
+  // Fixed (void), not the theme-flipping `ink` token — ink means "light
+  // text on dark bg" in dark mode, which would turn this into white text
+  // on a near-white background. void never flips, so this stays a solid
+  // dark pill with white text in both themes.
+  secondary: 'bg-void text-white hover:bg-void/90 focus-visible:outline-accent',
+  ghost: 'bg-transparent text-ink border border-line hover:bg-ink/5 focus-visible:outline-accent',
   danger: 'bg-transparent text-red-600 border border-red-200 hover:bg-red-50 focus-visible:outline-red-500',
 };
 
