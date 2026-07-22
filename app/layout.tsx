@@ -4,8 +4,6 @@ import '@fontsource-variable/cormorant-garamond';
 import '@fontsource-variable/inter';
 import '@fontsource-variable/jetbrains-mono';
 import './globals.css';
-import { Header } from '@/components/Header';
-import { Footer } from '@/components/Footer';
 import { CommandPalette } from '@/components/CommandPalette';
 
 // Brand typefaces, matched to the tech//site logo, self-hosted via
@@ -40,6 +38,13 @@ export const metadata: Metadata = {
 // problem than a broken page.
 const THEME_INIT_SCRIPT = `(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark');}}catch(e){}})();`;
 
+/**
+ * Deliberately minimal — just html/body/fonts/theme-init/command-palette.
+ * Header and Footer used to live here, but that meant every route got the
+ * public site chrome whether it made sense or not. They now live in
+ * (main)/layout.tsx instead; (auth)/layout.tsx renders its own editorial
+ * shell with no site header/footer at all — see the 3.5 auth work for why.
+ */
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
@@ -47,9 +52,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
       </head>
       <body className="font-body antialiased bg-bg text-ink transition-colors">
-        <Header />
-        <main className="min-h-[60vh]">{children}</main>
-        <Footer />
+        {children}
         <CommandPalette />
       </body>
     </html>

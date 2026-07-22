@@ -17,8 +17,8 @@ export default function SignupPage() {
 
   if (!isSupabaseConfigured()) {
     return (
-      <div className="mx-auto max-w-sm px-4 sm:px-6 py-20">
-        <h1 className="font-display text-3xl text-ink">Sign up</h1>
+      <div>
+        <h1 className="font-display text-3xl text-ink leading-tight">Become a reader.</h1>
         <p className="mt-4 rounded-folder border border-line bg-paper p-4 text-[13.5px] text-muted leading-relaxed">
           User accounts need a connected Supabase project. Follow Guides/01-database-setup.md, then this page
           will work.
@@ -56,22 +56,32 @@ export default function SignupPage() {
     setLoading(false);
   }
 
+  // This is the brief's "Verify Email" screen — there's no separate route
+  // for it, since Supabase's own link handles confirmation directly with
+  // nothing in between for the app to show. This moment gets the same
+  // editorial care instead of being an afterthought state.
   if (checkEmail) {
     return (
-      <div className="mx-auto max-w-sm px-4 sm:px-6 py-20">
-        <h1 className="font-display text-3xl text-ink">Check your email</h1>
-        <p className="mt-4 text-[14.5px] text-muted leading-relaxed">
-          We sent a confirmation link to {email}. Click it to confirm your account and get started.
+      <div>
+        <p className="font-mono text-[11px] uppercase tracking-wide text-accent mb-4">One more page to turn</p>
+        <h1 className="font-display text-3xl text-ink leading-tight">Check your inbox.</h1>
+        <p className="mt-4 text-[15px] text-muted leading-relaxed">
+          We sent a link to <span className="text-ink">{email}</span>. Open it, and you&apos;re in — no need to
+          come back here first.
         </p>
       </div>
     );
   }
 
   return (
-    <div className="mx-auto max-w-sm px-4 sm:px-6 py-20">
-      <h1 className="font-display text-3xl text-ink">Sign up</h1>
-      <p className="mt-2 text-[14.5px] text-muted">Publish under your own name, no AI tools attached.</p>
-      <form onSubmit={handleSubmit} className="mt-8">
+    <div>
+      <h1 className="font-display text-4xl text-ink leading-[1.15]">
+        Discover technology through stories worth reading.
+      </h1>
+      <p className="mt-4 text-[15px] text-muted leading-relaxed">
+        Publish under your own name, the old-fashioned way — no AI tools attached, just your own writing.
+      </p>
+      <form onSubmit={handleSubmit} className="mt-9">
         {error && (
           <div className="mb-4 rounded-folder border border-red-200 bg-red-50 px-4 py-3 text-[13.5px] text-red-700 dark:border-red-900/40 dark:bg-red-950/40 dark:text-red-400">
             {error}
@@ -97,11 +107,11 @@ export default function SignupPage() {
           />
         </FieldGroup>
         <Button type="submit" className="w-full" disabled={loading}>
-          {loading ? 'Creating account…' : 'Create account'}
+          {loading ? 'Just a moment…' : 'Become a reader'}
         </Button>
       </form>
-      <p className="mt-6 text-[13.5px] text-muted">
-        Already have an account?{' '}
+      <p className="mt-8 text-[13.5px] text-muted">
+        Already reading?{' '}
         <Link href="/login" className="text-accent hover:underline">
           Sign in
         </Link>

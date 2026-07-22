@@ -17,8 +17,8 @@ export default function LoginPage() {
 
   if (!isSupabaseConfigured()) {
     return (
-      <div className="mx-auto max-w-sm px-4 sm:px-6 py-20">
-        <h1 className="font-display text-3xl text-ink">Sign in</h1>
+      <div>
+        <h1 className="font-display text-3xl text-ink leading-tight">Continue reading.</h1>
         <p className="mt-4 rounded-folder border border-line bg-paper p-4 text-[13.5px] text-muted leading-relaxed">
           User accounts need a connected Supabase project. Follow Guides/01-database-setup.md, then this page
           will work.
@@ -43,10 +43,10 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="mx-auto max-w-sm px-4 sm:px-6 py-20">
-      <h1 className="font-display text-3xl text-ink">Sign in</h1>
-      <p className="mt-2 text-[14.5px] text-muted">Write and manage your own posts.</p>
-      <form onSubmit={handleSubmit} className="mt-8">
+    <div>
+      <h1 className="font-display text-4xl text-ink leading-tight">Continue reading.</h1>
+      <p className="mt-3 text-[15px] text-muted leading-relaxed">Sign in to publish and manage your posts.</p>
+      <form onSubmit={handleSubmit} className="mt-9">
         {error && (
           <div className="mb-4 rounded-folder border border-red-200 bg-red-50 px-4 py-3 text-[13.5px] text-red-700 dark:border-red-900/40 dark:bg-red-950/40 dark:text-red-400">
             {error}
@@ -57,7 +57,15 @@ export default function LoginPage() {
           <Input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
         </FieldGroup>
         <FieldGroup>
-          <Label htmlFor="password">Password</Label>
+          <div className="flex items-center justify-between">
+            <Label htmlFor="password">Password</Label>
+            <Link
+              href="/forgot-password"
+              className="mb-1.5 font-mono text-[11px] text-muted hover:text-accent transition-colors"
+            >
+              Forgot?
+            </Link>
+          </div>
           <Input
             id="password"
             type="password"
@@ -70,10 +78,10 @@ export default function LoginPage() {
           {loading ? 'Signing in…' : 'Sign in'}
         </Button>
       </form>
-      <p className="mt-6 text-[13.5px] text-muted">
-        No account yet?{' '}
+      <p className="mt-8 text-[13.5px] text-muted">
+        New here?{' '}
         <Link href="/signup" className="text-accent hover:underline">
-          Sign up
+          Become a reader
         </Link>
       </p>
     </div>
