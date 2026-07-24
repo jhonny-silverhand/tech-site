@@ -5,6 +5,7 @@ import '@fontsource-variable/inter';
 import '@fontsource-variable/jetbrains-mono';
 import './globals.css';
 import { CommandPalette } from '@/components/CommandPalette';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 // Brand typefaces, matched to the tech//site logo, self-hosted via
 // Fontsource rather than next/font/google — same font files Google Fonts
@@ -54,6 +55,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="font-body antialiased bg-bg text-ink transition-colors">
         {children}
         <CommandPalette />
+        <SpeedInsights />
       </body>
     </html>
   );
