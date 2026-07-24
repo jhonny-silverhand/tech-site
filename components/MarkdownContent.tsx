@@ -12,6 +12,13 @@ interface MarkdownContentProps {
    * deliberately stay a consistent neutral blue regardless of niche —
    * code needs to read the same everywhere, so that one isn't tinted. */
   accentColor?: string;
+
+  //fixing type error
+  /** Enables finance-specific figure highlighting */
+  highlightFigures?: boolean;
+
+  /** Enables AI Tools-specific citation styling */
+  citationStyle?: boolean;
 }
 
 export function MarkdownContent({ content, accentColor }: MarkdownContentProps) {

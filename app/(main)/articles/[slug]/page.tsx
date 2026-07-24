@@ -150,7 +150,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
       <div id="article-body" className="mt-10">
         <TableOfContents content={post.content} />
         <MarkdownContent
-          content={post.content}
+          content={post.content}  
           accentColor={ambientColor}
           highlightFigures={post.niche === 'finance'}
           citationStyle={post.niche === 'ai-tools'}
