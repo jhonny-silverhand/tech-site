@@ -9,6 +9,9 @@ import { TableOfContents } from '@/components/TableOfContents';
 import { RelatedPosts } from '@/components/RelatedPosts';
 import { ReadingProgressBar, ReadingProgressStat } from '@/components/ReadingProgress';
 import { BreadcrumbSlash } from '@/components/BreadcrumbSlash';
+import { BookmarkButton } from '@/components/BookmarkButton';
+import { isSupabaseConfigured } from '@/lib/supabase/config';
+import { isBookmarked, recordView } from '@/lib/library';
 
 export const dynamic = 'force-dynamic';
 
@@ -30,6 +33,15 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   const niche = getNiche(post.niche);
   const ambientColor = niche?.color ?? '#4F7DFF';
   const related = await getRelatedPosts(post);
+
+  const libraryEnabled = isSupabaseConfigured();
+  const bookmarked = libraryEnabled ? await isBookmarked(post.id) : false;
+  // Only real posts (not local demo-mode seed data) can be recorded —
+  // seed posts use synthetic "seed-..." ids with no row in the real
+  // database to reference, so there's nothing valid to upsert against.
+  if (libraryEnabled && !post.id.startsWith('seed-')) {
+    await recordView(post.id);
+  }
 
   // Per design-research/3.0: Gaming gets a larger, "cinematic" hero
   // treatment (full-bleed image, title overlaid) — the one niche where
@@ -130,6 +142,10 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
           )}
         </>
       )}
+
+      <div className="mt-6">
+        <BookmarkButton postId={post.id} initialBookmarked={bookmarked} enabled={libraryEnabled} />
+      </div>
 
       <div id="article-body" className="mt-10">
         <TableOfContents content={post.content} />

@@ -2,8 +2,19 @@ import Link from 'next/link';
 import { NICHES } from '@/lib/niches';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { MobileNav } from '@/components/MobileNav';
+import { LibraryMenu } from '@/components/LibraryMenu';
+import { isSupabaseConfigured } from '@/lib/supabase/config';
+import { getLibrarySummary, type LibrarySummary } from '@/lib/library';
 
-export function Header() {
+const SIGNED_OUT_SUMMARY: LibrarySummary = { isLoggedIn: false, continueReading: null, bookmarks: [], history: [] };
+
+export async function Header() {
+  const summary = isSupabaseConfigured() ? await getLibrarySummary() : SIGNED_OUT_SUMMARY;
+
+  const continueReadingLink = summary.continueReading
+    ? { title: summary.continueReading.title, slug: summary.continueReading.slug }
+    : null;
+
   return (
     <header className="relative bg-void text-white">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
@@ -22,12 +33,18 @@ export function Header() {
               <Link href="/write" className="px-3 py-1.5 rounded-folder hover:bg-white/10 transition-colors">
                 Write
               </Link>
-              <Link href="/login" className="px-3 py-1.5 rounded-folder hover:bg-white/10 transition-colors">
-                Sign in
-              </Link>
-              <Link href="/signup" className="px-3 py-1.5 rounded-folder hover:bg-white/10 transition-colors">
-                Sign up
-              </Link>
+              {summary.isLoggedIn ? (
+                <LibraryMenu bookmarkCount={summary.bookmarks.length} continueReading={continueReadingLink} />
+              ) : (
+                <>
+                  <Link href="/login" className="px-3 py-1.5 rounded-folder hover:bg-white/10 transition-colors">
+                    Sign in
+                  </Link>
+                  <Link href="/signup" className="px-3 py-1.5 rounded-folder hover:bg-white/10 transition-colors">
+                    Sign up
+                  </Link>
+                </>
+              )}
               <Link
                 href="/admin/login"
                 className="px-3 py-1.5 rounded-folder border border-white/20 hover:bg-white/10 transition-colors"
@@ -36,7 +53,7 @@ export function Header() {
               </Link>
             </nav>
             <ThemeToggle />
-            <MobileNav />
+            <MobileNav isLoggedIn={summary.isLoggedIn} bookmarkCount={summary.bookmarks.length} />
           </div>
         </div>
         <div className="flex gap-1 overflow-x-auto pb-3 -mt-1 scrollbar-none">

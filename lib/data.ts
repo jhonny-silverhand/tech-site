@@ -2,6 +2,7 @@ import { cache } from 'react';
 import { createClient } from './supabase/server';
 import { isSupabaseConfigured } from './supabase/config';
 import { getSeedPosts } from '@/content/seed-posts';
+import { withTimeout, SUPABASE_CALL_TIMEOUT_MS } from './with-timeout';
 import type { Post } from './types';
 
 // Re-exported so existing server-side imports of isSupabaseConfigured from
@@ -10,21 +11,32 @@ import type { Post } from './types';
 // server-only code (fs, via content/seed-posts.ts).
 export { isSupabaseConfigured };
 
+interface PostsQueryResult {
+  data: Post[] | null;
+  error: { message: string } | null;
+}
+
 async function fetchPublishedFromSupabase(): Promise<Post[]> {
   const supabase = await createClient();
-  const { data, error } = await supabase
+  const queryPromise = supabase
     .from('posts')
     .select('*')
     .eq('status', 'published')
-    .order('published_at', { ascending: false });
+    .order('published_at', { ascending: false }) as unknown as Promise<PostsQueryResult>;
+
+  const { data, error } = await withTimeout(queryPromise, SUPABASE_CALL_TIMEOUT_MS, {
+    data: null,
+    error: { message: `Supabase call did not respond within ${SUPABASE_CALL_TIMEOUT_MS}ms` },
+  });
 
   if (error) {
-    // Most likely cause during setup: schema.sql hasn't been run yet.
-    // Fall back rather than showing a broken page.
+    // Most likely cause during setup: schema.sql hasn't been run yet
+    // (or, per the timeout above, Supabase is unreachable). Fall back
+    // rather than showing a broken or painfully slow page.
     console.error('[data] Supabase fetch failed, serving local seed content instead:', error.message);
     return getLocalPosts();
   }
-  return (data as Post[]) ?? [];
+  return data ?? [];
 }
 
 let localCache: Post[] | null = null;
