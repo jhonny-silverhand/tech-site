@@ -10,15 +10,15 @@ interface LibraryMenuProps {
   continueReading: { title: string; slug: string } | null;
 }
 
-const COMING_SOON = ['Collections', 'Highlights', 'Comments', 'Settings'];
+const COMING_SOON = ['Highlights', 'Comments'];
 
 /**
  * Header's logged-in state — Option B from the 3.6 brief ("Library"
  * replaces "Sign In"), the one marked as the strongest fit. Deliberately
  * a compact dropdown, not a full account menu — Continue Reading,
- * Bookmarks, and History are real and link into /library; Collections,
- * Highlights, Comments, and Settings are shown but disabled, so the
- * eventual full shape is visible without pretending it's all built.
+ * Bookmarks, Collections, History, and Settings are real and link
+ * somewhere useful; Highlights and Comments are shown but disabled, so
+ * the eventual full shape is visible without pretending they're built.
  */
 export function LibraryMenu({ bookmarkCount, continueReading }: LibraryMenuProps) {
   const router = useRouter();
@@ -78,7 +78,21 @@ export function LibraryMenu({ bookmarkCount, continueReading }: LibraryMenuProps
             onClick={() => setOpen(false)}
             className="block px-4 py-2 font-mono text-[12.5px] hover:bg-ink/5 transition-colors"
           >
+            Collections
+          </Link>
+          <Link
+            href="/library"
+            onClick={() => setOpen(false)}
+            className="block px-4 py-2 font-mono text-[12.5px] hover:bg-ink/5 transition-colors"
+          >
             History
+          </Link>
+          <Link
+            href="/library/settings"
+            onClick={() => setOpen(false)}
+            className="block px-4 py-2 font-mono text-[12.5px] hover:bg-ink/5 transition-colors"
+          >
+            Settings
           </Link>
 
           {COMING_SOON.map((label) => (

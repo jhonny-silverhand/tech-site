@@ -10,6 +10,7 @@ import { RelatedPosts } from '@/components/RelatedPosts';
 import { ReadingProgressBar, ReadingProgressStat } from '@/components/ReadingProgress';
 import { BreadcrumbSlash } from '@/components/BreadcrumbSlash';
 import { BookmarkButton } from '@/components/BookmarkButton';
+import { CollectionPicker } from '@/components/CollectionPicker';
 import { isSupabaseConfigured } from '@/lib/supabase/config';
 import { isBookmarked, recordView } from '@/lib/library';
 
@@ -143,14 +144,15 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         </>
       )}
 
-      <div className="mt-6">
+      <div className="mt-6 flex flex-wrap gap-2">
         <BookmarkButton postId={post.id} initialBookmarked={bookmarked} enabled={libraryEnabled} />
+        <CollectionPicker postId={post.id} enabled={libraryEnabled} />
       </div>
 
       <div id="article-body" className="mt-10">
         <TableOfContents content={post.content} />
         <MarkdownContent
-          content={post.content}  
+          content={post.content}
           accentColor={ambientColor}
           highlightFigures={post.niche === 'finance'}
           citationStyle={post.niche === 'ai-tools'}

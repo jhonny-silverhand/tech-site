@@ -121,3 +121,88 @@ export async function recordView(postId: string): Promise<void> {
     console.error('[library] recordView failed:', err);
   }
 }
+
+export interface Collection {
+  id: string;
+  name: string;
+  created_at: string;
+  post_count: number;
+}
+
+export interface CollectionWithPosts {
+  id: string;
+  name: string;
+  created_at: string;
+  posts: Post[];
+}
+
+/** For the /library page's Collections section. */
+export async function getCollections(): Promise<Collection[]> {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await withTimeout(supabase.auth.getUser(), SUPABASE_CALL_TIMEOUT_MS, { data: { user: null } } as Awaited<
+      ReturnType<typeof supabase.auth.getUser>
+    >);
+    if (!user) return [];
+
+    const { data } = await supabase
+      .from('collections')
+      .select('id, name, created_at, collection_posts(count)')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false });
+
+    return (data ?? []).map((row) => {
+      const countRow = Array.isArray(row.collection_posts) ? row.collection_posts[0] : row.collection_posts;
+      return {
+        id: row.id,
+        name: row.name,
+        created_at: row.created_at,
+        post_count: (countRow as { count?: number } | null)?.count ?? 0,
+      };
+    });
+  } catch (err) {
+    console.error('[library] getCollections failed:', err);
+    return [];
+  }
+}
+
+/** A single collection and its posts, for /library/collections/[id]. Returns
+ * null both when the collection doesn't exist and when it belongs to someone
+ * else — RLS already prevents the latter, this just makes the not-found
+ * case explicit for the page to redirect on. */
+export async function getCollectionWithPosts(collectionId: string): Promise<CollectionWithPosts | null> {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await withTimeout(supabase.auth.getUser(), SUPABASE_CALL_TIMEOUT_MS, { data: { user: null } } as Awaited<
+      ReturnType<typeof supabase.auth.getUser>
+    >);
+    if (!user) return null;
+
+    const { data: collection } = await supabase
+      .from('collections')
+      .select('id, name, created_at')
+      .eq('id', collectionId)
+      .eq('user_id', user.id)
+      .maybeSingle();
+    if (!collection) return null;
+
+    const { data: postsData } = await supabase
+      .from('collection_posts')
+      .select('post:posts(*)')
+      .eq('collection_id', collectionId)
+      .order('added_at', { ascending: false });
+
+    const posts = (postsData ?? [])
+      .map((row) => (Array.isArray(row.post) ? row.post[0] : row.post))
+      .filter((post): post is Post => Boolean(post));
+
+    return { ...collection, posts };
+  } catch (err) {
+    console.error('[library] getCollectionWithPosts failed:', err);
+    return null;
+  }
+}

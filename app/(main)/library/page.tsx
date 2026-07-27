@@ -1,13 +1,14 @@
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { isSupabaseConfigured } from '@/lib/supabase/config';
-import { getLibrarySummary } from '@/lib/library';
+import { getLibrarySummary, getCollections } from '@/lib/library';
 import { PostCard } from '@/components/PostCard';
+import { NewCollectionForm } from '@/components/NewCollectionForm';
 
 export const metadata = { title: 'Your library' };
 export const dynamic = 'force-dynamic';
 
-const COMING_SOON = ['Collections', 'Highlights', 'Comments', 'Newsletter preferences', 'Reading settings'];
+const COMING_SOON = ['Highlights', 'Comments', 'Newsletter preferences', 'Reading settings'];
 
 export default async function LibraryPage() {
   if (!isSupabaseConfigured()) {
@@ -24,6 +25,8 @@ export default async function LibraryPage() {
 
   const summary = await getLibrarySummary();
   if (!summary.isLoggedIn) redirect('/login');
+
+  const collections = await getCollections();
 
   return (
     <div className="mx-auto max-w-5xl px-4 sm:px-6 py-14">
@@ -43,6 +46,10 @@ export default async function LibraryPage() {
           <span className="text-2xl font-display text-ink">{summary.history.length}</span>
           <p className="text-muted mt-0.5">Articles read</p>
         </div>
+        <div>
+          <span className="text-2xl font-display text-ink">{collections.length}</span>
+          <p className="text-muted mt-0.5">Collections</p>
+        </div>
       </div>
 
       {summary.continueReading && (
@@ -53,6 +60,33 @@ export default async function LibraryPage() {
           </div>
         </section>
       )}
+
+      <section className="mt-14">
+        <div className="flex items-center justify-between mb-6 gap-4 flex-wrap">
+          <h2 className="font-mono text-[11px] uppercase tracking-wide text-muted">Collections</h2>
+          <NewCollectionForm />
+        </div>
+        {collections.length === 0 ? (
+          <p className="font-mono text-[13px] text-muted">
+            No collections yet — create one above, or from the Collections button on any article.
+          </p>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+            {collections.map((collection) => (
+              <Link
+                key={collection.id}
+                href={`/library/collections/${collection.id}`}
+                className="rounded-folder border border-line bg-paper p-4 hover:border-ink/30 transition-colors"
+              >
+                <p className="font-display text-[17px] text-ink truncate">{collection.name}</p>
+                <p className="mt-1 font-mono text-[11px] text-muted">
+                  {collection.post_count} {collection.post_count === 1 ? 'article' : 'articles'}
+                </p>
+              </Link>
+            ))}
+          </div>
+        )}
+      </section>
 
       <section className="mt-14">
         <h2 className="font-mono text-[11px] uppercase tracking-wide text-muted mb-6">Bookmarks</h2>
