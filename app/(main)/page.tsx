@@ -19,7 +19,7 @@ export default async function HomePage() {
           section. */}
       <section className="flex flex-col lg:flex-row lg:items-center gap-10 lg:gap-8">
         <div className="max-w-2xl">
-          <p className="font-mono text-[12px] uppercase tracking-wide text-accent mb-3">tech/site</p>
+          <p className="font-display text-[15px] text-accent mb-3">tech // site</p>
           <h1 className="font-display text-4xl sm:text-5xl leading-[1.1] text-ink">
             Practical answers, not filler — across code, devices, and money.
           </h1>

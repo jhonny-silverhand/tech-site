@@ -25,13 +25,15 @@ export function HorizontalRail({ posts }: { posts: Post[] }) {
           return (
             <Link key={post.id} href={`/articles/${post.slug}`} className="group w-[190px] shrink-0 snap-start">
               <div className="relative aspect-[3/4] overflow-hidden rounded-folder bg-line">
-                <Image
-                  src={post.cover_image_url}
-                  alt=""
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  sizes="190px"
-                />
+                {post.cover_image_url && (
+                  <Image
+                    src={post.cover_image_url}
+                    alt=""
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    sizes="190px"
+                  />
+                )}
               </div>
               <p className="mt-2 font-display text-[14.5px] leading-snug text-ink line-clamp-2">{post.title}</p>
               <p className="mt-0.5 font-mono text-[10px] uppercase tracking-wide" style={{ color: niche?.color }}>

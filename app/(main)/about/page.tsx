@@ -3,7 +3,7 @@ export const metadata = { title: 'About' };
 export default function AboutPage() {
   return (
     <div className="mx-auto max-w-2xl px-4 sm:px-6 py-14">
-      <h1 className="font-display text-4xl text-ink">About tech/site</h1>
+      <h1 className="font-display text-4xl text-ink">About tech // site</h1>
       <div className="prose-tech mt-8">
         <p>
           tech/site runs on a deliberately split publishing model. A single admin account covers nine sections —

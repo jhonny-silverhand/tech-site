@@ -30,13 +30,15 @@ export function BentoGrid({ posts }: { posts: Post[] }) {
         const niche = getNiche(post.niche);
         return (
           <Link key={post.id} href={`/articles/${post.slug}`} className={`group relative overflow-hidden rounded-folder ${span}`}>
-            <Image
-              src={post.cover_image_url}
-              alt=""
-              fill
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
-              sizes="(min-width: 640px) 25vw, 50vw"
-            />
+            {post.cover_image_url && (
+              <Image
+                src={post.cover_image_url}
+                alt=""
+                fill
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                sizes="(min-width: 640px) 25vw, 50vw"
+              />
+            )}
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent" />
             <div className="absolute inset-x-0 bottom-0 p-3">
               <span

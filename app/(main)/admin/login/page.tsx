@@ -33,7 +33,7 @@ export default function AdminLoginPage() {
 
   return (
     <div className="mx-auto max-w-sm px-4 sm:px-6 py-24">
-      <p className="font-mono text-[11px] uppercase tracking-wide text-muted mb-2">tech/site</p>
+      <p className="font-display text-[15px] text-muted mb-2">tech // site</p>
       <h1 className="font-display text-3xl text-ink">Admin</h1>
       <form onSubmit={handleSubmit} className="mt-8">
         {error && (
