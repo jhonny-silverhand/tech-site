@@ -16,16 +16,36 @@ export async function Footer() {
             Knowledge published: {stats.articleCount} article{stats.articleCount === 1 ? '' : 's'} · Updated{' '}
             {timeAgo(stats.lastPublishedAt)}
           </p>
+          {/* Ko-fi link with Apple-inspired styling */}
+          <p className="mt-4 font-mono text-[11px] tracking-wide text-mutedOnDark">
+            <a
+              href="https://ko-fi.com/whysoserious_omik#setGoalModal"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative inline-flex items-center gap-1.5 transition-colors duration-300 hover:text-white"
+            >
+              <span>Buy me a Coffee</span>
+
+              <span className="opacity-60 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0.5">
+                []~(✿◡‿◡)
+              </span>
+
+              <span className="absolute -bottom-0.5 left-0 h-px w-0 bg-current transition-all duration-300 ease-out group-hover:w-full" />
+            </a>
+          </p>
         </div>
         <nav className="flex gap-5 font-mono text-[12px] text-mutedOnDark">
-          <Link href="/about" className="hover:text-white transition-colors">
+          <Link href="/about" className="relative group inline-flex transition-colors duration-300 hover:text-white">
             About
+            <span className="absolute -bottom-0.5 left-0 h-px w-0 bg-current transition-all duration-300 ease-out group-hover:w-full" />
           </Link>
-          <Link href="/privacy" className="hover:text-white transition-colors">
+          <Link href="/privacy" className="relative group inline-flex transition-colors duration-300 hover:text-white">
             Privacy
+            <span className="absolute -bottom-0.5 left-0 h-px w-0 bg-current transition-all duration-300 ease-out group-hover:w-full" />
           </Link>
-          <Link href="/contact" className="hover:text-white transition-colors">
+          <Link href="/contact" className="relative group inline-flex transition-colors duration-300 hover:text-white">
             Contact
+            <span className="absolute -bottom-0.5 left-0 h-px w-0 bg-current transition-all duration-300 ease-out group-hover:w-full" />
           </Link>
         </nav>
       </div>

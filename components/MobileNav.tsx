@@ -3,10 +3,13 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Menu, X } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 
 const SIGNED_OUT_LINKS = [
+  { href: '/shopping', label: 'Shopping' },
+  { href: '/pc-builder', label: 'PC Builder' },
   { href: '/write', label: 'Write' },
   { href: '/login', label: 'Sign in' },
   { href: '/signup', label: 'Sign up' },
@@ -16,6 +19,14 @@ const SIGNED_OUT_LINKS = [
 interface MobileNavProps {
   isLoggedIn: boolean;
   bookmarkCount: number;
+  user: {
+    id: string;
+    email?: string;
+    user_metadata?: {
+      full_name?: string;
+      avatar_url?: string;
+    };
+  } | null;
 }
 
 /**
@@ -24,9 +35,12 @@ interface MobileNavProps {
  * those links were completely unreachable on an actual phone screen, not
  * just visually different.
  */
-export function MobileNav({ isLoggedIn, bookmarkCount }: MobileNavProps) {
+export function MobileNav({ isLoggedIn, bookmarkCount, user }: MobileNavProps) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const displayName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Reader';
+  const avatarUrl = user?.user_metadata?.avatar_url;
+  const initial = displayName.charAt(0).toUpperCase();
 
   async function handleSignOut() {
     const supabase = createClient();
@@ -51,6 +65,22 @@ export function MobileNav({ isLoggedIn, bookmarkCount }: MobileNavProps) {
       {open && (
         <div className="absolute inset-x-0 top-full z-40 border-t border-white/10 bg-void px-4 py-3 flex flex-col">
           <Link
+            href="/shopping"
+            onClick={() => setOpen(false)}
+            className="py-2.5 font-mono text-[13px] text-white/85 hover:text-white transition-colors"
+          >
+            Shopping
+          </Link>
+
+          <Link
+            href="/pc-builder"
+            onClick={() => setOpen(false)}
+            className="py-2.5 font-mono text-[13px] text-white/85 hover:text-white transition-colors"
+          >
+            PC Builder
+          </Link>
+
+          <Link
             href="/write"
             onClick={() => setOpen(false)}
             className="py-2.5 font-mono text-[13px] text-white/85 hover:text-white transition-colors"
@@ -60,6 +90,35 @@ export function MobileNav({ isLoggedIn, bookmarkCount }: MobileNavProps) {
 
           {isLoggedIn ? (
             <>
+              {/* User identity header in mobile menu */}
+              <div className="flex items-center gap-3 px-2 py-2 border-b border-white/10 mb-2">
+                {avatarUrl ? (
+                  <Image
+                    src={avatarUrl}
+                    alt=""
+                    width={36}
+                    height={36}
+                    className="rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="w-9 h-9 rounded-full bg-accent/20 flex items-center justify-center">
+                    <span className="font-display text-lg text-accent">{initial}</span>
+                  </div>
+                )}
+                <div className="flex-1 min-w-0">
+                  <p className="font-display text-[15px] text-white truncate">{displayName}</p>
+                  <p className="font-mono text-[11px] text-white/50">@{displayName.toLowerCase().replace(/\s+/g, '')}</p>
+                </div>
+              </div>
+
+              <Link
+                href="/profile/@me"
+                onClick={() => setOpen(false)}
+                className="py-2.5 font-mono text-[13px] text-white/85 hover:text-white transition-colors"
+              >
+                Profile
+              </Link>
+
               <Link
                 href="/library"
                 onClick={() => setOpen(false)}
@@ -68,6 +127,31 @@ export function MobileNav({ isLoggedIn, bookmarkCount }: MobileNavProps) {
                 Library
                 <span className="text-white/50">{bookmarkCount} saved</span>
               </Link>
+
+              <Link
+                href="/dashboard"
+                onClick={() => setOpen(false)}
+                className="py-2.5 font-mono text-[13px] text-white/85 hover:text-white transition-colors"
+              >
+                My Articles
+              </Link>
+
+              <Link
+                href="/library/collections"
+                onClick={() => setOpen(false)}
+                className="py-2.5 font-mono text-[13px] text-white/85 hover:text-white transition-colors"
+              >
+                Collections
+              </Link>
+
+              <Link
+                href="/library/settings"
+                onClick={() => setOpen(false)}
+                className="py-2.5 font-mono text-[13px] text-white/85 hover:text-white transition-colors"
+              >
+                Settings
+              </Link>
+
               <Link
                 href="/admin/login"
                 onClick={() => setOpen(false)}
@@ -75,6 +159,7 @@ export function MobileNav({ isLoggedIn, bookmarkCount }: MobileNavProps) {
               >
                 Admin
               </Link>
+
               <button
                 type="button"
                 onClick={handleSignOut}

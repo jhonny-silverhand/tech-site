@@ -11,8 +11,14 @@ import { ReadingProgressBar, ReadingProgressStat } from '@/components/ReadingPro
 import { BreadcrumbSlash } from '@/components/BreadcrumbSlash';
 import { BookmarkButton } from '@/components/BookmarkButton';
 import { CollectionPicker } from '@/components/CollectionPicker';
+import { ReadingQueueButton } from '@/components/ReadingQueueButton';
+import { AuthorBlock } from '@/components/AuthorBlock';
+import { Comments } from '@/components/Comments';
+import { Highlights } from '@/components/Highlights';
+import { PrivateNotes } from '@/components/PrivateNotes';
 import { isSupabaseConfigured } from '@/lib/supabase/config';
-import { isBookmarked, recordView } from '@/lib/library';
+import { createClient } from '@/lib/supabase/server';
+import { isBookmarked, recordView, isInQueue, getCommentsForPost, getPostHighlights, getPostPrivateNote } from '@/lib/library';
 
 export const dynamic = 'force-dynamic';
 
@@ -37,6 +43,25 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
   const libraryEnabled = isSupabaseConfigured();
   const bookmarked = libraryEnabled ? await isBookmarked(post.id) : false;
+  const inQueue = libraryEnabled ? await isInQueue(post.id) : false;
+  
+  // Get user ID for fetching user-specific data
+  let userId: string | null = null;
+  if (libraryEnabled) {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    userId = user?.id || null;
+  }
+
+  // Fetch comments (public), highlights, and private note for logged-in users
+  const [comments, highlights, privateNote] = libraryEnabled
+    ? await Promise.all([
+        getCommentsForPost(post.id),
+        userId ? getPostHighlights(post.id, userId) : [],
+        userId ? getPostPrivateNote(post.id, userId) : null,
+      ])
+    : [[], [], null];
+
   // Only real posts (not local demo-mode seed data) can be recorded —
   // seed posts use synthetic "seed-..." ids with no row in the real
   // database to reference, so there's nothing valid to upsert against.
@@ -147,6 +172,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
       <div className="mt-6 flex flex-wrap gap-2">
         <BookmarkButton postId={post.id} initialBookmarked={bookmarked} enabled={libraryEnabled} />
         <CollectionPicker postId={post.id} enabled={libraryEnabled} />
+        <ReadingQueueButton postId={post.id} initialInQueue={inQueue} enabled={libraryEnabled} />
       </div>
 
       <div id="article-body" className="mt-10">
@@ -158,6 +184,16 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
           citationStyle={post.niche === 'ai-tools'}
         />
       </div>
+
+      <AuthorBlock authorId={post.author_id} authorName={post.author_name} />
+
+      {libraryEnabled && (
+        <>
+          <Comments postId={post.id} initialComments={comments} />
+          <Highlights postId={post.id} initialHighlights={highlights} />
+          <PrivateNotes postId={post.id} initialNote={privateNote} />
+        </>
+      )}
 
       <RelatedPosts posts={related} />
     </article>

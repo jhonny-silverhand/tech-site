@@ -2,18 +2,23 @@ import Link from 'next/link';
 import { NICHES } from '@/lib/niches';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { MobileNav } from '@/components/MobileNav';
-import { LibraryMenu } from '@/components/LibraryMenu';
+import { AccountMenu } from '@/components/AccountMenu';
 import { isSupabaseConfigured } from '@/lib/supabase/config';
 import { getLibrarySummary, type LibrarySummary } from '@/lib/library';
+import { createClient } from '@/lib/supabase/server';
 
 const SIGNED_OUT_SUMMARY: LibrarySummary = { isLoggedIn: false, continueReading: null, bookmarks: [], history: [] };
 
 export async function Header() {
   const summary = isSupabaseConfigured() ? await getLibrarySummary() : SIGNED_OUT_SUMMARY;
+  const bookmarkCount = summary.bookmarks.length;
 
-  const continueReadingLink = summary.continueReading
-    ? { title: summary.continueReading.title, slug: summary.continueReading.slug }
-    : null;
+  let user = null;
+  if (summary.isLoggedIn && isSupabaseConfigured()) {
+    const supabase = await createClient();
+    const { data: { user: authUser } } = await supabase.auth.getUser();
+    user = authUser;
+  }
 
   return (
     <header className="relative bg-void text-white">
@@ -30,11 +35,17 @@ export async function Header() {
 
           <div className="flex items-center gap-1">
             <nav className="hidden md:flex items-center gap-2 font-mono text-[12px]">
+              <Link href="/shopping" className="px-3 py-1.5 rounded-folder hover:bg-white/10 transition-colors">
+                Shopping
+              </Link>
+              <Link href="/pc-builder" className="px-3 py-1.5 rounded-folder hover:bg-white/10 transition-colors">
+                PC Builder
+              </Link>
               <Link href="/write" className="px-3 py-1.5 rounded-folder hover:bg-white/10 transition-colors">
                 Write
               </Link>
               {summary.isLoggedIn ? (
-                <LibraryMenu bookmarkCount={summary.bookmarks.length} continueReading={continueReadingLink} />
+                <AccountMenu user={user} bookmarkCount={bookmarkCount} />
               ) : (
                 <>
                   <Link href="/login" className="px-3 py-1.5 rounded-folder hover:bg-white/10 transition-colors">
@@ -53,7 +64,7 @@ export async function Header() {
               </Link>
             </nav>
             <ThemeToggle />
-            <MobileNav isLoggedIn={summary.isLoggedIn} bookmarkCount={summary.bookmarks.length} />
+            <MobileNav isLoggedIn={summary.isLoggedIn} bookmarkCount={bookmarkCount} user={user} />
           </div>
         </div>
         <div className="flex gap-1 overflow-x-auto pb-3 -mt-1 scrollbar-none">

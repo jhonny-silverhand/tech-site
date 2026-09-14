@@ -44,7 +44,7 @@ export default function SignupPage() {
         // from window.location.origin makes it correct for both local dev
         // and production, as long as both origins are also added to
         // Supabase's Redirect URLs allowlist (Guides/01-database-setup.md).
-        emailRedirectTo: `${window.location.origin}/dashboard`,
+        emailRedirectTo: `${window.location.origin}/onboarding`,
       },
     });
     if (authError) {

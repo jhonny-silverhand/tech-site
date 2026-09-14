@@ -212,6 +212,33 @@ html {
 .hljs-literal {
   color: #7c9cff;
 }
+
+/* Ensure avatar images don't break layout */
+img[src*="avatar"],
+img[src*="gravatar"],
+img[src*="profile"] {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Smooth transitions for interactive elements */
+* {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
 .hljs-string,
 .hljs-addition {
   color: #a6e3a1;

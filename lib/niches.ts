@@ -72,6 +72,12 @@ export const NICHES: Niche[] = [
     description: 'Notion, VS Code, and AI-assisted workflows.',
     color: '#F97316',
   },
+  {
+    slug: 'components',
+    label: 'PC Components',
+    description: 'CPUs, GPUs, motherboards, RAM, and PC building guides.',
+    color: '#EC4899',
+  },
 ];
 
 export const NICHE_SLUGS = NICHES.map((n) => n.slug);

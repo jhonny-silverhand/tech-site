@@ -3,7 +3,11 @@
   "version": "3.7.1",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "node scripts/scrape-all.mjs && next dev",
+    "dev:next": "next dev",
+    "scrape": "node scripts/scrape-all.mjs",
+    "scrape:amazon": "node scripts/scrape-amazon.mjs",
+    "scrape:flipkart": "node scripts/scrape-flipkart.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -35,6 +39,9 @@
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "autoprefixer": "^10.4.20",
+    "dotenv": "^17.4.2",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.3.5",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.13",
     "typescript": "^5.6.2"

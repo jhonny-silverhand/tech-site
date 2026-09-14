@@ -73,6 +73,19 @@ export async function getRecentPosts(limit = 6): Promise<Post[]> {
   return posts.slice(0, limit);
 }
 
+export async function getPostsByAuthor(authorId: string, limit = 20): Promise<Post[]> {
+  if (!isSupabaseConfigured()) return [];
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from('posts')
+    .select('*')
+    .eq('author_id', authorId)
+    .eq('status', 'published')
+    .order('published_at', { ascending: false })
+    .limit(limit);
+  return (data as Post[]) ?? [];
+}
+
 export async function getNicheCounts(): Promise<Record<string, number>> {
   const posts = await getPublishedPosts();
   const counts: Record<string, number> = {};

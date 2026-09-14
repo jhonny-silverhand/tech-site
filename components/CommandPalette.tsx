@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, useCallback, type KeyboardEvent as ReactKe
 import { useRouter } from 'next/navigation';
 
 interface SearchItem {
-  type: 'post' | 'niche';
+  type: 'post' | 'niche' | 'product' | 'guide';
   title: string;
   subtitle: string;
   href: string;
@@ -138,7 +138,7 @@ export function CommandPalette() {
               setActiveIndex(0);
             }}
             onKeyDown={handleInputKeyDown}
-            placeholder="Jump to an article or section…"
+            placeholder="Search articles, products, guides…"
             className="w-full bg-transparent font-body text-[15px] text-ink placeholder:text-muted focus:outline-none"
           />
           <kbd className="hidden sm:inline font-mono text-[10px] text-muted border border-line rounded px-1.5 py-0.5">
@@ -159,7 +159,13 @@ export function CommandPalette() {
                 i === activeIndex ? 'bg-accent/10' : ''
               }`}
             >
-              <span className="font-display text-[15px] text-ink truncate">{item.title}</span>
+              <span className="flex items-center gap-2 truncate">
+                {item.type === 'product' && <span className="font-mono text-[10px] uppercase text-accent bg-accent/10 px-1.5 py-0.5 rounded">Product</span>}
+                {item.type === 'guide' && <span className="font-mono text-[10px] uppercase text-amber-600 bg-amber-500/10 px-1.5 py-0.5 rounded">Guide</span>}
+                {item.type === 'post' && <span className="font-mono text-[10px] uppercase text-muted bg-muted/10 px-1.5 py-0.5 rounded">Article</span>}
+                {item.type === 'niche' && <span className="font-mono text-[10px] uppercase text-muted bg-muted/10 px-1.5 py-0.5 rounded">Section</span>}
+                <span className="font-display text-[15px] text-ink truncate">{item.title}</span>
+              </span>
               <span className="shrink-0 font-mono text-[10px] uppercase text-muted">{item.subtitle}</span>
             </button>
           ))}
