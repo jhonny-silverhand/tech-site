@@ -1,5 +1,11 @@
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  outputFileTracingRoot: __dirname,
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'picsum.photos' },
@@ -19,6 +25,12 @@ const nextConfig = {
       { protocol: 'https', hostname: '*.medium.com' },
       { protocol: 'https', hostname: '*.cdn.com' },
       { protocol: 'https', hostname: '*.akamaihd.net' },
+      { protocol: 'https', hostname: '*.gravatar.com' },
+      { protocol: 'https', hostname: 'secure.gravatar.com' },
+      { protocol: 'https', hostname: 'ui-avatars.com' },
+      { protocol: 'https', hostname: 'api.dicebear.com' },
+      { protocol: 'https', hostname: 'avatars.githubusercontent.com' },
+      { protocol: 'https', hostname: 'lh3.googleusercontent.com' },
     ],
   },
   eslint: { ignoreDuringBuilds: true },
