@@ -1,9 +1,10 @@
 import Link from 'next/link';
 import { getSiteStats } from '@/lib/data';
 import { timeAgo } from '@/lib/utils';
+import { getVersionInfo } from '@/lib/version';
 
 export async function Footer() {
-  const stats = await getSiteStats();
+  const [stats, version] = await Promise.all([getSiteStats(), getVersionInfo()]);
 
   return (
     <footer className="bg-void text-white mt-24">
@@ -16,6 +17,27 @@ export async function Footer() {
             Knowledge published: {stats.articleCount} article{stats.articleCount === 1 ? '' : 's'} · Updated{' '}
             {timeAgo(stats.lastPublishedAt)}
           </p>
+          {/* Version control */}
+          {version && (
+            <p className="mt-2 font-mono text-[10px] text-mutedOnDark/50 flex items-center gap-2">
+              <span className="inline-flex items-center gap-1 rounded bg-white/5 px-1.5 py-0.5 border border-white/10">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400/80" />
+                v{version.version}
+              </span>
+              {version.commit && (
+                <a
+                  href={`https://github.com/jhonny-silverhand/tech-site/commit/${version.commit}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white/70 transition-colors"
+                  title={version.commitMessage}
+                >
+                  {version.commit}
+                </a>
+              )}
+              {version.branch && <span className="text-mutedOnDark/30">{version.branch}</span>}
+            </p>
+          )}
           {/* Ko-fi link with Apple-inspired styling */}
           <p className="mt-4 font-mono text-[11px] tracking-wide text-mutedOnDark">
             <a

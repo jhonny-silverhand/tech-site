@@ -1,0 +1,7 @@
+{
+  "version": "3.7.1",
+  "commit": "1e5d06b",
+  "commitMessage": "fix: scraper price range, image extraction, flipkart rating parsing",
+  "branch": "main",
+  "builtAt": "2026-09-15T07:46:18.617Z"
+}
