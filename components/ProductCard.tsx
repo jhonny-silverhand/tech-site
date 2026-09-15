@@ -67,6 +67,16 @@ function getComparisonUrl(name: string, category: string): string {
   return `https://versus.com/en/?q=${query}`;
 }
 
+function getRetailerUrl(retailerName: string, productName: string): string {
+  const query = encodeURIComponent(productName);
+  const name = retailerName.toLowerCase();
+  if (name.includes('flipkart')) return `https://www.flipkart.com/search?q=${query}`;
+  if (name.includes('amazon')) return `https://www.amazon.in/s?k=${query}`;
+  if (name.includes('croma')) return `https://www.croma.com/searchB?q=${query}`;
+  if (name.includes('reliance')) return `https://www.reliancedigital.in/search?q=${query}`;
+  return `https://www.google.com/search?q=${query}+buy+online+india`;
+}
+
 export function ProductCard({ product, variant = 'default' }: ProductCardProps) {
   const catInfo = getCategoryInfo(product.category_slug);
   const bestPrice = getBestPrice(product.retailers);

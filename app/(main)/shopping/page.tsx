@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, type FormEvent } from 'react';
+import { useState, useEffect, type FormEvent } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/Button';
@@ -107,6 +107,18 @@ interface RetailerLink {
   price: number;
 }
 
+interface ScrapedProduct {
+  name: string;
+  brand: string;
+  image_url: string | null;
+  product_url: string;
+  price_inr: number;
+  mrp_inr: number | null;
+  rating: number | null;
+  review_count: number | null;
+  category: string;
+}
+
 interface PhoneSegment {
   name: string;
   slug: string;
@@ -117,41 +129,58 @@ interface PhoneSegment {
   retailers: RetailerLink[];
 }
 
-const PHONE_SEGMENTS: Record<string, PhoneSegment[]> = {
-  'Under ₹5,000': [
-    { name: 'Redmi A3', slug: 'redmi-a3', brand: 'Xiaomi', image: 'https://picsum.photos/seed/redmi-a3/400/300', specs: ['MediaTek Helio G36', '4GB RAM', '64GB', '6.71" HD+', '5000mAh'], price: 4499, retailers: [{ name: 'Amazon', url: 'https://amazon.in/s?k=Redmi+A3', price: 4499 }, { name: 'Flipkart', url: 'https://flipkart.com/search?q=Redmi+A3', price: 4399 }] },
-    { name: 'Samsung Galaxy A06', slug: 'galaxy-a06', brand: 'Samsung', image: 'https://picsum.photos/seed/galaxy-a06/400/300', specs: ['MediaTek Helio G85', '4GB RAM', '64GB', '6.7" HD+', '5000mAh'], price: 4999, retailers: [{ name: 'Amazon', url: 'https://amazon.in/s?k=Galaxy+A06', price: 4999 }, { name: 'Flipkart', url: 'https://flipkart.com/search?q=Galaxy+A06', price: 4899 }] },
-    { name: 'Lava Blaze Curve 5G', slug: 'lava-blaze-curve', brand: 'Lava', image: 'https://picsum.photos/seed/lava-blaze/400/300', specs: ['Dimensity 6300', '4GB RAM', '128GB', '6.67" HD+', '5000mAh'], price: 4999, retailers: [{ name: 'Amazon', url: 'https://amazon.in/s?k=Lava+Blaze+Curve', price: 4999 }, { name: 'Flipkart', url: 'https://flipkart.com/search?q=Lava+Blaze+Curve', price: 4899 }] },
-  ],
-  'Under ₹10,000': [
-    { name: 'Redmi 13 5G', slug: 'redmi-13-5g', brand: 'Xiaomi', image: 'https://picsum.photos/seed/redmi-13/400/300', specs: ['Snapdragon 4 Gen 2', '6GB RAM', '128GB', '6.67" FHD+ 120Hz', '5030mAh'], price: 9999, retailers: [{ name: 'Amazon', url: 'https://amazon.in/s?k=Redmi+13+5G', price: 9999 }, { name: 'Flipkart', url: 'https://flipkart.com/search?q=Redmi+13+5G', price: 9799 }] },
-    { name: 'Samsung Galaxy M15 5G', slug: 'galaxy-m15-5g', brand: 'Samsung', image: 'https://picsum.photos/seed/galaxy-m15/400/300', specs: ['Dimensity 6100+', '4GB RAM', '128GB', '6.5" FHD+ AMOLED', '6000mAh'], price: 9999, retailers: [{ name: 'Amazon', url: 'https://amazon.in/s?k=Galaxy+M15', price: 9999 }, { name: 'Flipkart', url: 'https://flipkart.com/search?q=Galaxy+M15', price: 9899 }] },
-    { name: 'Realme NARZO 70x 5G', slug: 'narzo-70x', brand: 'Realme', image: 'https://picsum.photos/seed/narzo-70x/400/300', specs: ['Dimensity 6100+', '4GB RAM', '128GB', '6.72" FHD+ 120Hz', '5000mAh'], price: 9499, retailers: [{ name: 'Amazon', url: 'https://amazon.in/s?k=Narzo+70x', price: 9499 }, { name: 'Flipkart', url: 'https://flipkart.com/search?q=Narzo+70x', price: 9399 }] },
-  ],
-  'Under ₹15,000': [
-    { name: 'Poco M6 Pro 5G', slug: 'poco-m6-pro', brand: 'Poco', image: 'https://picsum.photos/seed/poco-m6pro/400/300', specs: ['Snapdragon 4 Gen 2', '6GB RAM', '128GB', '6.67" FHD+ AMOLED 120Hz', '5000mAh'], price: 11999, retailers: [{ name: 'Amazon', url: 'https://amazon.in/s?k=Poco+M6+Pro', price: 11999 }, { name: 'Flipkart', url: 'https://flipkart.com/search?q=Poco+M6+Pro', price: 11799 }] },
-    { name: 'Samsung Galaxy A16 5G', slug: 'galaxy-a16-5g', brand: 'Samsung', image: 'https://picsum.photos/seed/galaxy-a16/400/300', specs: ['Dimensity 6300', '6GB RAM', '128GB', '6.7" FHD+ AMOLED', '5000mAh'], price: 13999, retailers: [{ name: 'Amazon', url: 'https://amazon.in/s?k=Galaxy+A16', price: 13999 }, { name: 'Flipkart', url: 'https://flipkart.com/search?q=Galaxy+A16', price: 13799 }] },
-    { name: 'Realme 12x 5G', slug: 'realme-12x', brand: 'Realme', image: 'https://picsum.photos/seed/realme-12x/400/300', specs: ['Dimensity 6100+', '6GB RAM', '128GB', '6.72" FHD+ 120Hz', '5000mAh'], price: 11999, retailers: [{ name: 'Amazon', url: 'https://amazon.in/s?k=Realme+12x', price: 11999 }, { name: 'Flipkart', url: 'https://flipkart.com/search?q=Realme+12x', price: 11899 }] },
-  ],
-  'Under ₹20,000': [
-    { name: 'Nothing Phone 2a', slug: 'nothing-phone-2a', brand: 'Nothing', image: 'https://picsum.photos/seed/nothing-2a/400/300', specs: ['Dimensity 7200 Pro', '8GB RAM', '128GB', '6.7" FHD+ AMOLED 120Hz', '5000mAh'], price: 17999, retailers: [{ name: 'Amazon', url: 'https://amazon.in/s?k=Nothing+Phone+2a', price: 17999 }, { name: 'Flipkart', url: 'https://flipkart.com/search?q=Nothing+Phone+2a', price: 17999 }] },
-    { name: 'Samsung Galaxy A35 5G', slug: 'galaxy-a35-5g', brand: 'Samsung', image: 'https://picsum.photos/seed/galaxy-a35/400/300', specs: ['Exynos 1380', '8GB RAM', '128GB', '6.6" FHD+ AMOLED 120Hz', '5000mAh'], price: 18999, retailers: [{ name: 'Amazon', url: 'https://amazon.in/s?k=Galaxy+A35', price: 18999 }, { name: 'Flipkart', url: 'https://flipkart.com/search?q=Galaxy+A35', price: 18799 }] },
-    { name: 'Redmi Note 13 Pro+ 5G', slug: 'redmi-note-13-pro-plus', brand: 'Xiaomi', image: 'https://picsum.photos/seed/note-13pro/400/300', specs: ['Dimensity 7200 Ultra', '8GB RAM', '256GB', '6.67" FHD+ AMOLED 120Hz', '5000mAh'], price: 19999, retailers: [{ name: 'Amazon', url: 'https://amazon.in/s?k=Redmi+Note+13+Pro+', price: 19999 }, { name: 'Flipkart', url: 'https://flipkart.com/search?q=Redmi+Note+13+Pro+', price: 19799 }] },
-  ],
-  'Under ₹30,000': [
-    { name: 'Samsung Galaxy A55 5G', slug: 'galaxy-a55-5g', brand: 'Samsung', image: 'https://picsum.photos/seed/galaxy-a55/400/300', specs: ['Exynos 1480', '8GB RAM', '128GB', '6.6" FHD+ AMOLED 120Hz', '5000mAh'], price: 26999, retailers: [{ name: 'Amazon', url: 'https://amazon.in/s?k=Galaxy+A55', price: 26999 }, { name: 'Flipkart', url: 'https://flipkart.com/search?q=Galaxy+A55', price: 26799 }] },
-    { name: 'Nothing Phone 2', slug: 'nothing-phone-2', brand: 'Nothing', image: 'https://picsum.photos/seed/nothing-phone2/400/300', specs: ['Snapdragon 8+ Gen 1', '8GB RAM', '128GB', '6.7" FHD+ OLED 120Hz', '4700mAh'], price: 27999, retailers: [{ name: 'Amazon', url: 'https://amazon.in/s?k=Nothing+Phone+2', price: 27999 }, { name: 'Flipkart', url: 'https://flipkart.com/search?q=Nothing+Phone+2', price: 27999 }] },
-    { name: 'iQOO Neo 9 Pro', slug: 'iqoo-neo9-pro', brand: 'iQOO', image: 'https://picsum.photos/seed/iqoo-neo9/400/300', specs: ['Snapdragon 8 Gen 2', '8GB RAM', '256GB', '6.78" FHD+ AMOLED 144Hz', '5160mAh'], price: 28999, retailers: [{ name: 'Amazon', url: 'https://amazon.in/s?k=iQOO+Neo+9+Pro', price: 28999 }, { name: 'Flipkart', url: 'https://flipkart.com/search?q=iQOO+Neo+9+Pro', price: 28999 }] },
-  ],
-  'Under ₹50,000': [
-    { name: 'Samsung Galaxy S23 FE', slug: 'galaxy-s23-fe', brand: 'Samsung', image: 'https://picsum.photos/seed/galaxy-s23fe/400/300', specs: ['Exynos 2200', '8GB RAM', '128GB', '6.4" FHD+ AMOLED 120Hz', '4500mAh'], price: 39999, retailers: [{ name: 'Amazon', url: 'https://amazon.in/s?k=Galaxy+S23+FE', price: 39999 }, { name: 'Flipkart', url: 'https://flipkart.com/search?q=Galaxy+S23+FE', price: 39999 }] },
-    { name: 'OnePlus 12R', slug: 'oneplus-12r', brand: 'OnePlus', image: 'https://picsum.photos/seed/oneplus-12r/400/300', specs: ['Snapdragon 8 Gen 2', '8GB RAM', '256GB', '6.78" FHD+ AMOLED 120Hz', '5500mAh'], price: 39999, retailers: [{ name: 'Amazon', url: 'https://amazon.in/s?k=OnePlus+12R', price: 39999 }, { name: 'Flipkart', url: 'https://flipkart.com/search?q=OnePlus+12R', price: 39999 }] },
-    { name: 'Pixel 8a', slug: 'pixel-8a', brand: 'Google', image: 'https://picsum.photos/seed/pixel-8a/400/300', specs: ['Tensor G3', '8GB RAM', '128GB', '6.1" FHD+ OLED 120Hz', '4492mAh'], price: 39999, retailers: [{ name: 'Flipkart', url: 'https://flipkart.com/search?q=Pixel+8a', price: 39999 }] },
-  ],
-};
+const PHONE_SEGMENTS: Record<string, PhoneSegment[]> = {};
 
 function getBudgetOptions(category: string) {
   return BUDGET_OPTIONS[category] || BUDGET_OPTIONS.default;
+}
+
+function scrapedToSegment(products: ScrapedProduct[]): Record<string, PhoneSegment[]> {
+  const segments: Record<string, PhoneSegment[]> = {
+    'Under ₹5,000': [],
+    'Under ₹10,000': [],
+    'Under ₹15,000': [],
+    'Under ₹20,000': [],
+    'Under ₹30,000': [],
+    'Under ₹50,000': [],
+  };
+
+  const getSegment = (price: number) => {
+    if (price < 5000) return 'Under ₹5,000';
+    if (price < 10000) return 'Under ₹10,000';
+    if (price < 15000) return 'Under ₹15,000';
+    if (price < 20000) return 'Under ₹20,000';
+    if (price < 30000) return 'Under ₹30,000';
+    if (price < 50000) return 'Under ₹50,000';
+    return null;
+  };
+
+  const seen = new Set<string>();
+  for (const p of products) {
+    const price = Math.round(p.price_inr / 100);
+    const seg = getSegment(price);
+    if (!seg || seen.has(p.name)) continue;
+    seen.add(p.name);
+
+    const cleanUrl = p.product_url.split('&amp;')[0].replace(/&amp;/g, '&');
+    const brand = p.brand || p.name.split(' ')[0];
+    segments[seg].push({
+      name: p.name.substring(0, 60),
+      slug: p.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').substring(0, 40),
+      brand,
+      image: p.image_url || '',
+      specs: [],
+      price,
+      retailers: [{ name: 'Buy', url: cleanUrl, price }],
+    });
+  }
+
+  // Trim each segment to top 3
+  for (const seg of Object.keys(segments)) {
+    segments[seg] = segments[seg].slice(0, 3);
+  }
+
+  return segments;
 }
 
 export default function ShoppingPage() {
@@ -164,6 +193,20 @@ export default function ShoppingPage() {
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [phoneSegments, setPhoneSegments] = useState<Record<string, PhoneSegment[]>>({});
+  const [segmentsLoading, setSegmentsLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/scraped-products/search?category=smartphone&limit=50&sortBy=price_asc')
+      .then(r => r.json())
+      .then(data => {
+        if (data.products) {
+          setPhoneSegments(scrapedToSegment(data.products));
+        }
+      })
+      .catch(() => {})
+      .finally(() => setSegmentsLoading(false));
+  }, []);
 
   function handleCategorySelect(category: string) {
     setSelectedCategory(category);
@@ -241,7 +284,7 @@ export default function ShoppingPage() {
 
   // ====== STEP: BROWSE (Category + Budget + Search) ======
   if (step === 'browse') {
-    const phoneSegments = Object.keys(PHONE_SEGMENTS);
+    const phoneSegmentNames = Object.keys(phoneSegments);
 
     return (
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-14">
@@ -334,77 +377,81 @@ export default function ShoppingPage() {
           <div className="flex items-center justify-between mb-6">
             <div>
               <h2 className="font-display text-2xl text-ink">Best Phones by Budget</h2>
-              <p className="text-[14px] text-muted mt-1">Top picks in every segment — specs, prices, and direct links</p>
+              <p className="text-[14px] text-muted mt-1">Real prices from Flipkart — tap to buy</p>
             </div>
           </div>
 
-          <div className="space-y-10">
-            {phoneSegments.map((segment) => (
-              <div key={segment}>
-                <h3 className="font-mono text-[12px] uppercase tracking-wide text-accent mb-4 flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-accent" />
-                  {segment}
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {PHONE_SEGMENTS[segment].map((phone) => (
-                    <div
-                      key={phone.slug}
-                      className="group relative rounded-folder border border-line bg-paper overflow-hidden hover:border-accent/30 transition-all"
-                    >
-                      {/* Image */}
-                      <div className="relative aspect-[4/3] bg-line overflow-hidden">
-                        <Image
-                          src={phone.image}
-                          alt={phone.name}
-                          fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-300"
-                          sizes="(max-width: 768px) 100vw, 33vw"
-                        />
-                        {/* Price badge */}
-                        <div className="absolute top-3 right-3 bg-ink/90 text-white px-3 py-1.5 rounded-full font-display text-[14px]">
-                          ₹{phone.price.toLocaleString('en-IN')}
+          {segmentsLoading ? (
+            <div className="flex items-center justify-center py-12 text-muted">
+              <Loader2 size={20} className="animate-spin mr-2" />
+              Loading real prices...
+            </div>
+          ) : (
+            <div className="space-y-10">
+              {phoneSegmentNames.map((segment) => (
+                <div key={segment}>
+                  <h3 className="font-mono text-[12px] uppercase tracking-wide text-accent mb-4 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-accent" />
+                    {segment}
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {phoneSegments[segment].map((phone) => (
+                      <div
+                        key={phone.slug}
+                        className="group relative rounded-folder border border-line bg-paper overflow-hidden hover:border-accent/30 transition-all"
+                      >
+                        {/* Image */}
+                        <div className="relative aspect-[4/3] bg-line overflow-hidden">
+                          {phone.image ? (
+                            <Image
+                              src={phone.image}
+                              alt={phone.name}
+                              fill
+                              className="object-contain p-2 group-hover:scale-105 transition-transform duration-300"
+                              sizes="(max-width: 768px) 100vw, 33vw"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-muted text-3xl font-display">
+                              {phone.name.charAt(0)}
+                            </div>
+                          )}
+                          {/* Price badge */}
+                          <div className="absolute top-3 right-3 bg-ink/90 text-white px-3 py-1.5 rounded-full font-display text-[14px]">
+                            ₹{phone.price.toLocaleString('en-IN')}
+                          </div>
+                        </div>
+
+                        {/* Content */}
+                        <div className="p-4">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="font-mono text-[10px] uppercase tracking-wide text-muted bg-line px-1.5 py-0.5 rounded">{phone.brand}</span>
+                          </div>
+                          <h4 className="font-display text-[16px] text-ink mb-2 line-clamp-2">{phone.name}</h4>
+
+                          {/* Retailer Link - Direct product page */}
+                          <div className="flex gap-2">
+                            {phone.retailers.map((r) => (
+                              <a
+                                key={r.name}
+                                href={r.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-1.5 rounded-lg border border-line bg-background px-3 py-2 font-mono text-[11px] text-ink hover:border-accent/50 hover:bg-accent/5 transition-colors"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                {r.name}
+                                <ExternalLink size={10} className="text-muted" />
+                              </a>
+                            ))}
+                          </div>
                         </div>
                       </div>
-
-                      {/* Content */}
-                      <div className="p-4">
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="font-mono text-[10px] uppercase tracking-wide text-muted bg-line px-1.5 py-0.5 rounded">{phone.brand}</span>
-                        </div>
-                        <h4 className="font-display text-[16px] text-ink mb-2">{phone.name}</h4>
-
-                        {/* Specs */}
-                        <div className="flex flex-wrap gap-1.5 mb-3">
-                          {phone.specs.map((spec, i) => (
-                            <span key={i} className="font-mono text-[10px] text-muted bg-accent/5 border border-accent/10 px-1.5 py-0.5 rounded">
-                              {spec}
-                            </span>
-                          ))}
-                        </div>
-
-                        {/* Retailer Links - Show on hover */}
-                        <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                          {phone.retailers.map((r) => (
-                            <a
-                              key={r.name}
-                              href={r.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center gap-1.5 rounded-lg border border-line bg-background px-3 py-2 font-mono text-[11px] text-ink hover:border-accent/50 hover:bg-accent/5 transition-colors"
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              {r.name}
-                              <ExternalLink size={10} className="text-muted" />
-                            </a>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </section>
 
         {/* Quick links */}
