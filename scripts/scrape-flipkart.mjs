@@ -165,7 +165,7 @@ function parseSearchResults(html, category, searchQuery) {
     let priceMatch;
     while ((priceMatch = priceRegex.exec(surroundingText)) !== null) {
       const price = parseInt(priceMatch[1].replace(/,/g, ''));
-      if (price > 100 && price < 500000) { // Valid price range
+      if (price > 100 && price < 100000) { // Valid price range (₹100 to ₹1,00,000)
         prices.push(price);
       }
     }
