@@ -57,17 +57,17 @@ export function MobileNav({ isLoggedIn, bookmarkCount, user }: MobileNavProps) {
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? 'Close menu' : 'Open menu'}
         aria-expanded={open}
-        className="inline-flex h-8 w-8 items-center justify-center rounded-full text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+        className="inline-flex h-8 w-8 items-center justify-center rounded-full text-ink/80 hover:text-ink hover:bg-line/10 transition-colors"
       >
         {open ? <X size={18} /> : <Menu size={18} />}
       </button>
 
       {open && (
-        <div className="absolute inset-x-0 top-full z-40 border-t border-white/10 bg-void px-4 py-3 flex flex-col">
+        <div className="absolute inset-x-0 top-full z-40 border-t border-line/10 bg-paper px-4 py-3 flex flex-col">
           <Link
             href="/shopping"
             onClick={() => setOpen(false)}
-            className="py-2.5 font-mono text-[13px] text-white/85 hover:text-white transition-colors"
+            className="py-2.5 font-mono text-[13px] text-ink/85 hover:text-ink transition-colors"
           >
             Shopping
           </Link>
@@ -75,7 +75,7 @@ export function MobileNav({ isLoggedIn, bookmarkCount, user }: MobileNavProps) {
           <Link
             href="/pc-builder"
             onClick={() => setOpen(false)}
-            className="py-2.5 font-mono text-[13px] text-white/85 hover:text-white transition-colors"
+            className="py-2.5 font-mono text-[13px] text-ink/85 hover:text-ink transition-colors"
           >
             PC Builder
           </Link>
@@ -83,7 +83,7 @@ export function MobileNav({ isLoggedIn, bookmarkCount, user }: MobileNavProps) {
           <Link
             href="/write"
             onClick={() => setOpen(false)}
-            className="py-2.5 font-mono text-[13px] text-white/85 hover:text-white transition-colors"
+            className="py-2.5 font-mono text-[13px] text-ink/85 hover:text-ink transition-colors"
           >
             Write
           </Link>
@@ -91,7 +91,7 @@ export function MobileNav({ isLoggedIn, bookmarkCount, user }: MobileNavProps) {
           {isLoggedIn ? (
             <>
               {/* User identity header in mobile menu */}
-              <div className="flex items-center gap-3 px-2 py-2 border-b border-white/10 mb-2">
+              <div className="flex items-center gap-3 px-2 py-2 border-b border-line/10 mb-2">
                 {avatarUrl ? (
                   <Image
                     src={avatarUrl}
@@ -106,15 +106,15 @@ export function MobileNav({ isLoggedIn, bookmarkCount, user }: MobileNavProps) {
                   </div>
                 )}
                 <div className="flex-1 min-w-0">
-                  <p className="font-display text-[15px] text-white truncate">{displayName}</p>
-                  <p className="font-mono text-[11px] text-white/50">@{displayName.toLowerCase().replace(/\s+/g, '')}</p>
+                  <p className="font-display text-[15px] text-ink truncate">{displayName}</p>
+                  <p className="font-mono text-[11px] text-ink/50">@{displayName.toLowerCase().replace(/\s+/g, '')}</p>
                 </div>
               </div>
 
               <Link
                 href="/profile/@me"
                 onClick={() => setOpen(false)}
-                className="py-2.5 font-mono text-[13px] text-white/85 hover:text-white transition-colors"
+                className="py-2.5 font-mono text-[13px] text-ink/85 hover:text-ink transition-colors"
               >
                 Profile
               </Link>
@@ -122,16 +122,16 @@ export function MobileNav({ isLoggedIn, bookmarkCount, user }: MobileNavProps) {
               <Link
                 href="/library"
                 onClick={() => setOpen(false)}
-                className="flex items-center justify-between py-2.5 font-mono text-[13px] text-white/85 hover:text-white transition-colors"
+                className="flex items-center justify-between py-2.5 font-mono text-[13px] text-ink/85 hover:text-ink transition-colors"
               >
                 Library
-                <span className="text-white/50">{bookmarkCount} saved</span>
+                <span className="text-ink/50">{bookmarkCount} saved</span>
               </Link>
 
               <Link
                 href="/dashboard"
                 onClick={() => setOpen(false)}
-                className="py-2.5 font-mono text-[13px] text-white/85 hover:text-white transition-colors"
+                className="py-2.5 font-mono text-[13px] text-ink/85 hover:text-ink transition-colors"
               >
                 My Articles
               </Link>
@@ -139,7 +139,7 @@ export function MobileNav({ isLoggedIn, bookmarkCount, user }: MobileNavProps) {
               <Link
                 href="/library/collections"
                 onClick={() => setOpen(false)}
-                className="py-2.5 font-mono text-[13px] text-white/85 hover:text-white transition-colors"
+                className="py-2.5 font-mono text-[13px] text-ink/85 hover:text-ink transition-colors"
               >
                 Collections
               </Link>
@@ -147,7 +147,7 @@ export function MobileNav({ isLoggedIn, bookmarkCount, user }: MobileNavProps) {
               <Link
                 href="/library/settings"
                 onClick={() => setOpen(false)}
-                className="py-2.5 font-mono text-[13px] text-white/85 hover:text-white transition-colors"
+                className="py-2.5 font-mono text-[13px] text-ink/85 hover:text-ink transition-colors"
               >
                 Settings
               </Link>
@@ -155,7 +155,7 @@ export function MobileNav({ isLoggedIn, bookmarkCount, user }: MobileNavProps) {
               <Link
                 href="/admin/login"
                 onClick={() => setOpen(false)}
-                className="py-2.5 font-mono text-[13px] text-white/85 hover:text-white transition-colors"
+                className="py-2.5 font-mono text-[13px] text-ink/85 hover:text-ink transition-colors"
               >
                 Admin
               </Link>
@@ -174,7 +174,7 @@ export function MobileNav({ isLoggedIn, bookmarkCount, user }: MobileNavProps) {
                 key={link.href}
                 href={link.href}
                 onClick={() => setOpen(false)}
-                className="py-2.5 font-mono text-[13px] text-white/85 hover:text-white transition-colors"
+                className="py-2.5 font-mono text-[13px] text-ink/85 hover:text-ink transition-colors"
               >
                 {link.label}
               </Link>

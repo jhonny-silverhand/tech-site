@@ -73,9 +73,9 @@ export default function ShoppingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-void text-white">
+    <div className="min-h-screen bg-bg text-ink">
       {/* ═══ HERO ═══ */}
-      <section className="relative overflow-hidden border-b border-white/5">
+      <section className="relative overflow-hidden border-b border-line/5">
         <div className="absolute inset-0 bg-gradient-to-br from-accent/10 via-transparent to-purple-500/5" />
         <div className="mx-auto max-w-4xl px-4 sm:px-6 py-20 text-center relative">
           <div className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-4 py-2 mb-6">
@@ -83,10 +83,10 @@ export default function ShoppingPage() {
             <span className="font-mono text-[11px] uppercase tracking-widest text-accent">AI-Powered Shopping</span>
           </div>
           <h1 className="font-display text-4xl sm:text-6xl leading-[1.08] font-bold mb-5">
-            <span className="text-white">Smarter Shopping.</span><br />
+            <span className="text-ink">Smarter Shopping.</span><br />
             <span className="text-accent">Better Decisions.</span>
           </h1>
-          <p className="text-[17px] leading-relaxed text-white/50 max-w-xl mx-auto mb-10">
+          <p className="text-[17px] leading-relaxed text-ink/50 max-w-xl mx-auto mb-10">
             Tell us what you need — our AI analyzes specs, reviews, and prices across Indian e-commerce to find your best options.
           </p>
 
@@ -98,12 +98,12 @@ export default function ShoppingPage() {
                 onChange={e => setQuery(e.target.value)}
                 onKeyDown={e => { if (e.key === 'Enter') handleSearch(query); }}
                 placeholder='Try "best phone under 30k for camera" or "laptop for coding"'
-                className="w-full pl-5 pr-32 py-4 rounded-2xl bg-white/5 border border-white/10 text-white placeholder:text-white/30 text-[15px] focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/20 transition-all"
+                className="w-full pl-5 pr-32 py-4 rounded-2xl bg-paper/5 border border-line/10 text-ink placeholder:text-ink/30 text-[15px] focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/20 transition-all"
               />
               <button
                 onClick={() => handleSearch(query)}
                 disabled={loading || !query.trim()}
-                className="absolute right-2 top-1/2 -translate-y-1/2 bg-accent hover:bg-accent/90 disabled:opacity-40 text-white rounded-xl px-5 py-2.5 font-mono text-[12px] uppercase tracking-wide transition-all flex items-center gap-1.5"
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-accent hover:bg-accent/90 disabled:opacity-40 text-ink rounded-xl px-5 py-2.5 font-mono text-[12px] uppercase tracking-wide transition-all flex items-center gap-1.5"
               >
                 {loading ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
                 Ask AI
@@ -118,7 +118,7 @@ export default function ShoppingPage() {
                 <button
                   key={s.label}
                   onClick={() => { setQuery(s.label); handleSearch(s.label); }}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-[13px] text-white/60 hover:border-accent/40 hover:text-white hover:bg-accent/5 transition-all"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-line/10 bg-paper/5 px-4 py-2 text-[13px] text-ink/60 hover:border-accent/40 hover:text-ink hover:bg-accent/5 transition-all"
                 >
                   <span>{s.icon}</span>
                   {s.label}
@@ -135,14 +135,14 @@ export default function ShoppingPage() {
         {loading && (
           <div className="text-center py-16">
             <Loader2 size={32} className="text-accent animate-spin mx-auto mb-3" />
-            <p className="font-mono text-[13px] text-white/50">AI is analyzing options for you…</p>
+            <p className="font-mono text-[13px] text-ink/50">AI is analyzing options for you…</p>
           </div>
         )}
 
         {/* Error */}
         {error && (
           <div className="text-center py-16">
-            <p className="font-display text-xl text-white/80 mb-3">{error}</p>
+            <p className="font-display text-xl text-ink/80 mb-3">{error}</p>
             <button onClick={handleReset} className="font-mono text-[12px] text-accent hover:text-accent/80">
               ← Try another query
             </button>
@@ -156,10 +156,10 @@ export default function ShoppingPage() {
             <div className="flex items-start justify-between mb-8">
               <div>
                 <p className="font-mono text-[11px] uppercase tracking-wide text-accent mb-2">AI Recommendation</p>
-                <h2 className="font-display text-2xl sm:text-3xl text-white mb-2">{result.summary}</h2>
-                <p className="font-mono text-[12px] text-white/40">Based on: &quot;{result.query}&quot;</p>
+                <h2 className="font-display text-2xl sm:text-3xl text-ink mb-2">{result.summary}</h2>
+                <p className="font-mono text-[12px] text-ink/40">Based on: &quot;{result.query}&quot;</p>
               </div>
-              <button onClick={handleReset} className="flex items-center gap-1.5 rounded-lg border border-white/10 px-3 py-2 text-[12px] text-white/50 hover:text-white hover:border-white/30 transition-all flex-shrink-0">
+              <button onClick={handleReset} className="flex items-center gap-1.5 rounded-lg border border-line/10 px-3 py-2 text-[12px] text-ink/50 hover:text-ink hover:border-line/30 transition-all flex-shrink-0">
                 <RotateCcw size={12} /> New search
               </button>
             </div>
@@ -167,27 +167,27 @@ export default function ShoppingPage() {
             {/* Picks */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {result.picks.map((pick, i) => (
-                <div key={pick.name + i} className="group rounded-xl border border-white/8 bg-white/[0.03] hover:border-accent/30 hover:bg-white/[0.06] transition-all p-5">
+                <div key={pick.name + i} className="group rounded-xl border border-line/8 bg-paper/[0.03] hover:border-accent/30 hover:bg-line/[0.06] transition-all p-5">
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-2">
                       {i === 0 && (
-                        <span className="bg-accent text-white text-[10px] font-mono uppercase tracking-wide px-2.5 py-1 rounded-md">
+                        <span className="bg-accent text-ink text-[10px] font-mono uppercase tracking-wide px-2.5 py-1 rounded-md">
                           Top Pick
                         </span>
                       )}
-                      <span className="font-mono text-[11px] text-white/30">#{i + 1}</span>
+                      <span className="font-mono text-[11px] text-ink/30">#{i + 1}</span>
                     </div>
-                    <span className="font-mono text-[10px] text-white/30 bg-white/5 px-2 py-0.5 rounded">{pick.category}</span>
+                    <span className="font-mono text-[10px] text-ink/30 bg-paper/5 px-2 py-0.5 rounded">{pick.category}</span>
                   </div>
 
-                  <h3 className="font-display text-xl text-white mb-1">{pick.name}</h3>
+                  <h3 className="font-display text-xl text-ink mb-1">{pick.name}</h3>
                   <p className="font-mono text-[12px] text-accent mb-1">{pick.tagline}</p>
                   <p className="font-mono text-[13px] text-green-400 mb-3">{pick.priceRange}</p>
 
                   {/* Features */}
                   <div className="flex flex-wrap gap-1.5 mb-4">
                     {pick.features.map(f => (
-                      <span key={f} className="inline-flex items-center gap-1 text-[11px] text-white/60 bg-white/5 border border-white/8 px-2.5 py-1 rounded-md">
+                      <span key={f} className="inline-flex items-center gap-1 text-[11px] text-ink/60 bg-paper/5 border border-line/8 px-2.5 py-1 rounded-md">
                         <Check size={10} className="text-green-400" />
                         {f}
                       </span>
@@ -195,10 +195,10 @@ export default function ShoppingPage() {
                   </div>
 
                   {/* Best for */}
-                  <div className="flex items-start gap-2 pt-3 border-t border-white/5 mb-4">
+                  <div className="flex items-start gap-2 pt-3 border-t border-line/5 mb-4">
                     <Target size={12} className="text-accent mt-0.5 flex-shrink-0" />
-                    <p className="font-mono text-[11px] text-white/50">
-                      <span className="text-white/70">Best for:</span> {pick.bestFor}
+                    <p className="font-mono text-[11px] text-ink/50">
+                      <span className="text-ink/70">Best for:</span> {pick.bestFor}
                     </p>
                   </div>
 
@@ -227,7 +227,7 @@ export default function ShoppingPage() {
 
             {/* Bottom CTA */}
             <div className="mt-10 text-center">
-              <p className="font-mono text-[12px] text-white/30 mb-4">Want to compare these products side by side?</p>
+              <p className="font-mono text-[12px] text-ink/30 mb-4">Want to compare these products side by side?</p>
               <Link
                 href="/compare"
                 className="inline-flex items-center gap-2 rounded-xl border border-accent/30 bg-accent/10 px-6 py-3 font-mono text-[12px] text-accent hover:bg-accent/20 transition-all"
@@ -244,8 +244,8 @@ export default function ShoppingPage() {
             <div className="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center mx-auto mb-4">
               <Sparkles size={28} className="text-accent" />
             </div>
-            <p className="font-display text-xl text-white/80 mb-2">What are you looking for?</p>
-            <p className="font-mono text-[13px] text-white/40 max-w-md mx-auto">
+            <p className="font-display text-xl text-ink/80 mb-2">What are you looking for?</p>
+            <p className="font-mono text-[13px] text-ink/40 max-w-md mx-auto">
               Type your needs naturally — budget, use case, priorities — and our AI will find the best options with direct buying links.
             </p>
           </div>
@@ -254,9 +254,9 @@ export default function ShoppingPage() {
 
       {/* ═══ HOW IT WORKS ═══ */}
       {!result && !loading && (
-        <section className="border-t border-white/5 bg-white/[0.02]">
+        <section className="border-t border-line/5 bg-paper/[0.02]">
           <div className="mx-auto max-w-5xl px-4 sm:px-6 py-12">
-            <h2 className="font-display text-xl text-white text-center mb-8">How it works</h2>
+            <h2 className="font-display text-xl text-ink text-center mb-8">How it works</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
                 { icon: Zap, title: 'Tell us your needs', desc: 'Budget, use case, priorities — just type naturally.' },
@@ -267,8 +267,8 @@ export default function ShoppingPage() {
                   <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center mx-auto mb-3">
                     <item.icon size={18} className="text-accent" />
                   </div>
-                  <h3 className="font-display text-[15px] text-white mb-1">{item.title}</h3>
-                  <p className="font-mono text-[12px] text-white/40">{item.desc}</p>
+                  <h3 className="font-display text-[15px] text-ink mb-1">{item.title}</h3>
+                  <p className="font-mono text-[12px] text-ink/40">{item.desc}</p>
                 </div>
               ))}
             </div>
