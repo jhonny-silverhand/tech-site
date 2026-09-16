@@ -274,6 +274,27 @@ export default function CompareIndexPage() {
           )}
         </div>
       </div>
+
+      {/* ═══ GUIDE ═══ */}
+      <section className="border-t border-line/5 mt-12 pt-12">
+        <h2 className="font-display text-xl text-ink text-center mb-6">How to compare effectively</h2>
+        <div className="max-w-2xl mx-auto space-y-4">
+          {[
+            { tip: 'Compare similar products', desc: 'Compare products within the same category — a phone vs a phone, not a phone vs a laptop.' },
+            { tip: 'Look beyond specs', desc: 'Check real-world reviews, battery life, and after-sales service — not just processor speed.' },
+            { tip: 'Set a budget range', desc: 'Compare products within ₹5,000-10,000 of each other for meaningful differences.' },
+            { tip: 'Check availability', desc: 'A great product is useless if it is out of stock or discontinued in India.' },
+          ].map((item, i) => (
+            <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-paper/5 border border-line/5">
+              <Check size={14} className="text-accent mt-1 flex-shrink-0" />
+              <div>
+                <p className="font-display text-[14px] text-ink mb-0.5">{item.tip}</p>
+                <p className="font-mono text-[11px] text-ink/40">{item.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }

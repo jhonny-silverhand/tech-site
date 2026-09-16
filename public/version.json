@@ -1,7 +1,7 @@
 {
   "version": "4.0.0",
-  "commit": "014794d",
-  "commitMessage": "chore: bump to v4.0.0, add CHANGELOG.md",
+  "commit": "a2132f1",
+  "commitMessage": "revert: restore dark header, nav, footer",
   "branch": "main",
-  "builtAt": "2026-09-15T11:03:48.750Z"
+  "builtAt": "2026-09-16T20:26:14.789Z"
 }

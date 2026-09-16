@@ -275,6 +275,31 @@ export default function ShoppingPage() {
           </div>
         </section>
       )}
+
+      {/* ═══ GUIDE ═══ */}
+      {!result && !loading && (
+        <section className="border-t border-line/5">
+          <div className="mx-auto max-w-5xl px-4 sm:px-6 py-12">
+            <h2 className="font-display text-xl text-ink text-center mb-6">Tips for better results</h2>
+            <div className="max-w-2xl mx-auto space-y-4">
+              {[
+                { tip: 'Be specific about your budget', example: '"Best phone under 25k" beats "good phone"' },
+                { tip: 'Mention your primary use', example: '"Laptop for video editing" gets different results than "laptop for browsing"' },
+                { tip: 'Include brand preferences', example: '"Sony or Bose noise cancelling headphones" narrows the field' },
+                { tip: 'Mention deal-breakers', example: '"Android phone, no Samsung, under 30k" filters out unwanted options' },
+              ].map((item, i) => (
+                <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-paper/5 border border-line/5">
+                  <Check size={14} className="text-accent mt-1 flex-shrink-0" />
+                  <div>
+                    <p className="font-display text-[14px] text-ink mb-0.5">{item.tip}</p>
+                    <p className="font-mono text-[11px] text-ink/40">Example: {item.example}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
     </div>
   );
 }
