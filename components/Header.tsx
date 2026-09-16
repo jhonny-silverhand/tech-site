@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { NICHES } from '@/lib/niches';
-import { ThemeToggle } from '@/components/ThemeToggle';
 import { MobileNav } from '@/components/MobileNav';
 import { AccountMenu } from '@/components/AccountMenu';
 import { isSupabaseConfigured } from '@/lib/supabase/config';
@@ -63,7 +62,6 @@ export async function Header() {
                 Admin
               </Link>
             </nav>
-            <ThemeToggle />
             <MobileNav isLoggedIn={summary.isLoggedIn} bookmarkCount={bookmarkCount} user={user} />
           </div>
         </div>
