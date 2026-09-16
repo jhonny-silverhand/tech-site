@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const MODEL = 'gemini-2.5-flash';
+const MODEL = 'gemini-3.6-flash';
 const ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
 
 export async function POST(request: NextRequest) {
@@ -56,21 +56,30 @@ RESPOND WITH ONLY a JSON object (no markdown fences), in exactly this shape:
 }`;
 
   try {
-    const res = await fetch(`${ENDPOINT}?key=${apiKey}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ role: 'user', parts: [{ text: prompt }] }],
-        generationConfig: {
-          temperature: 0.7,
-          responseMimeType: 'application/json',
-        },
-      }),
-    });
+    let res: Response | null = null;
+    for (let attempt = 0; attempt < 3; attempt++) {
+      res = await fetch(`${ENDPOINT}?key=${apiKey}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ role: 'user', parts: [{ text: prompt }] }],
+          generationConfig: {
+            temperature: 0.7,
+            responseMimeType: 'application/json',
+          },
+        }),
+      });
+      if (res.ok) break;
+      if (res.status === 503 || res.status === 429) {
+        await new Promise(r => setTimeout(r, 1000 * (attempt + 1)));
+        continue;
+      }
+      break;
+    }
 
-    if (!res.ok) {
-      const errText = await res.text().catch(() => '');
-      console.error('[ai-recommend] Gemini error:', res.status, errText.slice(0, 300));
+    if (!res || !res.ok) {
+      const errText = res ? await res.text().catch(() => '') : '';
+      console.error('[ai-recommend] Gemini error:', res?.status, errText.slice(0, 300));
       return NextResponse.json({ error: 'AI service unavailable' }, { status: 502 });
     }
 

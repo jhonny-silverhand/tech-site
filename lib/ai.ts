@@ -5,7 +5,7 @@ import { getNiche } from './niches';
 // renames/retires models occasionally — if generation starts failing with
 // a 404, check https://ai.google.dev/gemini-api/docs/models for the
 // current free-tier name and update this constant.
-const MODEL = 'gemini-3.5-flash';
+const MODEL = 'gemini-3.6-flash';
 const ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
 
 /**
