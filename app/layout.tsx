@@ -30,7 +30,14 @@ export const metadata: Metadata = {
     'Practical, no-fluff guides on AI tools, programming, Android, Windows & Linux, buying guides, gaming, careers, finance, and productivity.',
 };
 
-// Light mode only — no dark theme init needed.
+// Runs synchronously before paint, so the correct theme applies before
+// the browser ever renders a frame — without this, a saved 'dark'
+// preference would flash light for an instant on every load. Reads
+// localStorage first, falls back to OS preference if nothing's been
+// chosen yet. Wrapped in try/catch since localStorage can throw in some
+// privacy/incognito configurations, and a theme flash is a much smaller
+// problem than a broken page.
+const THEME_INIT_SCRIPT = `(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark');}}catch(e){}})();`;
 
 /**
  * Deliberately minimal — just html/body/fonts/theme-init/command-palette.
@@ -41,7 +48,10 @@ export const metadata: Metadata = {
  */
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+      </head>
       <body className="font-body antialiased bg-bg text-ink transition-colors">
         {children}
         <CommandPalette />

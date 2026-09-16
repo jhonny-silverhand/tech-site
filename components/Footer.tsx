@@ -7,7 +7,7 @@ export async function Footer() {
   const [stats, version] = await Promise.all([getSiteStats(), getVersionInfo()]);
 
   return (
-    <footer className="bg-paper text-white mt-24">
+    <footer className="bg-void text-white mt-24">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <p className="font-mono text-[12px] text-mutedOnDark">
@@ -29,7 +29,7 @@ export async function Footer() {
                   href={`https://github.com/jhonny-silverhand/tech-site/commit/${version.commit}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-ink/70 transition-colors"
+                  className="hover:text-white/70 transition-colors"
                   title={version.commitMessage}
                 >
                   {version.commit}
@@ -44,7 +44,7 @@ export async function Footer() {
               href="https://ko-fi.com/whysoserious_omik#setGoalModal"
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative inline-flex items-center gap-1.5 transition-colors duration-300 hover:text-ink"
+              className="group relative inline-flex items-center gap-1.5 transition-colors duration-300 hover:text-white"
             >
               <span>Buy me a Coffee</span>
 
@@ -57,15 +57,15 @@ export async function Footer() {
           </p>
         </div>
         <nav className="flex gap-5 font-mono text-[12px] text-mutedOnDark">
-          <Link href="/about" className="relative group inline-flex transition-colors duration-300 hover:text-ink">
+          <Link href="/about" className="relative group inline-flex transition-colors duration-300 hover:text-white">
             About
             <span className="absolute -bottom-0.5 left-0 h-px w-0 bg-current transition-all duration-300 ease-out group-hover:w-full" />
           </Link>
-          <Link href="/privacy" className="relative group inline-flex transition-colors duration-300 hover:text-ink">
+          <Link href="/privacy" className="relative group inline-flex transition-colors duration-300 hover:text-white">
             Privacy
             <span className="absolute -bottom-0.5 left-0 h-px w-0 bg-current transition-all duration-300 ease-out group-hover:w-full" />
           </Link>
-          <Link href="/contact" className="relative group inline-flex transition-colors duration-300 hover:text-ink">
+          <Link href="/contact" className="relative group inline-flex transition-colors duration-300 hover:text-white">
             Contact
             <span className="absolute -bottom-0.5 left-0 h-px w-0 bg-current transition-all duration-300 ease-out group-hover:w-full" />
           </Link>

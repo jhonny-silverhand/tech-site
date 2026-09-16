@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { NICHES } from '@/lib/niches';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { MobileNav } from '@/components/MobileNav';
 import { AccountMenu } from '@/components/AccountMenu';
 import { isSupabaseConfigured } from '@/lib/supabase/config';
@@ -20,7 +21,7 @@ export async function Header() {
   }
 
   return (
-    <header className="relative bg-paper text-ink border-b border-line">
+    <header className="relative bg-void text-white">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center font-display text-[26px] tracking-tight">
@@ -34,34 +35,35 @@ export async function Header() {
 
           <div className="flex items-center gap-1">
             <nav className="hidden md:flex items-center gap-2 font-mono text-[12px]">
-              <Link href="/shopping" className="px-3 py-1.5 rounded-folder hover:bg-line/50 transition-colors">
+              <Link href="/shopping" className="px-3 py-1.5 rounded-folder hover:bg-white/10 transition-colors">
                 Shopping
               </Link>
-              <Link href="/pc-builder" className="px-3 py-1.5 rounded-folder hover:bg-line/50 transition-colors">
+              <Link href="/pc-builder" className="px-3 py-1.5 rounded-folder hover:bg-white/10 transition-colors">
                 PC Builder
               </Link>
-              <Link href="/write" className="px-3 py-1.5 rounded-folder hover:bg-line/50 transition-colors">
+              <Link href="/write" className="px-3 py-1.5 rounded-folder hover:bg-white/10 transition-colors">
                 Write
               </Link>
               {summary.isLoggedIn ? (
                 <AccountMenu user={user} bookmarkCount={bookmarkCount} />
               ) : (
                 <>
-                  <Link href="/login" className="px-3 py-1.5 rounded-folder hover:bg-line/50 transition-colors">
+                  <Link href="/login" className="px-3 py-1.5 rounded-folder hover:bg-white/10 transition-colors">
                     Sign in
                   </Link>
-                  <Link href="/signup" className="px-3 py-1.5 rounded-folder hover:bg-line/50 transition-colors">
+                  <Link href="/signup" className="px-3 py-1.5 rounded-folder hover:bg-white/10 transition-colors">
                     Sign up
                   </Link>
                 </>
               )}
               <Link
                 href="/admin/login"
-                className="px-3 py-1.5 rounded-folder border border-line hover:bg-line/50 transition-colors"
+                className="px-3 py-1.5 rounded-folder border border-white/20 hover:bg-white/10 transition-colors"
               >
                 Admin
               </Link>
             </nav>
+            <ThemeToggle />
             <MobileNav isLoggedIn={summary.isLoggedIn} bookmarkCount={bookmarkCount} user={user} />
           </div>
         </div>
@@ -70,7 +72,7 @@ export async function Header() {
             <Link
               key={niche.slug}
               href={`/niche/${niche.slug}`}
-              className="shrink-0 font-mono text-[11px] uppercase tracking-wide px-2.5 py-1 rounded-full border border-line text-muted hover:text-ink hover:border-accent/50 transition-colors"
+              className="shrink-0 font-mono text-[11px] uppercase tracking-wide px-2.5 py-1 rounded-full border border-white/10 text-white/70 hover:text-white hover:border-white/30 transition-colors"
             >
               /{niche.slug}
             </Link>
