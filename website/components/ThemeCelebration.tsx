@@ -79,7 +79,7 @@ export function ThemeCelebration() {
           />
         </div>
         <p
-          className="font-pixel bg-black px-3 py-2 text-center text-[15px] tracking-wider text-white"
+          className="font-pixel bg-black px-3 py-2 text-center text-[20px] tracking-wider text-white"
         >
           {theme === 'dark' ? (
             <>NIGHT MODE <span className="text-accent">— IDEAS // TECH // YOU</span></>

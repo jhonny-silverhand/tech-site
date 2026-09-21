@@ -15,7 +15,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       <div className="flex items-center justify-center bg-bg px-4 py-12 sm:px-8">
         <div className="w-full max-w-[400px]">
           <Link href="/" aria-label="tech//site home" className="inline-block rounded-sm">
-            <BrandMark className="text-[38px] leading-none" />
+            <BrandMark className="text-[40px] leading-none" />
           </Link>
           <div className="mt-8">{children}</div>
           <p className="mt-8 font-mono text-[11px] leading-relaxed text-faint">
