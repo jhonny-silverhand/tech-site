@@ -1,6 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import { RouteProgress } from './RouteProgress';
 
 const CommandPalette = dynamic(() => import('./CommandPalette').then((m) => m.CommandPalette), {
   ssr: false,
@@ -15,6 +16,7 @@ export function ClientShell({ children }: { children: React.ReactNode }) {
   const onVercel = !!process.env.NEXT_PUBLIC_VERCEL_ENV;
   return (
     <>
+      <RouteProgress />
       {children}
       <CommandPalette />
       {onVercel && <SpeedInsights />}
