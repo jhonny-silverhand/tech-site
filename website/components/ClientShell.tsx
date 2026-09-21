@@ -2,6 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import { RouteProgress } from './RouteProgress';
+import { ThemeCelebration } from './ThemeCelebration';
 
 const CommandPalette = dynamic(() => import('./CommandPalette').then((m) => m.CommandPalette), {
   ssr: false,
@@ -17,6 +18,7 @@ export function ClientShell({ children }: { children: React.ReactNode }) {
   return (
     <>
       <RouteProgress />
+      <ThemeCelebration />
       {children}
       <CommandPalette />
       {onVercel && <SpeedInsights />}
