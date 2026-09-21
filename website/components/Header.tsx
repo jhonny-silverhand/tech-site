@@ -63,12 +63,6 @@ export async function Header() {
                   {l.label}
                 </Link>
               ))}
-              <Link
-                href="/admin/login"
-                className="ml-1 rounded-md border border-line px-2.5 py-1.5 text-muted hover:border-linestrong hover:text-ink"
-              >
-                Admin
-              </Link>
             </nav>
             <SearchTrigger />
             <ThemeToggle />

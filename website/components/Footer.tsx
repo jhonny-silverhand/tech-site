@@ -101,7 +101,7 @@ export async function Footer() {
           <span className="flex items-center gap-4">
             <span>Made with care in India.</span>
             <Link href="/admin/login" className="rounded-sm hover:text-ink dark:hover:text-zinc-300">
-              Admin
+              admin login
             </Link>
           </span>
         </div>
