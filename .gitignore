@@ -1,5 +1,5 @@
-website-backup/
-website.old/
+/website-backup/
+/website.old/
 **/node_modules/
 **/.next/
 .env.local

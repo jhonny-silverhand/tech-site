@@ -1,0 +1,7 @@
+{
+  "version": "4.0.0",
+  "commit": "3dddf14",
+  "commitMessage": "chore: remove orphaned ThemeToggle component and imports",
+  "branch": "main",
+  "builtAt": "2026-09-19T20:18:44.223Z"
+}

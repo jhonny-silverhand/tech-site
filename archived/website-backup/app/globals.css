@@ -1,0 +1,352 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------------------------------------------------------ */
+/* Theme variables. Every color below that should differ between light  */
+/* and dark mode is defined once here (as space-separated RGB, so       */
+/* Tailwind's rgb(var(--x) / <alpha-value>) pattern can still do        */
+/* opacity modifiers like bg-paper/50) and consumed via the color       */
+/* tokens in tailwind.config.ts — bg/paper/ink/muted/line. That means   */
+/* almost every existing bg-bg / text-ink / border-line class in the    */
+/* whole codebase becomes dark-mode-aware automatically, with no need   */
+/* to hunt down and add dark: variants file by file.                    */
+/*                                                                      */
+/* void, accent, and warn are NOT theme variables — they're the same    */
+/* color in both modes on purpose (accent blue has enough contrast on   */
+/* both; void is "intentionally always-dark chrome" like the header,    */
+/* code blocks, and footer, which is why it doesn't need to invert).    */
+/* ------------------------------------------------------------------ */
+:root {
+  --color-bg: 239 243 246;
+  --color-paper: 255 255 255;
+  --color-ink: 18 21 26;
+  --color-muted: 91 100 114;
+  --color-line: 219 225 230;
+}
+
+.dark {
+  --color-bg: 9 9 11;
+  --color-paper: 17 17 19;
+  --color-ink: 237 238 240;
+  --color-muted: 156 163 175;
+  --color-line: 39 39 42;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background-color: #4f7dff;
+  color: white;
+}
+
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* ---------------------------------------------------------------- */
+/* Article body typography — deliberately hand-rolled instead of a   */
+/* generic prose plugin, so headings/code/links match the site's     */
+/* serif-display + monospace-chrome pairing.                         */
+/* ---------------------------------------------------------------- */
+.prose-tech {
+  font-family: theme('fontFamily.body');
+  font-size: 17px;
+  line-height: 1.75;
+  color: rgb(var(--color-ink) / 0.88);
+  max-width: 68ch;
+}
+
+.prose-tech > * + * {
+  margin-top: 1.35em;
+}
+
+.prose-tech h2 {
+  font-family: theme('fontFamily.display');
+  font-size: 1.55em;
+  line-height: 1.3;
+  color: rgb(var(--color-ink));
+  margin-top: 2.1em;
+  padding-top: 0.2em;
+  scroll-margin-top: 1.5rem;
+}
+
+.prose-tech h3 {
+  font-family: theme('fontFamily.display');
+  font-size: 1.25em;
+  line-height: 1.35;
+  color: rgb(var(--color-ink));
+  margin-top: 1.8em;
+  scroll-margin-top: 1.5rem;
+}
+
+.prose-tech p {
+  margin-top: 1.1em;
+}
+
+.prose-tech a {
+  color: #4f7dff;
+  text-underline-offset: 2px;
+}
+
+.prose-tech strong {
+  color: rgb(var(--color-ink));
+  font-weight: 650;
+}
+
+.prose-tech ul,
+.prose-tech ol {
+  padding-left: 1.4em;
+}
+.prose-tech ul {
+  list-style: disc;
+}
+.prose-tech ol {
+  list-style: decimal;
+}
+.prose-tech li + li {
+  margin-top: 0.45em;
+}
+.prose-tech li::marker {
+  color: #4f7dff;
+}
+
+.prose-tech blockquote {
+  border-left: 3px solid var(--niche-accent, #4f7dff);
+  padding-left: 1em;
+  color: rgb(var(--color-muted));
+  font-style: italic;
+}
+
+.prose-tech table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92em;
+}
+.prose-tech th,
+.prose-tech td {
+  border: 1px solid rgb(var(--color-line));
+  padding: 0.5em 0.75em;
+  text-align: left;
+}
+.prose-tech th {
+  font-family: theme('fontFamily.mono');
+  font-size: 0.85em;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  background: rgb(var(--color-ink) / 0.04);
+  border-bottom: 2px solid var(--niche-accent, #4f7dff);
+}
+
+.prose-tech :not(pre) > code {
+  font-family: theme('fontFamily.mono');
+  font-size: 0.86em;
+  background: rgb(var(--color-ink) / 0.08);
+  border-radius: 4px;
+  padding: 0.15em 0.4em;
+}
+
+/* Code blocks stay a fixed dark surface regardless of site theme, on
+   purpose (see design-research/3.0) — code should read the same whether
+   the reader is in light or dark mode, so this doesn't use the theme
+   variables above. */
+.prose-tech pre {
+  font-family: theme('fontFamily.mono');
+  font-size: 0.86em;
+  line-height: 1.65;
+  background: #09090b;
+  color: #e7ebef;
+  border-radius: 7px;
+  padding: 1.1em 1.2em;
+  overflow-x: auto;
+  border-left: 3px solid #4f7dff;
+}
+.prose-tech pre code {
+  background: transparent;
+  padding: 0;
+}
+
+/* Finance-only (see MarkdownContent's highlightFigures prop): currency
+   amounts and percentages set apart in mono, Stripe-style — precise
+   figures, not decorative ones. */
+.figure-number {
+  font-family: theme('fontFamily.mono');
+  font-size: 1.05em;
+  font-weight: 550;
+  color: rgb(var(--color-ink));
+  letter-spacing: -0.01em;
+}
+
+/* AI Tools-only (see MarkdownContent's citationStyle prop): external
+   source links read as citations, not regular inline navigation. */
+.citation-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2em;
+  color: rgb(var(--color-ink));
+  background: rgb(var(--color-ink) / 0.06);
+  border-radius: 5px;
+  padding: 0.05em 0.4em;
+  text-decoration: none;
+  font-size: 0.92em;
+  transition: background-color 0.15s ease;
+}
+.citation-link:hover {
+  background: rgb(var(--color-ink) / 0.12);
+}
+.citation-icon {
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+
+/* Minimal highlight.js-compatible token colors (no external theme file).
+   Fixed regardless of site theme — same reasoning as .prose-tech pre. */
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal {
+  color: #7c9cff;
+}
+
+/* Ensure avatar images don't break layout */
+img[src*="avatar"],
+img[src*="gravatar"],
+img[src*="profile"] {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Smooth transitions for interactive elements — scoped to avoid
+   recalculation overhead on every DOM node (performance-critical). */
+a, button, input, select, textarea,
+[class*="hover:"], [class*="focus:"],
+header, nav, footer,
+.prose-tech a {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* KnowledgeOrbit auto-rotation (legacy circular layout, kept for safety) */
+.orbit-ring {
+  animation: orbitSpin 60s linear infinite;
+}
+
+.orbit-ring:hover {
+  animation-play-state: paused;
+}
+
+.orbit-pill {
+  animation: orbitCounterSpin 60s linear infinite;
+}
+
+@keyframes orbitSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes orbitCounterSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+
+/* Topic constellation: scattered pills, gentle drift */
+.constellation-pill {
+  animation: drift 7s ease-in-out infinite;
+  will-change: transform;
+}
+@keyframes drift {
+  0%,
+  100% {
+    transform: translateY(-5px);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+}
+
+/* Halo-style focus: indigo glow ring */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(91, 107, 255, 0.35);
+}
+
+/* Thin scrollbars for rails */
+.rail-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+.rail-scroll::-webkit-scrollbar-thumb {
+  background: rgb(var(--color-line));
+  border-radius: 8px;
+}
+
+/* Line clamp helpers */
+.clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+.hljs-string,
+.hljs-addition {
+  color: #a6e3a1;
+}
+.hljs-comment,
+.hljs-quote {
+  color: #7b8494;
+  font-style: italic;
+}
+.hljs-number,
+.hljs-attr {
+  color: #ffb86b;
+}
+.hljs-title,
+.hljs-title.function_,
+.hljs-built_in {
+  color: #79d4ff;
+}
+.hljs-variable,
+.hljs-template-variable,
+.hljs-params {
+  color: #e7ebef;
+}
+.hljs-tag,
+.hljs-name {
+  color: #ff8fb1;
+}
+.hljs-deletion {
+  color: #ff8f8f;
+}
+.hljs-emphasis {
+  font-style: italic;
+}
+.hljs-strong {
+  font-weight: 700;
+}
