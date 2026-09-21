@@ -113,13 +113,13 @@ export function ThemeToggle() {
       >
         {mounted && (
           <Image
-            src={dark ? '/theme-cat-dark.png' : '/theme-cat-light.png'}
+            src={dark ? '/theme-cat-dark-face.png' : '/theme-cat-light-face.png'}
             alt=""
             width={56}
             height={56}
             sizes="28px"
             className="h-full w-full"
-            style={{ objectFit: 'cover', objectPosition: 'center 42%' }}
+            style={{ objectFit: 'cover' }}
             priority={false}
           />
         )}
