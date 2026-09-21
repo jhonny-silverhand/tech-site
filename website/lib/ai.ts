@@ -2,11 +2,35 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { withTimeout } from './with-timeout';
 import type { AIRecommendation, PCBuild } from './types';
 
-function model() {
+const MODELS = ['gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-flash-latest'];
+
+function client() {
   const key = process.env.GEMINI_API_KEY;
   if (!key) throw new Error('GEMINI_API_KEY is not configured');
-  const genAI = new GoogleGenerativeAI(key);
-  return genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+  return new GoogleGenerativeAI(key);
+}
+
+function isRetriable(err: unknown): boolean {
+  const msg = err instanceof Error ? err.message : String(err);
+  return /\[404|\[429|\[503/.test(msg);
+}
+
+/** Generate content trying each model in order (retired/overloaded first). */
+async function generateWithFallback(prompt: string, timeoutMs: number, label: string): Promise<string> {
+  const genAI = client();
+  let lastErr: unknown = null;
+  for (const name of MODELS) {
+    try {
+      const m = genAI.getGenerativeModel({ model: name });
+      const res = await withTimeout(m.generateContent(prompt), timeoutMs, `Gemini ${label}`);
+      return res.response.text().trim();
+    } catch (err) {
+      lastErr = err;
+      console.error(`[ai] model ${name} failed for ${label}, trying fallback`);
+      if (!isRetriable(err)) break;
+    }
+  }
+  throw lastErr instanceof Error ? lastErr : new Error(`Gemini ${label} failed`);
 }
 
 function extractJson(text: string): string {
@@ -25,7 +49,6 @@ function extractJson(text: string): string {
 }
 
 export async function generateDraft(title: string, excerpt: string, niche: string): Promise<string> {
-  const m = model();
   const prompt = `You are an expert technology editor for a premium publication called tech/site.
 Write a complete, genuinely useful article in Markdown.
 
@@ -41,8 +64,7 @@ Requirements:
 - End with a short "Key takeaways" bullet list.
 - Use fenced code blocks with language tags for any code/commands.
 - Return ONLY the Markdown article body, no preamble.`;
-  const res = await withTimeout(m.generateContent(prompt), 60000, 'Gemini draft generation');
-  return res.response.text().trim();
+  return generateWithFallback(prompt, 60000, 'draft generation');
 }
 
 export async function recommendProducts(
@@ -50,7 +72,6 @@ export async function recommendProducts(
   category: string,
   catalog: { name: string; manufacturer?: string | null; description?: string | null; specs: { spec_key: string; spec_value: string }[]; price_inr?: number | null }[]
 ): Promise<AIRecommendation[]> {
-  const m = model();
   const catalogText =
     catalog.length > 0
       ? catalog
@@ -72,14 +93,13 @@ Return ONLY a JSON array where each item is:
  "reasoning": string (2-3 sentences), "pros": [2-3 strings], "cons": [1-2 strings],
  "estimated_price_inr": number, "product_slug": string (only if it clearly matches a catalog item, else omit)}
 No markdown fences, no commentary — raw JSON only.`;
-  const res = await withTimeout(m.generateContent(prompt), 60000, 'Gemini recommendations');
-  const parsed = JSON.parse(extractJson(res.response.text()));
+  const text = await generateWithFallback(prompt, 60000, 'recommendations');
+  const parsed = JSON.parse(extractJson(text));
   const arr = Array.isArray(parsed) ? parsed : parsed.recommendations || parsed.products || [];
   return arr as AIRecommendation[];
 }
 
 export async function generatePCBuilds(budgetInr: number, useCase: string): Promise<PCBuild[]> {
-  const m = model();
   const prompt = `You are a PC building expert for the Indian market (prices in INR, buy from Amazon.in / Flipkart / mdcomputers.in / vedantcomputers.com).
 Budget: ₹${budgetInr.toLocaleString('en-IN')}. Use case: ${useCase}.
 
@@ -92,8 +112,8 @@ Return ONLY a JSON array where each item is:
  "components": [{"category": string, "name": string, "price_inr": number, "reasoning": string (1 sentence)}],
  "notes": string (2 sentences on who this build suits)}
 Raw JSON only, no fences, no commentary.`;
-  const res = await withTimeout(m.generateContent(prompt), 90000, 'Gemini PC builds');
-  const parsed = JSON.parse(extractJson(res.response.text()));
+  const text = await generateWithFallback(prompt, 90000, 'PC builds');
+  const parsed = JSON.parse(extractJson(text));
   const arr = Array.isArray(parsed) ? parsed : parsed.builds || [];
   return arr as PCBuild[];
 }
