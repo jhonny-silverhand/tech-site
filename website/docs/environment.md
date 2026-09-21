@@ -43,6 +43,19 @@ admin draft generator. Quota is shared — watch 429s in server logs.
 `NEXT_PUBLIC_SITE_URL` — canonical origin (`http://localhost:3000` for
 dev; production URL when deployed). Used by metadata, sitemap, robots.
 
+## Contact form (Resend)
+
+The `/contact` form sends mail via the Resend API (no SDK — direct fetch).
+
+| Variable | Notes |
+|---|---|
+| `RESEND_API_KEY` | Create at <https://resend.com/api-keys> (free tier suffices) |
+| `CONTACT_TO` | Inbox, defaults to `jhonnysilverhand.069@gmail.com` |
+| `CONTACT_FROM` | Sender identity; `onboarding@resend.dev` works without a custom domain. For production, verify your domain in Resend and use `contact@yourdomain` |
+
+Without `RESEND_API_KEY` the form responds 503 with "not configured yet".
+Set it in Vercel env vars too.
+
 ## Reference (old project)
 
 The previous codebase (`tech-site`, Supabase `kgflqrpdcaxccvuxyhff`) keeps
