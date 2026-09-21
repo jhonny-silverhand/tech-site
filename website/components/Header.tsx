@@ -43,7 +43,7 @@ export async function Header() {
           <Link
             href="/"
             aria-label="tech//site home"
-            className="font-pixel flex flex-none items-baseline gap-1 rounded-sm text-[19px]"
+            className="font-pixel flex flex-none items-baseline gap-1 rounded-sm text-[25px] leading-none"
           >
             <span>tech</span>
             <span className="animate-slash-blink text-accent" aria-hidden>

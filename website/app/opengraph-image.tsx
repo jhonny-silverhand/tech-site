@@ -29,7 +29,7 @@ export default async function OGImage() {
           fontFamily: pixelFont ? 'Pixels, monospace' : 'monospace',
         }}
       >
-        <div style={{ fontSize: 72, display: 'flex' }}>
+        <div style={{ fontSize: 92, display: 'flex' }}>
           tech<span style={{ color: '#4F7DFF' }}>//</span>site
         </div>
         <div style={{ fontSize: 30, color: '#a1a1aa', marginTop: 16, fontFamily: 'monospace' }}>

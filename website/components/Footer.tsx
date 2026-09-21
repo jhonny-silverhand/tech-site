@@ -21,7 +21,7 @@ export async function Footer() {
     <footer className="border-t border-line bg-paper-2 text-muted dark:bg-void dark:text-zinc-400">
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
         <div>
-          <BrandMark className="text-[26px] leading-none text-ink dark:text-white" />
+          <BrandMark className="text-[34px] leading-none text-ink dark:text-white" />
           <p className="mt-4 max-w-[26ch] font-tagline text-[19px] italic leading-snug text-ink-2 dark:text-zinc-400">
             Practical answers, not filler — across code, devices, and money.
           </p>
