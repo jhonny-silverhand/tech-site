@@ -3,6 +3,34 @@
 All notable changes to tech//site are documented here. Format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [1.2.0] - 2026-09-21
+
+### Added
+- Working contact form — `POST /api/contact` via Resend with validation
+  and inline states (`RESEND_API_KEY`, `CONTACT_TO`, `CONTACT_FROM`).
+- YouTube-style route loading bar (`RouteProgress`) matching the article
+  read-progress slot.
+- Niche font specimens draft page (`/font-preview`, noindex, unreleased).
+- Monorepo layout — app at `website/`, legacy snapshot at
+  `archived/website-backup`, guides and research alongside.
+
+### Changed
+- Nav Admin button removed; footer link reads "admin login".
+- Pixels wordmark scaled up (~40px: header 38, footer 40, orbit/auth 38)
+  with layout guards; embedded in OG image (Satori flex fix).
+- Cheerful shopping redo — cream/grape surfaces with coral, sunny,
+  and teal accents; display titles unchanged.
+- PC builder, shopping, and drafts share the Gemini fallback chain
+  (`3.6 → 3.5 → latest`) after the `2.5-flash` retirement.
+- AI niche displays as "AI Tools" (slug unchanged).
+
+### Fixed
+- `user_xxxxxxxx` handles — username editor with availability check,
+  post-login setup redirect, signup error/confirmation surfacing.
+- Header username trimmed to 10ch with full name on hover.
+- Scroll-behavior hydration warning (`data-scroll-behavior`).
+- AccountMenu hydration mismatch (stale Turbopack server HTML).
+
 ## [1.1.0] - 2026-09-21
 
 ### Added
