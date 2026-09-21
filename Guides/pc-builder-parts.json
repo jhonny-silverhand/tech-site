@@ -1,0 +1,2587 @@
+{
+ "_meta": {
+  "version": "2.1.0",
+  "published": "2026-06-09",
+  "publisher": "TechFuel HQ",
+  "publisher_url": "https://techfuelhq.com/",
+  "license": "CC BY 4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "attribution_required": "TechFuelHQ PC Builder Parts Dataset (CC BY 4.0). https://techfuelhq.com/tools/pc-builder/",
+  "note": "2026-08-01 (v2.1.0): all prices removed - see price_removal. The 97 expansion rows lost their fields at v2.0.0; the 29 pre-expansion rows followed the same day after review of their mixed retailer provenance. The removed figures were live Amazon.com street prices observed 2026-07-29; the rows' specifications and their 'source' specification-page URLs are unchanged and remain individually verifiable. Original expansion record: 97 parts added and one retired on 2026-07-29 (30 -> 126 parts); every added row carries a 'source' field naming the manufacturer, Newegg or B&H specification page its specs were read from; any candidate whose specs could not be confirmed against a page that was actually retrieved was dropped rather than estimated (41 candidates dropped); several vendor sites (TechPowerUp, Kingston, Crucial, MSI, Gigabyte, Zotac, PNY, AMD product pages) refused automated retrieval, so those brands are under-represented and NVIDIA add-in-board rows skew toward ASUS; PCIe lane counts are recorded only where a retrieved page stated them explicitly. Original pre-expansion sourcing: manufacturer pages, TechPowerUp, Tom's Hardware, and verified retailer listings. Performance tier estimates are TechFuelHQ editorial assessments based on aggregate review consensus, not first-party benchmarks (except where the part appears in a TechFuelHQ Open Bench Dataset, in which case the tier is anchored to first-party data).",
+  "compatibility_rules": [
+   "CPU and motherboard must share socket (AM5, LGA1851, LGA1700)",
+   "Motherboard chipset must be in cpu.supported_chipsets (e.g. AM5 X870E supports Ryzen 7000+9000; B650 supports Ryzen 7000+9000 with BIOS update)",
+   "Motherboard ram_type must match RAM ram_type (DDR5 only at this generation)",
+   "PSU wattage must exceed sum of CPU TDP + GPU TGP + 150W system overhead, with 20% margin",
+   "Case form_factor must accept motherboard form_factor (ATX > mATX > ITX)",
+   "Case max_gpu_length_mm must exceed GPU length_mm",
+   "Storage interface (NVMe Gen5 / Gen4 / SATA) must match a free motherboard slot"
+  ],
+  "price_removal": {
+   "date": "2026-08-01",
+   "removed": "price_usd, price_source, price_asin from the 97 rows added 2026-07-29 (v2.0.0), then price_usd from the 29 pre-expansion rows (v2.1.0) - the dataset now carries no prices at all",
+   "reason": "The 97 expansion prices were Amazon.com street-price observations. The 29 original prices were reviewed same-day under the same policy reading: their own v1.0 methodology note lists Amazon among the retailer sources and no per-row attribution exists to separate which figures came from where, so a row cannot be cleared as non-Amazon on the evidence available. As an Amazon Associates participant, TechFuelHQ displays Amazon price data only through Amazon's approved mechanisms.",
+   "unaffected": "All specifications, compatibility fields, spec-source URLs and last_verified dates, on every row.",
+   "planned": "Re-pricing of the whole dataset under a per-row provenance schema from clean sources (manufacturer MSRP or a single attributed retailer), so every future price carries its own price_source."
+  }
+ },
+ "performance_tiers": {
+  "entry": "1080p high settings, 60+ FPS in modern titles",
+  "mid": "1440p high settings, 60+ FPS / 1080p ultra 144+ FPS",
+  "high": "1440p ultra 100+ FPS / 4K high 60+ FPS",
+  "flagship": "4K ultra 60+ FPS / 1440p ultra 144+ FPS / path tracing with DLSS/FSR upscaling"
+ },
+ "cpu": [
+  {
+   "id": "cpu-r5-9600x",
+   "vendor": "AMD",
+   "model": "Ryzen 5 9600X",
+   "cores": 6,
+   "threads": 12,
+   "boost_ghz": 5.4,
+   "tdp_w": 65,
+   "socket": "AM5",
+   "ram_type": "DDR5",
+   "supported_chipsets": [
+    "X870E",
+    "X870",
+    "B850",
+    "B650"
+   ],
+   "performance_tier": "mid",
+   "use_cases": [
+    "1080p gaming",
+    "1440p gaming",
+    "productivity"
+   ],
+   "notes": "The mainstream gaming pick of the 9000-series stack. Pairs well with B850 boards.",
+   "last_verified": "2026-07-24"
+  },
+  {
+   "id": "cpu-r7-9700x",
+   "vendor": "AMD",
+   "model": "Ryzen 7 9700X",
+   "cores": 8,
+   "threads": 16,
+   "boost_ghz": 5.5,
+   "tdp_w": 65,
+   "socket": "AM5",
+   "ram_type": "DDR5",
+   "supported_chipsets": [
+    "X870E",
+    "X870",
+    "B850",
+    "B650"
+   ],
+   "performance_tier": "high",
+   "use_cases": [
+    "1440p gaming",
+    "4K gaming",
+    "productivity",
+    "streaming"
+   ],
+   "notes": "The mid-range gaming + productivity pick. Cooler stays quiet at 65W default; PBO unlocks more.",
+   "last_verified": "2026-07-24"
+  },
+  {
+   "id": "cpu-r7-9800x3d",
+   "vendor": "AMD",
+   "model": "Ryzen 7 9800X3D",
+   "cores": 8,
+   "threads": 16,
+   "boost_ghz": 5.2,
+   "tdp_w": 120,
+   "socket": "AM5",
+   "ram_type": "DDR5",
+   "supported_chipsets": [
+    "X870E",
+    "X870",
+    "B850",
+    "B650"
+   ],
+   "performance_tier": "flagship",
+   "use_cases": [
+    "1440p gaming",
+    "4K gaming",
+    "competitive gaming"
+   ],
+   "notes": "Best gaming CPU on the market in 2026. 3D V-Cache transforms 1% lows. Get this if gaming is the only job.",
+   "last_verified": "2026-07-24"
+  },
+  {
+   "id": "cpu-r9-9900x",
+   "vendor": "AMD",
+   "model": "Ryzen 9 9900X",
+   "cores": 12,
+   "threads": 24,
+   "boost_ghz": 5.6,
+   "tdp_w": 120,
+   "socket": "AM5",
+   "ram_type": "DDR5",
+   "supported_chipsets": [
+    "X870E",
+    "X870",
+    "B850",
+    "B650"
+   ],
+   "performance_tier": "flagship",
+   "use_cases": [
+    "productivity",
+    "video editing",
+    "compilation",
+    "streaming"
+   ],
+   "notes": "Heavier multi-thread than the 9800X3D but worse 1% lows in games. Pick this for content work, not pure gaming.",
+   "last_verified": "2026-07-24"
+  },
+  {
+   "id": "cpu-i5-14600k",
+   "vendor": "Intel",
+   "model": "Core i5-14600K",
+   "cores": 14,
+   "threads": 20,
+   "boost_ghz": 5.3,
+   "tdp_w": 125,
+   "socket": "LGA1700",
+   "ram_type": "DDR5",
+   "supported_chipsets": [
+    "Z790",
+    "B760"
+   ],
+   "performance_tier": "mid",
+   "use_cases": [
+    "1080p gaming",
+    "1440p gaming",
+    "productivity"
+   ],
+   "notes": "Last-gen LGA1700 platform but pricing is aggressive. P+E cores help in mixed workloads.",
+   "last_verified": "2026-06-09"
+  },
+  {
+   "id": "cpu-cu7-265k",
+   "vendor": "Intel",
+   "model": "Core Ultra 7 265K",
+   "cores": 20,
+   "threads": 20,
+   "boost_ghz": 5.5,
+   "tdp_w": 125,
+   "socket": "LGA1851",
+   "ram_type": "DDR5",
+   "supported_chipsets": [
+    "Z890",
+    "B860"
+   ],
+   "performance_tier": "high",
+   "use_cases": [
+    "1440p gaming",
+    "productivity",
+    "streaming"
+   ],
+   "notes": "Arrow Lake platform. Strong productivity, gaming is competitive (not class-leading). LGA1851 has future-proofing upside.",
+   "last_verified": "2026-06-09"
+  },
+  {
+   "id": "amd-ryzen-9-9950x3d2-dual-edition",
+   "vendor": "AMD",
+   "model": "Ryzen 9 9950X3D2 Dual Edition",
+   "cores": 16,
+   "threads": 32,
+   "boost_ghz": 5.6,
+   "tdp_w": 200,
+   "socket": "AM5",
+   "ram_type": "DDR5",
+   "supported_chipsets": [
+    "X870E",
+    "X870",
+    "B850",
+    "B650"
+   ],
+   "performance_tier": "flagship",
+   "use_cases": [
+    "gaming",
+    "content-creation",
+    "workstation",
+    "simulation"
+   ],
+   "notes": "Both CCDs carry 3D V-Cache (192MB L3 total), so the Windows scheduler no longer has to park cores to keep a game on the cache-heavy die. The 200W TDP is 30W above the 9950X3D and needs a 360mm AIO or equivalent air tower to hold boost.",
+   "source": "https://www.newegg.com/amd-ryzen-9-9950x3d2-ryzen-9-9000-series-granite-ridge-socket-am5-desktop-cpu-processor/p/N82E16819113938",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "amd-ryzen-9-9950x3d",
+   "vendor": "AMD",
+   "model": "Ryzen 9 9950X3D",
+   "cores": 16,
+   "threads": 32,
+   "boost_ghz": 5.7,
+   "tdp_w": 170,
+   "socket": "AM5",
+   "ram_type": "DDR5",
+   "supported_chipsets": [
+    "X870E",
+    "X870",
+    "B850",
+    "B650"
+   ],
+   "performance_tier": "flagship",
+   "use_cases": [
+    "gaming",
+    "content-creation",
+    "workstation",
+    "streaming"
+   ],
+   "notes": "16 cores with 3D V-Cache on one CCD, so it games close to the 9800X3D while keeping full 16-core render throughput. Ships without a cooler and pulls 170W, so budget for a 280mm+ AIO and a board with a strong VRM.",
+   "source": "https://www.newegg.com/amd-ryzen-9-9000-series-ryzen-9-9950x3d-granite-ridge-socket-am5-desktop-cpu-processor/p/N82E16819113884",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "amd-ryzen-9-9950x",
+   "vendor": "AMD",
+   "model": "Ryzen 9 9950X",
+   "cores": 16,
+   "threads": 32,
+   "boost_ghz": 5.7,
+   "tdp_w": 170,
+   "socket": "AM5",
+   "ram_type": "DDR5",
+   "supported_chipsets": [
+    "X870E",
+    "X870",
+    "B850",
+    "B650"
+   ],
+   "performance_tier": "flagship",
+   "use_cases": [
+    "content-creation",
+    "workstation",
+    "compiling",
+    "virtualization"
+   ],
+   "notes": "Same 16 cores and 5.7GHz boost as the 9950X3D but with 64MB L3 instead of 128MB, which costs it in cache-sensitive games while matching it in rendering and compiles. The cheaper pick if the machine is not primarily for gaming.",
+   "source": "https://www.newegg.com/amd-ryzen-9-9000-series-ryzen-9-9950x-granite-ridge-socket-am5-desktop-cpu-processor/p/N82E16819113841",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "amd-ryzen-9-9900x3d",
+   "vendor": "AMD",
+   "model": "Ryzen 9 9900X3D",
+   "cores": 12,
+   "threads": 24,
+   "boost_ghz": 5.5,
+   "tdp_w": 120,
+   "socket": "AM5",
+   "ram_type": "DDR5",
+   "supported_chipsets": [
+    "X870E",
+    "X870",
+    "B850",
+    "B650"
+   ],
+   "performance_tier": "flagship",
+   "use_cases": [
+    "gaming",
+    "content-creation",
+    "streaming"
+   ],
+   "notes": "12-core 3D V-Cache part at 120W, so it runs cooler than the 170W 9950X3D and is easier to cool in a mid-tower. At this observed price it sits about $16 above the 8-core 9850X3D and just under the 9950X, so check all three before buying.",
+   "source": "https://www.newegg.com/amd-ryzen-9-9000-series-ryzen-9-9900x3d-granite-ridge-socket-am5-desktop-cpu-processor/p/N82E16819113886",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "amd-ryzen-7-9850x3d",
+   "vendor": "AMD",
+   "model": "Ryzen 7 9850X3D",
+   "cores": 8,
+   "threads": 16,
+   "boost_ghz": 5.6,
+   "tdp_w": 120,
+   "socket": "AM5",
+   "ram_type": "DDR5",
+   "supported_chipsets": [
+    "X870E",
+    "X870",
+    "B850",
+    "B650"
+   ],
+   "performance_tier": "flagship",
+   "use_cases": [
+    "gaming",
+    "streaming"
+   ],
+   "notes": "Single-CCD 8-core with 96MB L3, so every core sits on the cache die and there is no scheduler split to worry about. Rated 120W and sold without a cooler; a 240mm AIO or large air tower is the practical minimum.",
+   "source": "https://www.newegg.com/amd-ryzen-7-9850x3d-ryzen-7-9000-series-granite-ridge-socket-am5-desktop-processor/p/N82E16819113934",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "cpu-intel-core-ultra-9-285k",
+   "vendor": "Intel",
+   "model": "Core Ultra 9 285K",
+   "cores": 24,
+   "threads": 24,
+   "boost_ghz": 5.7,
+   "tdp_w": 125,
+   "socket": "LGA1851",
+   "ram_type": "DDR5",
+   "supported_chipsets": [
+    "Z890",
+    "B860"
+   ],
+   "performance_tier": "flagship",
+   "use_cases": [
+    "gaming",
+    "content-creation",
+    "workstation"
+   ],
+   "notes": "24 cores but only 24 threads - Arrow Lake dropped hyper-threading, so heavily threaded renders gain less than the core count implies versus a 32-thread i9-14900K. Needs a new LGA 1851 board; there is no upgrade path from LGA 1700.",
+   "source": "https://www.newegg.com/intel-core-ultra-9-285k-arrow-lake-lga-1851-desktop-cpu-processor/p/N82E16819118505",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "cpu-intel-core-ultra-7-265kf",
+   "vendor": "Intel",
+   "model": "Core Ultra 7 265KF",
+   "cores": 20,
+   "threads": 20,
+   "boost_ghz": 5.5,
+   "tdp_w": 125,
+   "socket": "LGA1851",
+   "ram_type": "DDR5",
+   "supported_chipsets": [
+    "Z890",
+    "B860"
+   ],
+   "performance_tier": "high",
+   "use_cases": [
+    "gaming",
+    "content-creation",
+    "streaming"
+   ],
+   "notes": "The KF has no integrated graphics, so a discrete GPU is mandatory and you lose Quick Sync for video encoding. Same 125W base power as the K, so cooling requirements do not drop with the price.",
+   "source": "https://www.newegg.com/intel-core-ultra-7-265kf-arrow-lake-lga-1851-desktop-cpu-processor/p/N82E16819118507",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "cpu-intel-core-ultra-5-245kf",
+   "vendor": "Intel",
+   "model": "Core Ultra 5 245KF",
+   "cores": 14,
+   "threads": 14,
+   "boost_ghz": 5.2,
+   "tdp_w": 125,
+   "socket": "LGA1851",
+   "ram_type": "DDR5",
+   "supported_chipsets": [
+    "Z890",
+    "B860"
+   ],
+   "performance_tier": "mid",
+   "use_cases": [
+    "gaming",
+    "home-office",
+    "budget-build"
+   ],
+   "notes": "Cheapest unlocked LGA 1851 part, but it is 14 cores and only 14 threads and ships with no integrated graphics. Its 125W base power means you still need a proper tower cooler, unlike the 65W non-K Ultra 5 chips.",
+   "source": "https://www.newegg.com/intel-core-ultra-5-245kf-arrow-lake-lga-1851-desktop-cpu-processor/p/N82E16819118509",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "cpu-intel-core-ultra-5-225f",
+   "vendor": "Intel",
+   "model": "Core Ultra 5 225F",
+   "cores": 10,
+   "threads": 10,
+   "boost_ghz": 4.9,
+   "tdp_w": 65,
+   "socket": "LGA1851",
+   "ram_type": "DDR5",
+   "supported_chipsets": [
+    "Z890",
+    "B860"
+   ],
+   "performance_tier": "entry",
+   "use_cases": [
+    "gaming",
+    "budget-build",
+    "home-office"
+   ],
+   "notes": "The cheapest way onto the LGA 1851 / DDR5 platform. No integrated graphics, so it cannot post without a GPU installed - pick the plain 225 instead if you want display output for troubleshooting.",
+   "source": "https://www.newegg.com/intel-core-ultra-5-225f-arrow-lake-lga-1851-desktop-cpu-processor/p/N82E16819118578",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "cpu-intel-core-ultra-5-225",
+   "vendor": "Intel",
+   "model": "Core Ultra 5 225",
+   "cores": 10,
+   "threads": 10,
+   "boost_ghz": 4.9,
+   "tdp_w": 65,
+   "socket": "LGA1851",
+   "ram_type": "DDR5",
+   "supported_chipsets": [
+    "Z890",
+    "B860"
+   ],
+   "performance_tier": "entry",
+   "use_cases": [
+    "home-office",
+    "budget-build",
+    "htpc"
+   ],
+   "notes": "Identical 10-core configuration to the 225F but with Intel Graphics enabled, which is worth the premium for a build that must display without a discrete card. 65W base power runs fine on the bundled-class cooler.",
+   "source": "https://www.newegg.com/intel-core-ultra-5-225-arrow-lake-lga-1851-desktop-cpu-processor/p/N82E16819118577",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "cpu-intel-core-i7-14700k",
+   "vendor": "Intel",
+   "model": "Core i7-14700K",
+   "cores": 20,
+   "threads": 28,
+   "boost_ghz": 5.6,
+   "tdp_w": 125,
+   "socket": "LGA1700",
+   "ram_type": "DDR5",
+   "supported_chipsets": [
+    "Z790",
+    "B760"
+   ],
+   "performance_tier": "high",
+   "use_cases": [
+    "gaming",
+    "content-creation",
+    "streaming"
+   ],
+   "notes": "Still 28 threads thanks to hyper-threading, so it holds up against newer Arrow Lake parts in threaded work. LGA 1700 boards take DDR4 or DDR5 depending on the board, and older 600-series chipsets may need a BIOS update first.",
+   "source": "https://www.newegg.com/intel-core-i7-14th-gen-core-i7-14700k-raptor-lake-lga-1700-desktop-cpu-processor/p/N82E16819118466",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "cpu-intel-core-i7-14700kf",
+   "vendor": "Intel",
+   "model": "Core i7-14700KF",
+   "cores": 20,
+   "threads": 28,
+   "boost_ghz": 5.6,
+   "tdp_w": 125,
+   "socket": "LGA1700",
+   "ram_type": "DDR5",
+   "supported_chipsets": [
+    "Z790",
+    "B760"
+   ],
+   "performance_tier": "high",
+   "use_cases": [
+    "gaming",
+    "content-creation",
+    "streaming"
+   ],
+   "notes": "Same 20-core/28-thread silicon as the 14700K with the integrated graphics fused off, so budget for a GPU and lose Quick Sync. Only a small discount over the K, so buy the K if you ever want display output without a card.",
+   "source": "https://www.newegg.com/intel-core-i7-14th-gen-core-i7-14700kf-raptor-lake-lga-1700-desktop-cpu-processor/p/N82E16819118468",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "cpu-intel-core-i9-14900k",
+   "vendor": "Intel",
+   "model": "Core i9-14900K",
+   "cores": 24,
+   "threads": 32,
+   "boost_ghz": 6,
+   "tdp_w": 125,
+   "socket": "LGA1700",
+   "ram_type": "DDR5",
+   "supported_chipsets": [
+    "Z790",
+    "B760"
+   ],
+   "performance_tier": "flagship",
+   "use_cases": [
+    "gaming",
+    "content-creation",
+    "workstation"
+   ],
+   "notes": "32 threads and a 6.0 GHz Thermal Velocity Boost ceiling, but the 125W figure is base power only - it draws far more sustained and wants 360mm-class liquid cooling to hold clocks. Update the board BIOS before first boot on 600-series chipsets.",
+   "source": "https://www.newegg.com/intel-core-i9-14th-gen-core-i9-14900k-raptor-lake-lga-1700-desktop-cpu-processor/p/N82E16819118462",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "cpu-intel-core-i9-14900kf",
+   "vendor": "Intel",
+   "model": "Core i9-14900KF",
+   "cores": 24,
+   "threads": 32,
+   "boost_ghz": 6,
+   "tdp_w": 125,
+   "socket": "LGA1700",
+   "ram_type": "DDR5",
+   "supported_chipsets": [
+    "Z790",
+    "B760"
+   ],
+   "performance_tier": "flagship",
+   "use_cases": [
+    "gaming",
+    "content-creation",
+    "workstation"
+   ],
+   "notes": "Graphics-less 14900K at a negligible discount, so it only makes sense if you already have a GPU and never need Quick Sync. Same cooling demands: 125W base power understates real sustained draw.",
+   "source": "https://www.newegg.com/intel-core-i9-14th-gen-core-i9-14900kf-raptor-lake-lga-1700-desktop-cpu-processor/p/N82E16819118464",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "amd-ryzen-9-7950x3d",
+   "vendor": "AMD",
+   "model": "Ryzen 9 7950X3D",
+   "cores": 16,
+   "threads": 32,
+   "boost_ghz": 5.7,
+   "tdp_w": 120,
+   "socket": "AM5",
+   "ram_type": "DDR5",
+   "supported_chipsets": [
+    "X870E",
+    "X870",
+    "B850",
+    "B650"
+   ],
+   "performance_tier": "flagship",
+   "use_cases": [
+    "gaming",
+    "content-creation",
+    "workstation"
+   ],
+   "notes": "16 cores but only one of the two CCDs carries the 3D V-Cache, so Windows relies on the AMD chipset driver plus Game Bar to park the non-cache cores for games; if that scheduling is broken you lose the cache benefit. At 120W it runs cooler than the 7950X but still wants a 240mm-class cooler.",
+   "source": "https://www.newegg.com/amd-ryzen-9-7950x3d-ryzen-9-7000-series-raphael-zen-4-socket-am5/p/N82E16819113791",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "amd-ryzen-9-7950x",
+   "vendor": "AMD",
+   "model": "Ryzen 9 7950X",
+   "cores": 16,
+   "threads": 32,
+   "boost_ghz": 5.7,
+   "tdp_w": 170,
+   "socket": "AM5",
+   "ram_type": "DDR5",
+   "supported_chipsets": [
+    "X870E",
+    "X870",
+    "B850",
+    "B650"
+   ],
+   "performance_tier": "flagship",
+   "use_cases": [
+    "content-creation",
+    "workstation",
+    "rendering"
+   ],
+   "notes": "170W TDP is the real planning number here — it will sit at its 95C thermal limit under all-core load by design, which is normal behavior, not a fault. Budget a 360mm AIO and a PSU sized for sustained package power well above 170W.",
+   "source": "https://www.newegg.com/amd-ryzen-9-7950x-ryzen-9-7000-series-raphael-zen-4-socket-am5/p/N82E16819113771",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "amd-ryzen-9-7900x",
+   "vendor": "AMD",
+   "model": "Ryzen 9 7900X",
+   "cores": 12,
+   "threads": 24,
+   "boost_ghz": 5.6,
+   "tdp_w": 170,
+   "socket": "AM5",
+   "ram_type": "DDR5",
+   "supported_chipsets": [
+    "X870E",
+    "X870",
+    "B850",
+    "B650"
+   ],
+   "performance_tier": "high",
+   "use_cases": [
+    "content-creation",
+    "gaming",
+    "workstation"
+   ],
+   "notes": "Same 170W bracket as the 7950X with four fewer cores, so cooling requirements do not drop much. No cooler is in the box — factor one into the build cost.",
+   "source": "https://www.newegg.com/amd-ryzen-9-7900x-ryzen-9-7000-series-raphael-zen-4-socket-am5/p/N82E16819113769",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "amd-ryzen-9-7900",
+   "vendor": "AMD",
+   "model": "Ryzen 9 7900",
+   "cores": 12,
+   "threads": 24,
+   "boost_ghz": 5.4,
+   "tdp_w": 65,
+   "socket": "AM5",
+   "ram_type": "DDR5",
+   "supported_chipsets": [
+    "X870E",
+    "X870",
+    "B850",
+    "B650"
+   ],
+   "performance_tier": "high",
+   "use_cases": [
+    "content-creation",
+    "home-server",
+    "workstation"
+   ],
+   "notes": "The 65W version of the 12-core part and the easiest Ryzen 9 to cool — it ships with a Wraith Prism and suits small-form-factor or always-on boxes. Check street prices on both 12-core parts before buying - the 65W part has at times cost more than the 170W 7900X.",
+   "source": "https://www.newegg.com/amd-ryzen-9-7900-ryzen-9-7000-series-raphael-zen-4-socket-am5/p/N82E16819113785",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "amd-ryzen-7-7800x3d",
+   "vendor": "AMD",
+   "model": "Ryzen 7 7800X3D",
+   "cores": 8,
+   "threads": 16,
+   "boost_ghz": 5,
+   "tdp_w": 120,
+   "socket": "AM5",
+   "ram_type": "DDR5",
+   "supported_chipsets": [
+    "X870E",
+    "X870",
+    "B850",
+    "B650"
+   ],
+   "performance_tier": "high",
+   "use_cases": [
+    "gaming"
+   ],
+   "notes": "Single-CCD 3D V-Cache part, so there is no core-parking scheduler dependency like the 7950X3D has. The multiplier is locked for overclocking — tuning is limited to Curve Optimizer and memory.",
+   "source": "https://www.newegg.com/amd-ryzen-7-7800x3d-ryzen-7-7000-series-raphael-zen-4-socket-am5/p/N82E16819113793",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "amd-ryzen-7-7700x",
+   "vendor": "AMD",
+   "model": "Ryzen 7 7700X",
+   "cores": 8,
+   "threads": 16,
+   "boost_ghz": 5.4,
+   "tdp_w": 105,
+   "socket": "AM5",
+   "ram_type": "DDR5",
+   "supported_chipsets": [
+    "X870E",
+    "X870",
+    "B850",
+    "B650"
+   ],
+   "performance_tier": "mid",
+   "use_cases": [
+    "gaming",
+    "content-creation"
+   ],
+   "notes": "105W and no bundled cooler, unlike the non-X 7700. A mid-tower air cooler is enough; the stock 95C boost ceiling means better cooling buys clock, not safety.",
+   "source": "https://www.newegg.com/amd-ryzen-7-7700x-ryzen-7-7000-series-raphael-zen-4-socket-am5/p/N82E16819113768",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "amd-ryzen-5-7600x",
+   "vendor": "AMD",
+   "model": "Ryzen 5 7600X",
+   "cores": 6,
+   "threads": 12,
+   "boost_ghz": 5.3,
+   "tdp_w": 105,
+   "socket": "AM5",
+   "ram_type": "DDR5",
+   "supported_chipsets": [
+    "X870E",
+    "X870",
+    "B850",
+    "B650"
+   ],
+   "performance_tier": "mid",
+   "use_cases": [
+    "gaming",
+    "budget-build"
+   ],
+   "notes": "Cheapest way onto AM5 with a 105W six-core. No cooler included, and the platform cost (DDR5 plus an AM5 board) usually exceeds the CPU price itself.",
+   "source": "https://www.newegg.com/amd-ryzen-5-7600x-ryzen-5-7000-series-raphael-zen-4-socket-am5/p/N82E16819113770",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "amd-ryzen-5-7600",
+   "vendor": "AMD",
+   "model": "Ryzen 5 7600",
+   "cores": 6,
+   "threads": 12,
+   "boost_ghz": 5.1,
+   "tdp_w": 65,
+   "socket": "AM5",
+   "ram_type": "DDR5",
+   "supported_chipsets": [
+    "X870E",
+    "X870",
+    "B850",
+    "B650"
+   ],
+   "performance_tier": "mid",
+   "use_cases": [
+    "gaming",
+    "budget-build",
+    "home-server"
+   ],
+   "notes": "65W six-core that includes a Wraith Stealth cooler, so it is the lower total-cost entry to AM5 when the CPU price is competitive. At the price observed here the 105W 7600X was cheaper — compare both listings.",
+   "source": "https://www.newegg.com/amd-ryzen-5-7000-series-ryzen-5-7600-raphael-socket-am5-desktop-cpu-processor/p/N82E16819113787",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "amd-ryzen-7-8700g",
+   "vendor": "AMD",
+   "model": "Ryzen 7 8700G",
+   "cores": 8,
+   "threads": 16,
+   "boost_ghz": 5.1,
+   "tdp_w": 65,
+   "socket": "AM5",
+   "ram_type": "DDR5",
+   "supported_chipsets": [
+    "X870E",
+    "X870",
+    "B850",
+    "B650"
+   ],
+   "performance_tier": "mid",
+   "use_cases": [
+    "gpu-less-build",
+    "htpc",
+    "small-form-factor"
+   ],
+   "notes": "APU with Radeon 780M graphics, aimed at builds with no discrete card. Unlike the 7000-series desktop chips it is a monolithic mobile-derived die, so it gives up PCIe 5.0 and runs the graphics off system DDR5 — dual-channel memory is required for the iGPU to perform.",
+   "source": "https://www.newegg.com/amd-ryzen-7-8700g-ryzen-7-8000-g-series-phoenix-zen-4-socket-am5/p/N82E16819113811",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "amd-ryzen-5-8600g",
+   "vendor": "AMD",
+   "model": "Ryzen 5 8600G",
+   "cores": 6,
+   "threads": 12,
+   "boost_ghz": 5,
+   "tdp_w": 65,
+   "socket": "AM5",
+   "ram_type": "DDR5",
+   "supported_chipsets": [
+    "X870E",
+    "X870",
+    "B850",
+    "B650"
+   ],
+   "performance_tier": "entry",
+   "use_cases": [
+    "gpu-less-build",
+    "htpc",
+    "budget-build"
+   ],
+   "notes": "Six-core APU with the smaller Radeon 760M rather than the 8700G's 780M, which is the main difference between the two. Same 65W envelope and same DDR5 dual-channel requirement for usable integrated graphics performance.",
+   "source": "https://www.newegg.com/amd-ryzen-5-8600g-ryzen-5-8000-g-series-phoenix-zen-4-socket-am5/p/N82E16819113814",
+   "last_verified": "2026-07-29"
+  }
+ ],
+ "gpu": [
+  {
+   "id": "gpu-rtx-5060-ti-16gb",
+   "vendor": "NVIDIA AIB",
+   "model": "RTX 5060 Ti 16GB",
+   "vram_gb": 16,
+   "tgp_w": 180,
+   "length_mm": 280,
+   "pcie": "Gen5 x8",
+   "performance_tier": "mid",
+   "use_cases": [
+    "1080p ultra",
+    "1440p high"
+   ],
+   "notes": "1440p sweet spot in 2026. 16GB VRAM future-proofs against texture growth. See TechFuelHQ 5060 Ti vs 9060 XT review.",
+   "last_verified": "2026-07-24"
+  },
+  {
+   "id": "gpu-rx-9060-xt-16gb",
+   "vendor": "AMD AIB",
+   "model": "RX 9060 XT 16GB",
+   "vram_gb": 16,
+   "tgp_w": 150,
+   "length_mm": 270,
+   "pcie": "Gen5 x16",
+   "performance_tier": "mid",
+   "use_cases": [
+    "1080p ultra",
+    "1440p high"
+   ],
+   "notes": "Best 1440p value in 2026 if FSR4 quality is acceptable. Lower power than the 5060 Ti.",
+   "last_verified": "2026-07-24"
+  },
+  {
+   "id": "gpu-rtx-5070",
+   "vendor": "NVIDIA AIB",
+   "model": "RTX 5070",
+   "vram_gb": 12,
+   "tgp_w": 250,
+   "length_mm": 300,
+   "pcie": "Gen5 x16",
+   "performance_tier": "high",
+   "use_cases": [
+    "1440p ultra",
+    "4K high"
+   ],
+   "notes": "DLSS 4 + MFG makes the 12GB VRAM bearable. Watch for texture-heavy titles where 12GB hurts.",
+   "last_verified": "2026-07-24"
+  },
+  {
+   "id": "gpu-rtx-5070-ti-16gb",
+   "vendor": "NVIDIA AIB",
+   "model": "RTX 5070 Ti 16GB",
+   "vram_gb": 16,
+   "tgp_w": 300,
+   "length_mm": 320,
+   "pcie": "Gen5 x16",
+   "performance_tier": "high",
+   "use_cases": [
+    "1440p ultra",
+    "4K high",
+    "VR"
+   ],
+   "notes": "16GB resolves the 5070's VRAM problem. Strong 1440p flagship, capable 4K with DLSS.",
+   "last_verified": "2026-07-24"
+  },
+  {
+   "id": "gpu-rtx-5080-fe",
+   "vendor": "NVIDIA FE",
+   "model": "RTX 5080 Founders Edition",
+   "vram_gb": 16,
+   "tgp_w": 360,
+   "length_mm": 304,
+   "pcie": "Gen5 x16",
+   "performance_tier": "flagship",
+   "use_cases": [
+    "4K ultra",
+    "path tracing + DLSS 4"
+   ],
+   "notes": "TechFuelHQ first-party reference: see the ROG Astral 5080 OC bench dataset for the FE-vs-OC clock and thermal data.",
+   "last_verified": "2026-06-09"
+  },
+  {
+   "id": "gpu-rog-astral-5080-oc",
+   "vendor": "ASUS",
+   "model": "ROG Astral RTX 5080 OC",
+   "vram_gb": 16,
+   "tgp_w": 360,
+   "length_mm": 358,
+   "pcie": "Gen5 x16",
+   "performance_tier": "flagship",
+   "use_cases": [
+    "4K ultra",
+    "path tracing + DLSS 4 MFG",
+    "showcase build"
+   ],
+   "notes": "TechFuelHQ first-party: ~66C under stress, 400W board power, 2918 MHz manual OC. See dataset: /data/gpu/rog-astral-rtx-5080-oc-2026-06-09/. Long card — check case clearance.",
+   "last_verified": "2026-07-24"
+  },
+  {
+   "id": "gpu-nvidia-asus-rog-astral-rtx5090-o32g",
+   "vendor": "ASUS",
+   "model": "ROG Astral GeForce RTX 5090 32GB GDDR7 OC Edition",
+   "vram_gb": 32,
+   "tgp_w": 575,
+   "length_mm": 357.6,
+   "pcie": "Gen5",
+   "performance_tier": "flagship",
+   "use_cases": [
+    "4k-gaming",
+    "path-tracing",
+    "local-llm-inference",
+    "3d-rendering",
+    "ai-workstation"
+   ],
+   "notes": "Card measured is the ROG Astral quad-fan at 357.6 mm long and 76 mm thick (3.8 slots) — it will not fit most mid-towers, so check clearance before buying. ASUS asks for a 1000 W PSU with a single 16-pin connector; street prices on this card run far above NVIDIA's launch MSRP.",
+   "source": "https://rog.asus.com/us/graphics-cards/graphics-cards/rog-astral/rog-astral-rtx5090-o32g-gaming/spec/",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "gpu-nvidia-asus-tuf-rtx5080-o16g",
+   "vendor": "ASUS",
+   "model": "TUF Gaming GeForce RTX 5080 16GB GDDR7 OC Edition",
+   "vram_gb": 16,
+   "tgp_w": 360,
+   "length_mm": 348,
+   "pcie": "Gen5",
+   "performance_tier": "flagship",
+   "use_cases": [
+    "4k-gaming",
+    "1440p-high-refresh",
+    "path-tracing",
+    "content-creation"
+   ],
+   "notes": "Card measured is the TUF Gaming triple-fan at 348 mm — long enough to foul front radiators in many mid-towers. ASUS specifies a 850 W PSU; the 16 GB buffer is the practical ceiling on this tier for 4K texture packs.",
+   "source": "https://www.asus.com/us/motherboards-components/graphics-cards/tuf-gaming/tuf-rtx5080-o16g-gaming/techspec/",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "gpu-nvidia-asus-prime-rtx5070-o12g",
+   "vendor": "ASUS",
+   "model": "Prime GeForce RTX 5070 12GB GDDR7 OC Edition (SFF-Ready)",
+   "vram_gb": 12,
+   "tgp_w": 250,
+   "length_mm": 304,
+   "pcie": "Gen5 x16",
+   "performance_tier": "high",
+   "use_cases": [
+    "1440p-gaming",
+    "1080p-high-refresh",
+    "content-creation",
+    "sff-build"
+   ],
+   "notes": "ASUS badges this Prime card SFF-Ready but it is still 304 mm long and 2.5 slots — the badge refers to the SFF clearance program, not to it being short. 12 GB on a 192-bit bus is the constraint to watch at 4K.",
+   "source": "https://www.asus.com/us/motherboards-components/graphics-cards/prime/prime-rtx5070-o12g/techspec/",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "gpu-nvidia-asus-tuf-rtx5060ti-o8g",
+   "vendor": "ASUS",
+   "model": "TUF Gaming GeForce RTX 5060 Ti 8GB GDDR7 OC Edition",
+   "vram_gb": 8,
+   "tgp_w": 180,
+   "length_mm": 302,
+   "pcie": "Gen5 x8",
+   "performance_tier": "mid",
+   "use_cases": [
+    "1440p-gaming",
+    "1080p-high-refresh",
+    "esports"
+   ],
+   "notes": "Oversized cooler for the class: 302 mm long and 3.1 slots on a 180 W part, so it runs quiet but eats case space a 5070 would occupy. The 8 GB buffer is the real limiter — the 16 GB version of the same chip is the safer buy if the price gap is small.",
+   "source": "https://www.asus.com/us/motherboards-components/graphics-cards/tuf-gaming/tuf-rtx5060ti-o8g-gaming/techspec/",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "gpu-nvidia-asus-dual-rtx5060ti-o8g",
+   "vendor": "ASUS",
+   "model": "Dual GeForce RTX 5060 Ti 8GB GDDR7 OC Edition",
+   "vram_gb": 8,
+   "tgp_w": 180,
+   "length_mm": 229,
+   "pcie": "Gen5 x8",
+   "performance_tier": "mid",
+   "use_cases": [
+    "1440p-gaming",
+    "1080p-high-refresh",
+    "compact-build"
+   ],
+   "notes": "At 229 mm this is the short two-fan build of the 5060 Ti and fits cases the 302 mm TUF will not. ASUS rates it for a 550 W PSU; same 8 GB buffer caveat as the rest of this SKU.",
+   "source": "https://www.asus.com/us/motherboards-components/graphics-cards/dual/dual-rtx5060ti-o8g/techspec/",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "gpu-nvidia-asus-dual-rtx5060-o8g",
+   "vendor": "ASUS",
+   "model": "Dual GeForce RTX 5060 8GB GDDR7 OC Edition",
+   "vram_gb": 8,
+   "tgp_w": 145,
+   "length_mm": 228,
+   "pcie": "Gen5 x8",
+   "performance_tier": "entry",
+   "use_cases": [
+    "1080p-gaming",
+    "esports",
+    "compact-build",
+    "htpc"
+   ],
+   "notes": "228 mm and 2.5 slots on a 145 W part, so a 550 W PSU covers it and it drops into most mid-towers without measuring. Fastest-selling card in this bracket, but 8 GB on a 128-bit bus caps its useful life at 1080p.",
+   "source": "https://www.asus.com/us/motherboards-components/graphics-cards/dual/dual-rtx5060-o8g/techspec/",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "gpu-nvidia-asus-dual-rtx5050-8g",
+   "vendor": "ASUS",
+   "model": "Dual GeForce RTX 5050 8GB GDDR6",
+   "vram_gb": 8,
+   "tgp_w": 130,
+   "length_mm": 203,
+   "pcie": "Gen5 x8",
+   "performance_tier": "entry",
+   "use_cases": [
+    "1080p-gaming",
+    "esports",
+    "htpc",
+    "compact-build"
+   ],
+   "notes": "Shortest RTX 50 card here at 203 mm and only 2 slots, which is what makes it a genuine small-case option. Note this tier drops to GDDR6 at 20 Gbps rather than the GDDR7 used everywhere else in the 50-series.",
+   "source": "https://www.asus.com/us/motherboards-components/graphics-cards/dual/dual-rtx5050-8g/techspec/",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "gpu-nvidia-asus-prime-rtx5050-o8g",
+   "vendor": "ASUS",
+   "model": "Prime GeForce RTX 5050 8GB GDDR6 OC Edition (SFF-Ready)",
+   "vram_gb": 8,
+   "tgp_w": 130,
+   "length_mm": 268.3,
+   "pcie": "Gen5 x8",
+   "performance_tier": "entry",
+   "use_cases": [
+    "1080p-gaming",
+    "esports",
+    "htpc"
+   ],
+   "notes": "Despite the SFF-Ready badge this Prime model is 268.3 mm — 65 mm longer than ASUS's own Dual RTX 5050 for the same GPU, so the cheaper Dual is the better pick for a genuinely small case. Same GDDR6 memory as the rest of the 5050 tier.",
+   "source": "https://www.asus.com/us/motherboards-components/graphics-cards/prime/prime-rtx5050-o8g/techspec/",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "gpu-amd-radeon-rx-9070-xt-16gb",
+   "vendor": "AMD",
+   "model": "Radeon RX 9070 XT 16GB",
+   "vram_gb": 16,
+   "tgp_w": 304,
+   "length_mm": 320,
+   "pcie": "Gen5 x16",
+   "performance_tier": "flagship",
+   "use_cases": [
+    "4K gaming",
+    "1440p ultra gaming",
+    "content creation",
+    "local AI inference"
+   ],
+   "notes": "16GB of GDDR6 at 304W board power gives you a genuine 4K card that a good 750W PSU can still feed. The Pulse is 320mm long, so measure your case before ordering.",
+   "source": "https://www.newegg.com/sapphire-tech-sapphire-pulse-radeon-rx-9070-xt-16gb-graphics-card-triple-fans/p/27N-0005-00270",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "gpu-amd-radeon-rx-9070-16gb",
+   "vendor": "AMD",
+   "model": "Radeon RX 9070 16GB",
+   "vram_gb": 16,
+   "tgp_w": 220,
+   "length_mm": 290,
+   "pcie": "Gen5 x16",
+   "performance_tier": "high",
+   "use_cases": [
+    "1440p ultra gaming",
+    "4K high gaming",
+    "content creation"
+   ],
+   "notes": "Same 16GB buffer as the XT but 84W lower board power, so a 650W supply and a normal mid-tower are enough. The sensible RDNA 4 pick when you do not want the XT's heat or its price.",
+   "source": "https://www.newegg.com/asrock-challenger-rx9070-cl-16g-radeon-rx-9070-16gb-graphics-card-triple-fans/p/N82E16814930138",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "gpu-amd-radeon-rx-9070-gre-12gb",
+   "vendor": "AMD",
+   "model": "Radeon RX 9070 GRE 12GB",
+   "vram_gb": 12,
+   "tgp_w": 240,
+   "length_mm": 280,
+   "pcie": "Gen5 x16",
+   "performance_tier": "high",
+   "use_cases": [
+    "1440p ultra gaming",
+    "1080p high-refresh gaming",
+    "content creation"
+   ],
+   "notes": "Slots between the 9060 XT and the 9070 at 240W, and the 280mm two-fan board fits cases that cannot take a 320mm card. Worth it only if the gap to a full 9070 is more than about $80.",
+   "source": "https://www.newegg.com/sapphire-tech-pulse-radeon-rx-9070-gre-graphics-12gb-graphics-card-double-fans/p/N82E16814202478",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "gpu-amd-radeon-rx-9060-xt-8gb",
+   "vendor": "AMD",
+   "model": "Radeon RX 9060 XT 8GB",
+   "vram_gb": 8,
+   "tgp_w": 170,
+   "length_mm": 244,
+   "pcie": "Gen5 x16",
+   "performance_tier": "mid",
+   "use_cases": [
+    "1080p ultra gaming",
+    "1440p high gaming",
+    "esports"
+   ],
+   "notes": "At 170W and 244mm this is the easiest RDNA 4 card to power and fit, and it runs happily on a 550W supply. The 8GB buffer is already tight for 1440p textures, so buy the 16GB variant instead unless the price gap is large.",
+   "source": "https://www.newegg.com/sapphire-tech-9060xt-pulse-8g-radeon-rx-9060-xt-8gb-video-cards-double-fans/p/27N-0005-00298",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "gpu-amd-radeon-rx-7900-xtx-24gb",
+   "vendor": "AMD",
+   "model": "Radeon RX 7900 XTX 24GB",
+   "vram_gb": 24,
+   "tgp_w": 327,
+   "length_mm": 344,
+   "pcie": "Gen4 x16",
+   "performance_tier": "flagship",
+   "use_cases": [
+    "4K gaming",
+    "local AI inference",
+    "3D rendering",
+    "video editing"
+   ],
+   "notes": "Previous-generation halo card whose 24GB buffer still matters for local AI and heavy 3D work, but the 344mm board rules out most mid-towers. The 327W figure is what XFX publishes in this card's retail spec table, so size the PSU with headroom rather than to the number.",
+   "source": "https://www.newegg.com/xfx-speedster-merc310-rx-79xmercb9-radeon-rx-7900-xtx-24gb-graphics-card-triple-fans/p/N82E16814150878",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "gpu-amd-radeon-rx-7900-gre-16gb",
+   "vendor": "AMD",
+   "model": "Radeon RX 7900 GRE 16GB",
+   "vram_gb": 16,
+   "tgp_w": 250,
+   "length_mm": 303,
+   "pcie": "Gen4",
+   "performance_tier": "high",
+   "use_cases": [
+    "1440p ultra gaming",
+    "4K high gaming",
+    "video editing"
+   ],
+   "notes": "Discontinued RDNA 3 part: 16GB and 250W are fine on paper, but remaining stock is listed far above its original street price. A current 9070 GRE beats it on price, power and features.",
+   "source": "https://www.newegg.com/powercolor-fighter-rx7900gre-16g-f-oc-radeon-rx-7900-gre-16gb-graphics-card-triple-fans/p/N82E16814131864",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "gpu-amd-radeon-rx-7800-xt-16gb",
+   "vendor": "AMD",
+   "model": "Radeon RX 7800 XT 16GB",
+   "vram_gb": 16,
+   "tgp_w": 263,
+   "length_mm": 280,
+   "pcie": "Gen4 x16",
+   "performance_tier": "high",
+   "use_cases": [
+    "1440p ultra gaming",
+    "video editing",
+    "streaming"
+   ],
+   "notes": "16GB at 263W on a 280mm board that fits most mid-towers, but the generation is end-of-life and remaining listings carry a heavy premium. Check a 9070 GRE first before paying this.",
+   "source": "https://www.newegg.com/sapphire-tech-pulse-11330-02-20g-radeon-rx-7800-xt-16gb-graphics-card-double-fans/p/27N-0005-00244",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "gpu-amd-radeon-rx-7700-xt-12gb",
+   "vendor": "AMD",
+   "model": "Radeon RX 7700 XT 12GB",
+   "vram_gb": 12,
+   "tgp_w": 245,
+   "length_mm": 266,
+   "pcie": "Gen4 x16",
+   "performance_tier": "mid",
+   "use_cases": [
+    "1440p high gaming",
+    "1080p ultra gaming",
+    "streaming"
+   ],
+   "notes": "12GB and 245W make it a competent 1440p card, but it wants two 8-pin connectors and a 266mm slot. Only buy it when it lands clearly below a 9060 XT 16GB.",
+   "source": "https://www.newegg.com/asrock-challenger-rx7700xt-cl-12go-radeon-rx-7700-xt-12gb-graphics-card-double-fans/p/N82E16814930109",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "gpu-amd-radeon-rx-7600-8gb",
+   "vendor": "AMD",
+   "model": "Radeon RX 7600 8GB",
+   "vram_gb": 8,
+   "tgp_w": 165,
+   "length_mm": 269,
+   "pcie": "Gen4 x8",
+   "performance_tier": "entry",
+   "use_cases": [
+    "1080p high gaming",
+    "esports",
+    "HTPC"
+   ],
+   "notes": "165W over a single 8-pin keeps PSU requirements low, and it is a straightforward 1080p card. The PCIe 4.0 x8 link costs real performance on older PCIe 3.0 motherboards, so check your board generation.",
+   "source": "https://www.newegg.com/asrock-radeon-rx-7600-rx7600-cl-8go/p/N82E16814930093",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "gpu-intel-arc-b580-12gb",
+   "vendor": "Intel",
+   "model": "Arc B580 12GB",
+   "vram_gb": 12,
+   "tgp_w": 190,
+   "length_mm": 249,
+   "pcie": "Gen4 x8",
+   "performance_tier": "mid",
+   "use_cases": [
+    "1440p high gaming",
+    "1080p ultra gaming",
+    "AV1 encoding",
+    "streaming"
+   ],
+   "notes": "12GB at 190W is the most VRAM per dollar in this class and the 249mm card drops into compact builds. Board power is Intel's published 190W for the B580 since ASRock does not print a card-specific figure; length and the PCIe 4.0 x8 link come from this card's own retail spec table.",
+   "source": "https://www.newegg.com/asrock-challenger-b580-cl-12go-arc-b580-12gb-graphics-card-double-fans/p/N82E16814930131",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "gpu-intel-arc-b570-10gb",
+   "vendor": "Intel",
+   "model": "Arc B570 10GB",
+   "vram_gb": 10,
+   "tgp_w": 150,
+   "length_mm": 249,
+   "pcie": "Gen4 x8",
+   "performance_tier": "entry",
+   "use_cases": [
+    "1080p high gaming",
+    "esports",
+    "AV1 encoding",
+    "HTPC"
+   ],
+   "notes": "150W on a single 8-pin makes it an easy drop-in for a prebuilt or a modest PSU, with 10GB of VRAM at an entry price. The PCIe 4.0 x8 link hurts on PCIe 3.0 boards; the 150W figure is the B570's published board power, since ASRock's retail spec table omits it.",
+   "source": "https://www.newegg.com/asrock-challenger-b570-cl-10go-arc-b570-10gb-graphics-card-double-fans/p/N82E16814930134",
+   "last_verified": "2026-07-29"
+  }
+ ],
+ "motherboard": [
+  {
+   "id": "mb-b650-tomahawk",
+   "vendor": "MSI",
+   "model": "B650 Tomahawk WiFi",
+   "socket": "AM5",
+   "chipset": "B650",
+   "form_factor": "ATX",
+   "ram_type": "DDR5",
+   "ram_slots": 4,
+   "ram_max_gb": 192,
+   "m2_slots": 3,
+   "pcie_gen": "Gen4",
+   "use_cases": [
+    "budget AM5",
+    "mid-tier AM5"
+   ],
+   "notes": "Best B650 value in 2026. Solid VRMs for any Ryzen 7000/9000 short of the 9950X3D.",
+   "last_verified": "2026-07-24"
+  },
+  {
+   "id": "mb-b850-edge",
+   "vendor": "MSI",
+   "model": "B850 Edge WiFi",
+   "socket": "AM5",
+   "chipset": "B850",
+   "form_factor": "ATX",
+   "ram_type": "DDR5",
+   "ram_slots": 4,
+   "ram_max_gb": 256,
+   "m2_slots": 4,
+   "pcie_gen": "Gen5",
+   "use_cases": [
+    "mid-tier AM5",
+    "high-tier AM5"
+   ],
+   "notes": "PCIe 5.0 for the primary GPU slot and primary NVMe. Worth the bump from B650 if you're building 2026+ forward.",
+   "last_verified": "2026-07-24"
+  },
+  {
+   "id": "mb-x870e-hero",
+   "vendor": "ASUS",
+   "model": "ROG Crosshair X870E Hero",
+   "socket": "AM5",
+   "chipset": "X870E",
+   "form_factor": "ATX",
+   "ram_type": "DDR5",
+   "ram_slots": 4,
+   "ram_max_gb": 256,
+   "m2_slots": 5,
+   "pcie_gen": "Gen5",
+   "use_cases": [
+    "flagship AM5",
+    "showcase build"
+   ],
+   "notes": "Overkill for most builds. Pick for X3D-class CPUs, multi-NVMe storage, and aesthetic.",
+   "last_verified": "2026-07-24"
+  },
+  {
+   "id": "mb-z890-tomahawk",
+   "vendor": "MSI",
+   "model": "Z890 Tomahawk WiFi",
+   "socket": "LGA1851",
+   "chipset": "Z890",
+   "form_factor": "ATX",
+   "ram_type": "DDR5",
+   "ram_slots": 4,
+   "ram_max_gb": 256,
+   "m2_slots": 4,
+   "pcie_gen": "Gen5",
+   "use_cases": [
+    "mid-tier Intel",
+    "high-tier Intel"
+   ],
+   "notes": "Solid Arrow Lake mid-range. Z890 needed for Core Ultra K-series tuning.",
+   "last_verified": "2026-07-24"
+  },
+  {
+   "id": "mb-z790-tomahawk",
+   "vendor": "MSI",
+   "model": "Z790 Tomahawk WiFi",
+   "socket": "LGA1700",
+   "chipset": "Z790",
+   "form_factor": "ATX",
+   "ram_type": "DDR5",
+   "ram_slots": 4,
+   "ram_max_gb": 192,
+   "m2_slots": 4,
+   "pcie_gen": "Gen5",
+   "use_cases": [
+    "LGA1700 holdouts"
+   ],
+   "notes": "Only buy LGA1700 today if the deal on a 14600K is exceptional. Platform is end-of-life.",
+   "last_verified": "2026-07-24"
+  },
+  {
+   "id": "mb-asrock-a620am-x",
+   "vendor": "ASRock",
+   "model": "A620AM-X",
+   "socket": "AM5",
+   "chipset": "AMD A620A",
+   "form_factor": "Micro-ATX",
+   "ram_type": "DDR5",
+   "ram_slots": 2,
+   "ram_max_gb": 128,
+   "m2_slots": 2,
+   "pcie_gen": "Gen4",
+   "use_cases": [
+    "budget-gaming",
+    "office",
+    "htpc"
+   ],
+   "notes": "Cheapest way onto AM5 with DDR5, but it is A620: no CPU overclocking, PCIe 4.0 only on the GPU slot, and just 2 DIMM slots. Fine for a 7600/9600X build, wasteful under a high-end GPU.",
+   "source": "https://www.asrock.com/mb/AMD/A620AM-X/index.asp",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "mb-asrock-b860-pro-rs",
+   "vendor": "ASRock",
+   "model": "B860 Pro RS",
+   "socket": "LGA1851",
+   "chipset": "Intel B860",
+   "form_factor": "ATX",
+   "ram_type": "DDR5",
+   "ram_slots": 4,
+   "ram_max_gb": 256,
+   "m2_slots": 3,
+   "pcie_gen": "Gen5",
+   "use_cases": [
+    "budget-gaming",
+    "workstation",
+    "general"
+   ],
+   "notes": "Full ATX LGA1851 board with a Gen5 x16 slot, three M.2 (one Gen5) and four DIMMs for well under $150. No onboard Wi-Fi, so budget for an add-in card or use wired networking.",
+   "source": "https://www.asrock.com/mb/Intel/B860%20Pro%20RS/index.asp",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "mb-asrock-b860m-x-gen5-wifi",
+   "vendor": "ASRock",
+   "model": "B860M-X Gen5 WiFi",
+   "socket": "LGA1851",
+   "chipset": "Intel B860",
+   "form_factor": "Micro-ATX",
+   "ram_type": "DDR5",
+   "ram_slots": 2,
+   "ram_max_gb": 128,
+   "m2_slots": 2,
+   "pcie_gen": "Gen5",
+   "use_cases": [
+    "budget-gaming",
+    "small-form-factor",
+    "general"
+   ],
+   "notes": "Micro-ATX LGA1851 board that keeps the Gen5 x16 slot and a Gen5 M.2 at a low price. Only two DIMM slots, so plan on a 2x32GB kit if you want 64GB - there is no room to add sticks later.",
+   "source": "https://www.asrock.com/mb/Intel/B860M-X%20Gen5%20WiFi/index.asp",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "mb-asrock-b860i-wifi",
+   "vendor": "ASRock",
+   "model": "B860I WiFi",
+   "socket": "LGA1851",
+   "chipset": "Intel B860",
+   "form_factor": "Mini-ITX",
+   "ram_type": "DDR5",
+   "ram_slots": 2,
+   "ram_max_gb": 128,
+   "m2_slots": 2,
+   "pcie_gen": "Gen5",
+   "use_cases": [
+    "small-form-factor",
+    "gaming",
+    "htpc"
+   ],
+   "notes": "One of the cheaper Mini-ITX LGA1851 options, with a Gen5 x16 slot and a Gen5 M.2. ASRock names the board B860I WiFi; retail listings often append 6E, which refers to its Wi-Fi 6E module.",
+   "source": "https://www.asrock.com/mb/Intel/B860I%20WiFi/index.asp",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "mb-asus-rog-strix-b860-i-gaming-wifi",
+   "vendor": "ASUS",
+   "model": "ROG Strix B860-I Gaming WiFi",
+   "socket": "LGA1851",
+   "chipset": "Intel B860",
+   "form_factor": "Mini-ITX",
+   "ram_type": "DDR5",
+   "ram_slots": 2,
+   "ram_max_gb": 128,
+   "m2_slots": 2,
+   "pcie_gen": "Gen5",
+   "use_cases": [
+    "small-form-factor",
+    "gaming"
+   ],
+   "notes": "Mini-ITX LGA1851 board with Gen5 x16, a Gen5 M.2 and Thunderbolt 4, which is rare at this size. Two DIMM slots cap you at 128GB and ITX VRM cooling is tight under a 200-series K chip.",
+   "source": "https://rog.asus.com/motherboards/rog-strix/rog-strix-b860-i-gaming-wifi/spec/",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "mb-asus-prime-b860-plus-wifi-csm",
+   "vendor": "ASUS",
+   "model": "Prime B860-PLUS WiFi-CSM",
+   "socket": "LGA1851",
+   "chipset": "Intel B860",
+   "form_factor": "ATX",
+   "ram_type": "DDR5",
+   "ram_slots": 4,
+   "ram_max_gb": 256,
+   "m2_slots": 2,
+   "pcie_gen": "Gen5",
+   "use_cases": [
+    "general",
+    "office",
+    "budget-gaming"
+   ],
+   "notes": "Plain ATX B860 board with four DIMMs to 256GB and a Gen5 x16 slot. Only two M.2 sockets, so heavy-storage builds will run out of NVMe slots before they run out of anything else.",
+   "source": "https://www.asus.com/motherboards-components/motherboards/prime/prime-b860-plus-wifi-csm/techspec/",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "mb-asus-prime-z890-p-wifi",
+   "vendor": "ASUS",
+   "model": "Prime Z890-P WiFi",
+   "socket": "LGA1851",
+   "chipset": "Intel Z890",
+   "form_factor": "ATX",
+   "ram_type": "DDR5",
+   "ram_slots": 4,
+   "ram_max_gb": 256,
+   "m2_slots": 4,
+   "pcie_gen": "Gen5",
+   "use_cases": [
+    "gaming",
+    "workstation",
+    "content-creation"
+   ],
+   "notes": "Entry point into Z890 if you want memory overclocking and four M.2 slots without paying ROG prices. Thunderbolt 4 Type-C is onboard, which most B860 boards at this price skip.",
+   "source": "https://www.asus.com/motherboards-components/motherboards/prime/prime-z890-p-wifi/techspec/",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "mb-asus-tuf-gaming-x870-plus-wifi",
+   "vendor": "ASUS",
+   "model": "TUF Gaming X870-PLUS WiFi",
+   "socket": "AM5",
+   "chipset": "AMD X870",
+   "form_factor": "ATX",
+   "ram_type": "DDR5",
+   "ram_slots": 4,
+   "ram_max_gb": 256,
+   "m2_slots": 4,
+   "pcie_gen": "Gen5",
+   "use_cases": [
+    "gaming",
+    "content-creation",
+    "workstation"
+   ],
+   "notes": "X870 brings USB4 as a chipset requirement, and this board has four M.2 slots. Watch the sharing rule: ASUS states the Gen5 x16 slot drops to x8 when the second M.2 slot is populated.",
+   "source": "https://www.asus.com/motherboards-components/motherboards/tuf-gaming/tuf-gaming-x870-plus-wifi/techspec/",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "mb-asus-tuf-gaming-b850-plus-wifi",
+   "vendor": "ASUS",
+   "model": "TUF Gaming B850-PLUS WiFi",
+   "socket": "AM5",
+   "chipset": "AMD B850",
+   "form_factor": "ATX",
+   "ram_type": "DDR5",
+   "ram_slots": 4,
+   "ram_max_gb": 256,
+   "m2_slots": 3,
+   "pcie_gen": "Gen5",
+   "use_cases": [
+    "gaming",
+    "general",
+    "content-creation"
+   ],
+   "notes": "B850 board with a Gen5 x16 slot and three M.2. Note the ASUS spec: the x16 slot runs Gen5 with Ryzen 9000/7000 but only Gen4 with the 8000-series APUs.",
+   "source": "https://www.asus.com/motherboards-components/motherboards/tuf-gaming/tuf-gaming-b850-plus-wifi/techspec/",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "mb-asus-rog-strix-b850-i-gaming-wifi",
+   "vendor": "ASUS",
+   "model": "ROG Strix B850-I Gaming WiFi",
+   "socket": "AM5",
+   "chipset": "AMD B850",
+   "form_factor": "Mini-ITX",
+   "ram_type": "DDR5",
+   "ram_slots": 2,
+   "ram_max_gb": 128,
+   "m2_slots": 2,
+   "pcie_gen": "Gen5",
+   "use_cases": [
+    "small-form-factor",
+    "gaming"
+   ],
+   "notes": "High-end AM5 Mini-ITX with a Gen5 x16 slot and Wi-Fi 7, but you pay a large premium over ATX for the same chipset. Two DIMMs cap memory at 128GB and the x16 slot is Gen4 with 8000-series APUs.",
+   "source": "https://rog.asus.com/motherboards/rog-strix/rog-strix-b850-i-gaming-wifi/spec/",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "mb-asus-rog-strix-b650-a-gaming-wifi",
+   "vendor": "ASUS",
+   "model": "ROG Strix B650-A Gaming WiFi",
+   "socket": "AM5",
+   "chipset": "AMD B650",
+   "form_factor": "ATX",
+   "ram_type": "DDR5",
+   "ram_slots": 4,
+   "ram_max_gb": 192,
+   "m2_slots": 3,
+   "pcie_gen": "Gen4",
+   "use_cases": [
+    "gaming",
+    "general",
+    "budget-gaming"
+   ],
+   "notes": "Older B650 board that is now cheap, with four DIMMs and three M.2. The main GPU slot is PCIe 4.0 x16, not Gen5 - only the primary M.2 is Gen5, so pair it with a card you do not expect to bottleneck.",
+   "source": "https://rog.asus.com/motherboards/rog-strix/rog-strix-b650-a-gaming-wifi-model/spec/",
+   "last_verified": "2026-07-29"
+  }
+ ],
+ "ram": [
+  {
+   "id": "ram-ddr5-32gb-6000",
+   "vendor": "G.Skill",
+   "model": "Trident Z5 Neo 32GB (2x16GB) DDR5-6000 CL30",
+   "capacity_gb": 32,
+   "kit": "2x16GB",
+   "speed_mtps": 6000,
+   "cas_latency": 30,
+   "ram_type": "DDR5",
+   "use_cases": [
+    "AM5 sweet spot",
+    "mid-tier"
+   ],
+   "notes": "Sweet spot for AM5: EXPO 6000 CL30 is the official AMD spec target. Use this for any Ryzen 7000/9000 build.",
+   "last_verified": "2026-07-24"
+  },
+  {
+   "id": "ram-ddr5-64gb-6000",
+   "vendor": "G.Skill",
+   "model": "Trident Z5 Neo 64GB (2x32GB) DDR5-6000 CL30",
+   "capacity_gb": 64,
+   "kit": "2x32GB",
+   "speed_mtps": 6000,
+   "cas_latency": 30,
+   "ram_type": "DDR5",
+   "use_cases": [
+    "productivity",
+    "VMs",
+    "content creation"
+   ],
+   "notes": "64GB at 6000 CL30 is the new content-creator default. Don't go above 2 sticks on AM5 — IMC stability falls off with 4 sticks.",
+   "last_verified": "2026-07-24"
+  },
+  {
+   "id": "corsair-vengeance-ddr5-6000-cl36-16gb",
+   "vendor": "Corsair",
+   "model": "Vengeance DDR5 16GB (2x8GB) 6000MT/s CL36 (CMK16GX5M2E6000Z36)",
+   "capacity_gb": 16,
+   "kit": "2x8GB",
+   "speed_mtps": 6000,
+   "cas_latency": 36,
+   "ram_type": "DDR5",
+   "use_cases": [
+    "1080p gaming",
+    "budget build",
+    "office productivity"
+   ],
+   "notes": "The cheapest genuinely current-spec DDR5 kit in this dataset, and 16GB in 2026 still costs more than 32GB did in 2025 - that is the DRAM spike in one number. 2x8GB is single-rank per module and 16GB total is now the hard floor; anyone doing more than gaming plus a browser should stretch to 32GB rather than plan to add sticks later, because four-DIMM DDR5 configurations rarely hold their rated speed.",
+   "source": "https://www.corsair.com/us/en/p/memory/cmk16gx5m2e6000z36/vengeance-16gb-2x8gb-ddr5-dram-6000mts-cl36-memory-kit-grey-cmk16gx5m2e6000z36",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "corsair-vengeance-ddr5-6000-cl36-32gb",
+   "vendor": "Corsair",
+   "model": "Vengeance DDR5 32GB (2x16GB) 6000MT/s CL36 (CMK32GX5M2E6000Z36)",
+   "capacity_gb": 32,
+   "kit": "2x16GB",
+   "speed_mtps": 6000,
+   "cas_latency": 36,
+   "ram_type": "DDR5",
+   "use_cases": [
+    "1440p gaming",
+    "productivity",
+    "general build"
+   ],
+   "notes": "The default 32GB kit for both AM5 and Intel right now - DDR5-6000 is the AM5 sweet spot because it keeps the Infinity Fabric in 1:1 mode. CL36 rather than CL30 is the tradeoff for the lower price; the latency gap is small in games relative to the price gap in 2026. Low-profile heatspreader, so it clears most tower coolers.",
+   "source": "https://www.corsair.com/us/en/p/memory/cmk32gx5m2e6000z36/vengeance-32gb-2x16gb-ddr5-dram-6000mts-cl36-memory-kit-grey-cmk32gx5m2e6000z36",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "gskill-flare-x5-ddr5-6000-cl36-32gb",
+   "vendor": "G.Skill",
+   "model": "Flare X5 DDR5 32GB (2x16GB) 6000MT/s CL36 (F5-6000J3636F16GX2-FX5)",
+   "capacity_gb": 32,
+   "kit": "2x16GB",
+   "speed_mtps": 6000,
+   "cas_latency": 36,
+   "ram_type": "DDR5",
+   "use_cases": [
+    "1440p gaming",
+    "productivity",
+    "small form factor"
+   ],
+   "notes": "Flare X5 is G.Skill's low-profile AM5-targeted line - no RGB, short heatspreader, which is why it turns up in SFF and big-air-cooler builds where Trident Z5 fouls the fan. Same DDR5-6000 CL36 EXPO profile as the mainstream Corsair kit; pick on clearance and cooler fitment rather than performance.",
+   "source": "https://www.gskill.com/specification/165/396/1662622664/F5-6000J3636F16GX2-FX5-Specification",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "teamgroup-tforce-delta-rgb-ddr5-6000-cl30-32gb",
+   "vendor": "TeamGroup",
+   "model": "T-Force Delta RGB DDR5 32GB (2x16GB) 6000MT/s CL30 (FF3D532G6000HC30DC01)",
+   "capacity_gb": 32,
+   "kit": "2x16GB",
+   "speed_mtps": 6000,
+   "cas_latency": 30,
+   "ram_type": "DDR5",
+   "use_cases": [
+    "1440p gaming",
+    "productivity",
+    "rgb build"
+   ],
+   "notes": "The CL30 tier of DDR5-6000 for roughly $60 over the CL36 kits, which is a far smaller premium than the same gap commanded before the shortage. TeamGroup is a second-tier brand by mindshare but this is a widely-deployed SKU with both XMP 3.0 and EXPO profiles on the same sticks. Tall RGB heatspreader - check cooler clearance.",
+   "source": "https://www.teamgroupinc.com/en/product-detail/memory/T-FORCE/delta-rgb-ddr5-black/delta-rgb-ddr5-black-FF3D532G6000HC30DC01/",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "corsair-vengeance-rgb-rs-ddr5-6000-cl40-64gb",
+   "vendor": "Corsair",
+   "model": "Vengeance RGB RS DDR5 64GB (2x32GB) 6000MT/s CL40 (CMG64GX5M2D6000Z40)",
+   "capacity_gb": 64,
+   "kit": "2x32GB",
+   "speed_mtps": 6000,
+   "cas_latency": 40,
+   "ram_type": "DDR5",
+   "use_cases": [
+    "1440p gaming",
+    "content creation",
+    "vm host"
+   ],
+   "notes": "The cheapest verified 64GB DDR5-6000 kit in this batch, and the reason is CL40 - Corsair is using looser-binned dual-rank 32GB modules. If you want 64GB primarily for capacity (VMs, large timelines, many browser tabs) that tradeoff is fine; if you want 64GB for latency-sensitive work, the CL36 and CL30 64GB kits below cost meaningfully more.",
+   "source": "https://www.corsair.com/us/en/p/memory/cmg64gx5m2d6000z40/vengeance-rgb-rs-64gb-2x32gb-ddr5-dram-6000mt-s-cl40-memory-kit-grey-cmg64gx5m2d6000z40",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "gskill-trident-z5-ck-rgb-ddr5-8200-cl40-48gb",
+   "vendor": "G.Skill",
+   "model": "Trident Z5 CK RGB DDR5 48GB (2x24GB) 8200MT/s CL40 CU-DIMM (F5-8200C4052G24GX2-TZ5CRK)",
+   "capacity_gb": 48,
+   "kit": "2x24GB",
+   "speed_mtps": 8200,
+   "cas_latency": 40,
+   "ram_type": "DDR5",
+   "use_cases": [
+    "1440p gaming",
+    "enthusiast overclocking",
+    "high refresh gaming"
+   ],
+   "notes": "This is a CU-DIMM, not a normal U-DIMM: it carries an on-module clock driver (CKD) to keep the clock signal clean at 8200 MT/s. G.Skill states it is for Intel Core Ultra 200 K-series on Z890 only - it will not give you these speeds on AM5 and is not a general-purpose kit. SPD default is 6400 MT/s at 1.10V, so it boots slow until XMP is enabled.",
+   "source": "https://www.gskill.com/specification/165/437/1730699700/F5-8200C4052G24GX2-TZ5CRK-Specification",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "gskill-trident-z5-neo-rgb-ddr5-6000-cl36-64gb",
+   "vendor": "G.Skill",
+   "model": "Trident Z5 Neo RGB DDR5 64GB (2x32GB) 6000MT/s CL36 (F5-6000J3636F32GX2-TZ5NR)",
+   "capacity_gb": 64,
+   "kit": "2x32GB",
+   "speed_mtps": 6000,
+   "cas_latency": 36,
+   "ram_type": "DDR5",
+   "use_cases": [
+    "content creation",
+    "video editing",
+    "vm host",
+    "1440p gaming"
+   ],
+   "notes": "The middle option in 64GB: CL36 at 1.35V, tighter than the CL40 Corsair kit and cheaper than the CL30 Flare X5. Carries both EXPO and XMP 3.0 profiles, so it is not locked to AMD despite the Neo branding. Dual-rank 32GB modules generally need a BIOS with recent AGESA to train reliably at 6000.",
+   "source": "https://www.gskill.com/specification/165/390/1730883449/F5-6000J3636F32GX2-TZ5NR-Specification",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "gskill-flare-x5-ddr5-6000-cl30-64gb",
+   "vendor": "G.Skill",
+   "model": "Flare X5 DDR5 64GB (2x32GB) 6000MT/s CL30 (F5-6000J3040G32GX2-FX5)",
+   "capacity_gb": 64,
+   "kit": "2x32GB",
+   "speed_mtps": 6000,
+   "cas_latency": 30,
+   "ram_type": "DDR5",
+   "use_cases": [
+    "content creation",
+    "3d rendering",
+    "local llm",
+    "workstation"
+   ],
+   "notes": "CL30 at 64GB is the tightest widely-stocked 2x32GB EXPO bin, and G.Skill rates it at 1.40V rather than the 1.35V of the CL36 kits - budget for a little more DIMM heat in a cramped case. Low-profile, no RGB. The $220 premium over the CL36 64GB kit buys latency, not capacity, so only take it if your workload is latency-bound.",
+   "source": "https://www.gskill.com/specification/165/396/1691400033/F5-6000J3040G32GX2-FX5-Specification",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "gskill-trident-z5-rgb-ddr5-6400-cl32-96gb",
+   "vendor": "G.Skill",
+   "model": "Trident Z5 RGB DDR5 96GB (2x48GB) 6400MT/s CL32 (F5-6400J3239F48GX2-TZ5RK)",
+   "capacity_gb": 96,
+   "kit": "2x48GB",
+   "speed_mtps": 6400,
+   "cas_latency": 32,
+   "ram_type": "DDR5",
+   "use_cases": [
+    "content creation",
+    "3d rendering",
+    "workstation",
+    "local llm"
+   ],
+   "notes": "96GB from two DIMMs is the practical creator sweet spot: you keep two-slot operation and its clock headroom instead of dropping to four sticks. This is the Intel XMP 3.0 SKU - G.Skill does not list an EXPO profile on it, so AM5 owners should take the EXPO 96GB kit instead rather than assume it will train.",
+   "source": "https://www.gskill.com/specification/165/374/1681113538/F5-6400J3239F48GX2-TZ5RK-Specification",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "gskill-trident-z5-neo-rgb-ddr5-6000-cl28-96gb",
+   "vendor": "G.Skill",
+   "model": "Trident Z5 Neo RGB DDR5 96GB (2x48GB) 6000MT/s CL28 (F5-6000J2836F48GX2-TZ5NR)",
+   "capacity_gb": 96,
+   "kit": "2x48GB",
+   "speed_mtps": 6000,
+   "cas_latency": 28,
+   "ram_type": "DDR5",
+   "use_cases": [
+    "content creation",
+    "3d rendering",
+    "workstation",
+    "local llm"
+   ],
+   "notes": "The EXPO counterpart to the 96GB Intel kit and the tightest 48GB-module bin G.Skill lists - CL28 at DDR5-6000 and 1.35V. This is the kit for an AM5 creator box that wants 96GB while staying in 1:1 Infinity Fabric mode. Two 48GB dual-rank DIMMs are demanding to train; a current BIOS is not optional.",
+   "source": "https://www.gskill.com/specification/165/390/1736133551/F5-6000J2836F48GX2-TZ5NR-Specification",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "gskill-trident-z5-neo-rgb-ddr5-6000-cl36-128gb",
+   "vendor": "G.Skill",
+   "model": "Trident Z5 Neo RGB DDR5 128GB (2x64GB) 6000MT/s CL36 (F5-6000J3644D64GX2-TZ5NR)",
+   "capacity_gb": 128,
+   "kit": "2x64GB",
+   "speed_mtps": 6000,
+   "cas_latency": 36,
+   "ram_type": "DDR5",
+   "use_cases": [
+    "workstation",
+    "local llm",
+    "3d rendering",
+    "vm host"
+   ],
+   "notes": "128GB in only two slots, using 64GB modules that G.Skill explicitly says require a motherboard BIOS dated 2025 or newer with 64GB module support - check your board's memory QVL before buying, because an unsupported board will not post at capacity. Runs at 1.25V, lower than the 32GB and 48GB kits. At over $3,300 this is a professional purchase, not an enthusiast one.",
+   "source": "https://www.gskill.com/product/165/390/1750730617/F5-6000J3644D64GX2-TZ5NR",
+   "last_verified": "2026-07-29"
+  }
+ ],
+ "storage": [
+  {
+   "id": "ssd-sn850x-2tb",
+   "vendor": "WD",
+   "model": "Black SN850X 2TB",
+   "capacity_gb": 2000,
+   "interface": "NVMe Gen4 x4",
+   "form_factor": "M.2 2280",
+   "read_mbps": 7300,
+   "write_mbps": 6600,
+   "use_cases": [
+    "OS drive",
+    "game library",
+    "general"
+   ],
+   "notes": "Reliable Gen4 default. 2TB is the sane minimum in 2026 with 100GB+ AAA game installs.",
+   "last_verified": "2026-07-24"
+  },
+  {
+   "id": "ssd-t705-2tb",
+   "vendor": "Crucial",
+   "model": "T705 2TB",
+   "capacity_gb": 2000,
+   "interface": "NVMe Gen5 x4",
+   "form_factor": "M.2 2280",
+   "read_mbps": 14500,
+   "write_mbps": 12700,
+   "use_cases": [
+    "content creation",
+    "DirectStorage gaming"
+   ],
+   "notes": "Gen5 only matters for sequential workloads (video scrub, large file IO). For gaming, Gen4 is fine. Runs hot — needs heatsink.",
+   "last_verified": "2026-07-24"
+  },
+  {
+   "id": "ssd-sn850x-4tb",
+   "vendor": "WD",
+   "model": "Black SN850X 4TB",
+   "capacity_gb": 4000,
+   "interface": "NVMe Gen4 x4",
+   "form_factor": "M.2 2280",
+   "read_mbps": 7300,
+   "write_mbps": 6600,
+   "use_cases": [
+    "large game library",
+    "content creation"
+   ],
+   "notes": "Cheaper per-GB than the T705 and only marginally slower in real-world workloads. Best 4TB Gen4 pick.",
+   "last_verified": "2026-07-24"
+  },
+  {
+   "id": "samsung-9100-pro-1tb",
+   "vendor": "Samsung",
+   "model": "9100 PRO 1TB",
+   "capacity_gb": 1000,
+   "interface": "NVMe Gen5 x4",
+   "form_factor": "M.2 2280",
+   "read_mbps": 14700,
+   "write_mbps": 13300,
+   "use_cases": [
+    "gaming",
+    "boot drive",
+    "content creation"
+   ],
+   "notes": "The 1TB unit is the slow one in the 9100 PRO line at 14,700/13,300 MB/s versus 14,800/13,400 on 4TB, and its 600TB endurance rating is a quarter of the 4TB model's. Gen5 drives run hot enough that a motherboard M.2 heatsink is effectively mandatory on this bare (non-heatsink) SKU.",
+   "source": "https://www.newegg.com/samsung-1tb-9100-pro-nvme-2-0/p/N82E16820147902",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "samsung-9100-pro-2tb",
+   "vendor": "Samsung",
+   "model": "9100 PRO 2TB",
+   "capacity_gb": 2000,
+   "interface": "NVMe Gen5 x4",
+   "form_factor": "M.2 2280",
+   "read_mbps": 14700,
+   "write_mbps": 13400,
+   "use_cases": [
+    "gaming",
+    "boot drive",
+    "content creation",
+    "workstation scratch disk"
+   ],
+   "notes": "Carries 2GB of LPDDR4X DRAM and a 1200TB endurance rating, so it holds up to sustained write workloads better than HMB-only Gen5 drives. Read speed is 14,700 MB/s here, 100 MB/s below the 4TB and 8TB versions of the same family.",
+   "source": "https://www.newegg.com/samsung-2tb-9100-pro-nvme-2-0/p/N82E16820147903",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "samsung-9100-pro-4tb",
+   "vendor": "Samsung",
+   "model": "9100 PRO 4TB",
+   "capacity_gb": 4000,
+   "interface": "NVMe Gen5 x4",
+   "form_factor": "M.2 2280",
+   "read_mbps": 14800,
+   "write_mbps": 13400,
+   "use_cases": [
+    "content creation",
+    "workstation scratch disk",
+    "gaming"
+   ],
+   "notes": "The fastest capacity in the line at 14,800/13,400 MB/s, with 4GB LPDDR4X DRAM and a 2400TB endurance rating. At roughly $0.23/GB it carries only about a 16% per-gigabyte premium over the 2TB (about $0.20/GB), so the real cost is the $929 outlay - buy it for single-slot capacity, not for the marginal speed gain.",
+   "source": "https://www.newegg.com/samsung-4tb-9100-pro-nvme-2-0/p/N82E16820147904",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "samsung-990-pro-1tb",
+   "vendor": "Samsung",
+   "model": "990 PRO 1TB",
+   "capacity_gb": 1000,
+   "interface": "NVMe Gen4 x4",
+   "form_factor": "M.2 2280",
+   "read_mbps": 7450,
+   "write_mbps": 6900,
+   "use_cases": [
+    "gaming",
+    "boot drive"
+   ],
+   "notes": "Unusually for a product line, the 1TB 990 PRO is rated at the same 7,450/6,900 MB/s as the 2TB and 4TB models, so you are not paying a speed penalty for the small capacity. It has 1GB of dedicated DRAM, which is why it still beats HMB-only Gen4 drives on random I/O.",
+   "source": "https://www.newegg.com/samsung-1tb-990-pro-nvme-2-0/p/N82E16820147860",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "samsung-990-pro-4tb",
+   "vendor": "Samsung",
+   "model": "990 PRO 4TB",
+   "capacity_gb": 4000,
+   "interface": "NVMe Gen4 x4",
+   "form_factor": "M.2 2280",
+   "read_mbps": 7450,
+   "write_mbps": 6900,
+   "use_cases": [
+    "content creation",
+    "gaming",
+    "workstation scratch disk"
+   ],
+   "notes": "Same 7,450/6,900 MB/s rating as the 1TB but with 4GB of DRAM backing it. At $798 it currently costs more than the Gen5 9100 PRO 2TB, so only pick it if your board is Gen4-only and you need 4TB in one slot.",
+   "source": "https://www.newegg.com/samsung-4tb-990-pro-nvme-2-0/p/N82E16820147879",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "samsung-990-evo-plus-4tb",
+   "vendor": "Samsung",
+   "model": "990 EVO Plus 4TB",
+   "capacity_gb": 4000,
+   "interface": "NVMe Gen4 x4",
+   "form_factor": "M.2 2280",
+   "read_mbps": 7250,
+   "write_mbps": 6300,
+   "use_cases": [
+    "bulk game library",
+    "secondary storage",
+    "laptop upgrade"
+   ],
+   "notes": "Newegg's spec table lists it as PCIe 4.0 x4 or PCIe 5.0 x2, so it hits its rated 7,250/6,300 MB/s on either a Gen4 x4 slot or a Gen5 x2 slot. It is DRAM-less and relies on Host Memory Buffer, which costs it sustained-write performance once the SLC cache fills, but it undercuts the 990 PRO 4TB by over $200.",
+   "source": "https://www.newegg.com/samsung-4tb-990-evo-plus-nvme-2-0/p/N82E16820147901",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "samsung-870-evo-2tb",
+   "vendor": "Samsung",
+   "model": "870 EVO 2TB",
+   "capacity_gb": 2000,
+   "interface": "SATA III 6Gb/s",
+   "form_factor": "2.5-inch",
+   "read_mbps": 560,
+   "write_mbps": 530,
+   "use_cases": [
+    "older system upgrade",
+    "secondary storage",
+    "bulk game library"
+   ],
+   "notes": "The 560/530 MB/s ceiling is the SATA III interface limit, not a drive limitation, so any 2.5-inch SSD tops out here. Worth it only when your case or board has no free M.2 slot; at $399.99 for 2TB it is currently priced above several Gen4 NVMe drives of the same capacity.",
+   "source": "https://www.newegg.com/samsung-2tb-870-evo-series-sata/p/N82E16820147794",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "wd-blue-sa510-2tb",
+   "vendor": "Western Digital",
+   "model": "WD Blue SA510 2TB",
+   "capacity_gb": 2000,
+   "interface": "SATA III 6Gb/s",
+   "form_factor": "2.5-inch",
+   "read_mbps": 560,
+   "write_mbps": 520,
+   "use_cases": [
+    "older system upgrade",
+    "secondary storage",
+    "laptop upgrade"
+   ],
+   "notes": "A 7mm 2.5-inch drive, so it drops into laptop bays that reject 9.5mm units. Its 200TB endurance rating is a sixth of the 870 EVO 2TB's 1200TB, which is the real reason for the $120 price gap.",
+   "source": "https://www.newegg.com/western-digital-2tb-sa510-sata/p/N82E16820250251",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "wd-black-sn8100-2tb",
+   "vendor": "Western Digital",
+   "model": "WD_BLACK SN8100 2TB",
+   "capacity_gb": 2000,
+   "interface": "NVMe Gen5 x4",
+   "form_factor": "M.2 2280",
+   "read_mbps": 14900,
+   "write_mbps": 14000,
+   "use_cases": [
+    "gaming",
+    "boot drive",
+    "content creation"
+   ],
+   "notes": "The Amazon title's 11,000 MB/s write figure is the family floor set by the 1TB model; the 2TB SKU is rated 14,000 MB/s write per the retailer spec table. Endurance is 1200TB and it ships bare, so plan on the motherboard's M.2 heatsink.",
+   "source": "https://www.newegg.com/western-digital-2tb-nvme/p/N82E16820250279",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "wd-black-sn8100-4tb",
+   "vendor": "Western Digital",
+   "model": "WD_BLACK SN8100 4TB",
+   "capacity_gb": 4000,
+   "interface": "NVMe Gen5 x4",
+   "form_factor": "M.2 2280",
+   "read_mbps": 14900,
+   "write_mbps": 14000,
+   "use_cases": [
+    "content creation",
+    "gaming",
+    "workstation scratch disk"
+   ],
+   "notes": "Rated identically to the 2TB at 14,900/14,000 MB/s but with double the endurance at 2400TB. It is currently $250 cheaper than the Samsung 9100 PRO 4TB while posting higher rated sequentials, making it the value pick at 4TB Gen5.",
+   "source": "https://www.newegg.com/western-digital-4tb-nvme/p/N82E16820250280",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "wd-black-sn850x-8tb",
+   "vendor": "Western Digital",
+   "model": "WD_BLACK SN850X 8TB",
+   "capacity_gb": 8000,
+   "interface": "NVMe Gen4 x4",
+   "form_factor": "M.2 2280",
+   "read_mbps": 7200,
+   "write_mbps": 6600,
+   "use_cases": [
+    "bulk game library",
+    "content creation",
+    "secondary storage"
+   ],
+   "notes": "The 8TB variant is rated 7,200/6,600 MB/s, which is 100 MB/s slower on read and 300 MB/s faster on write than the 7,300/6,300 family headline in the Amazon title. It is double-sided, so check clearance under laptop and console heatsinks before buying.",
+   "source": "https://www.newegg.com/western-digital-8tb-black/p/N82E16820250270",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "wd-black-sn7100-1tb",
+   "vendor": "Western Digital",
+   "model": "WD_BLACK SN7100 1TB",
+   "capacity_gb": 1000,
+   "interface": "NVMe Gen4 x4",
+   "form_factor": "M.2 2280",
+   "read_mbps": 7250,
+   "write_mbps": 6900,
+   "use_cases": [
+    "boot drive",
+    "gaming",
+    "laptop upgrade",
+    "handheld console upgrade"
+   ],
+   "notes": "DRAM-less and HMB-based, rated 7,250/6,900 MB/s - 200 MB/s below the 1TB 990 PRO's 7,450 read while tying its 6,900 write, for about $50 less. The single-sided, low-power design is aimed at laptops and handhelds where a double-sided drive will not fit.",
+   "source": "https://www.newegg.com/western-digital-1tb-sn7100-nvme/p/N82E16820250276",
+   "last_verified": "2026-07-29"
+  }
+ ],
+ "psu": [
+  {
+   "id": "psu-750w-gold",
+   "vendor": "Corsair",
+   "model": "RM750x (2024) 750W 80+ Gold",
+   "wattage_w": 750,
+   "efficiency": "80+ Gold",
+   "form_factor": "ATX 3.1",
+   "modular": "Fully modular",
+   "pcie_5_connectors": 1,
+   "use_cases": [
+    "mid-tier",
+    "single-GPU under 300W TGP"
+   ],
+   "notes": "Right-size for 9700X + 5070 Ti class builds. ATX 3.1 + 12V-2x6 connector for current GPUs.",
+   "last_verified": "2026-07-24"
+  },
+  {
+   "id": "psu-850w-gold",
+   "vendor": "Corsair",
+   "model": "RM850x (2024) 850W 80+ Gold",
+   "wattage_w": 850,
+   "efficiency": "80+ Gold",
+   "form_factor": "ATX 3.1",
+   "modular": "Fully modular",
+   "pcie_5_connectors": 1,
+   "use_cases": [
+    "high-tier",
+    "5070 Ti / 5080 class"
+   ],
+   "notes": "850W gives headroom for 5080-class GPUs with transient spike margin. Default for most 2026 mid-to-high builds.",
+   "last_verified": "2026-07-24"
+  },
+  {
+   "id": "psu-1000w-plat",
+   "vendor": "Corsair",
+   "model": "HX1000i 1000W 80+ Platinum",
+   "wattage_w": 1000,
+   "efficiency": "80+ Platinum",
+   "form_factor": "ATX 3.1",
+   "modular": "Fully modular",
+   "pcie_5_connectors": 2,
+   "use_cases": [
+    "flagship",
+    "OC headroom",
+    "ROG Astral 5080 OC"
+   ],
+   "notes": "1000W is appropriate for ROG Astral 5080 OC pulling 400W under stress, plus 9800X3D/9900X CPU + transient spikes. iCue power monitoring is a nice-to-have.",
+   "last_verified": "2026-06-09"
+  },
+  {
+   "id": "psu-bequiet-dark-power-13-750w",
+   "vendor": "be quiet!",
+   "model": "Dark Power 13 750W",
+   "wattage_w": 750,
+   "efficiency": "80+ Titanium",
+   "form_factor": "ATX 3.0",
+   "modular": "Fully modular",
+   "pcie_5_connectors": 1,
+   "use_cases": [
+    "silent build",
+    "high-end gaming",
+    "workstation"
+   ],
+   "notes": "One of the few sub-1kW 80+ Titanium units; runs 4 independent 12V rails by default with an overclocking key on the unit that merges them into one rail. It is ATX 3.0, not 3.1, and ships the older 12VHPWR connector rather than 12V-2x6.",
+   "source": "https://www.bequiet.com/en/powersupply/4044",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "psu-bequiet-power-zone-2-1000w",
+   "vendor": "be quiet!",
+   "model": "Power Zone 2 1000W",
+   "wattage_w": 1000,
+   "efficiency": "80+ Platinum",
+   "form_factor": "ATX 3.1",
+   "modular": "Fully modular",
+   "pcie_5_connectors": 1,
+   "use_cases": [
+    "high-end gaming",
+    "single-GPU workstation"
+   ],
+   "notes": "Platinum-rated single 12V rail with a 90-degree-angled native 12V-2x6 connector, which helps in cases with tight side-panel clearance over the GPU. Only three PCIe 6+2 connectors, so older multi-8-pin cards can run short on plugs.",
+   "source": "https://www.bequiet.com/en/powersupply/5762",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "psu-thermaltake-toughpower-gt-850w",
+   "vendor": "Thermaltake",
+   "model": "Toughpower GT 850W",
+   "wattage_w": 850,
+   "efficiency": "80+ Gold",
+   "form_factor": "ATX 3.1",
+   "modular": "Fully modular",
+   "pcie_5_connectors": 1,
+   "use_cases": [
+    "mid-range gaming",
+    "budget ATX 3.1 build"
+   ],
+   "notes": "Cheapest verified ATX 3.1 850W here, but its single 12V-2x6 cable is rated 450W, not 600W - fine for a 4070/5070-class card, not for a 5090. Five-year warranty is shorter than most rivals at this wattage.",
+   "source": "https://www.newegg.com/thermaltake-atx-3-1-compatible-850-w-meet-80-plus-gold-at-115vac-input-power-supplies-black-ps-tpt-0850fnfagu-3/p/1HU-0014-006W8",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "psu-coolermaster-mwe-gold-850-v3",
+   "vendor": "Cooler Master",
+   "model": "MWE Gold 850 V3 (ATX 3.1)",
+   "wattage_w": 850,
+   "efficiency": "80+ Gold",
+   "form_factor": "ATX 3.1",
+   "modular": "Fully modular",
+   "pcie_5_connectors": 1,
+   "use_cases": [
+    "mid-range gaming",
+    "general desktop"
+   ],
+   "notes": "Uses a 90-degree 12V-2x6 connector, which reduces cable strain where the GPU sits close to the side panel. Note there are V2 and V3 MWE Gold 850 units on shelves at similar prices - only the V3 is ATX 3.1.",
+   "source": "https://www.coolermaster.com/en-global/products/mwe-gold-850-v3-atx-3-1/?tab=tech_spec",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "psu-nzxt-c1000-gold-atx31",
+   "vendor": "NZXT",
+   "model": "C1000 Gold ATX 3.1",
+   "wattage_w": 1000,
+   "efficiency": "80+ Gold",
+   "form_factor": "ATX 3.1",
+   "modular": "Fully modular",
+   "pcie_5_connectors": 1,
+   "use_cases": [
+    "high-end gaming",
+    "RTX 50-series build"
+   ],
+   "notes": "Single 600W-rated 12V-2x6 cable and a 135mm fan with zero-RPM mode; 150mm depth fits most mid-towers without cable-bay conflicts. NZXT also sells a separate C1000 Gold Core at a lower price - a different unit, not a colour variant.",
+   "source": "https://www.newegg.com/nzxt-pa-0g2bb-us-1000-w/p/N82E16817116052",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "psu-asus-rog-strix-1000w-platinum",
+   "vendor": "ASUS",
+   "model": "ROG Strix 1000W Platinum",
+   "wattage_w": 1000,
+   "efficiency": "80+ Platinum",
+   "form_factor": "ATX 3.1",
+   "modular": "Fully modular",
+   "pcie_5_connectors": 1,
+   "use_cases": [
+    "high-end gaming",
+    "overclocking"
+   ],
+   "notes": "Platinum-class efficiency with a GaN MOSFET design and a single native 16-pin (12V-2x6) plus four PCIe 6+2 outputs. Priced well above Gold 1000W units, so it only pays back on long-running, high-load systems.",
+   "source": "https://rog.asus.com/power-supply-units/rog-strix/rog-strix-1000p-gaming/spec/",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "psu-lianli-sp750-v2-gold",
+   "vendor": "Lian Li",
+   "model": "SP750 V2 Gold (SP750G.B)",
+   "wattage_w": 750,
+   "efficiency": "80+ Gold",
+   "form_factor": "SFX",
+   "modular": "Fully modular",
+   "pcie_5_connectors": 1,
+   "use_cases": [
+    "small form factor",
+    "mini-ITX gaming"
+   ],
+   "notes": "True SFX at 125 x 100 x 63.5mm with a native 12V-2x6 cable, so it fits SFX-only ITX cases that will not take an SFX-L unit. The 92mm fan spins up sooner than a 120mm ATX unit once load climbs past roughly half rated output.",
+   "source": "https://lian-li.com/product/sp-v2/",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "psu-asrock-pg-1600g",
+   "vendor": "ASRock",
+   "model": "Phantom Gaming PG-1600G",
+   "wattage_w": 1600,
+   "efficiency": "80+ Gold",
+   "form_factor": "ATX 3.1",
+   "modular": "Fully modular",
+   "pcie_5_connectors": 2,
+   "use_cases": [
+    "multi-GPU workstation",
+    "AI/ML rig",
+    "extreme gaming"
+   ],
+   "notes": "Two native 12V-2x6 connectors at 600W each makes it one of the cheapest ways to feed a dual-high-end-GPU box. It is 80+ Gold, not Titanium, so a 1600W load will draw noticeably more from the wall than Titanium units at the same rating.",
+   "source": "https://pg.asrock.com/Power-Supply/PG-1600G/index.asp",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "psu-msi-mpg-a850gs-pcie5",
+   "vendor": "MSI",
+   "model": "MPG A850GS PCIE5",
+   "wattage_w": 850,
+   "efficiency": "80+ Gold",
+   "form_factor": "ATX 3.1",
+   "modular": "Fully modular",
+   "pcie_5_connectors": 2,
+   "use_cases": [
+    "mid-range gaming",
+    "compact ATX build"
+   ],
+   "notes": "Two PSU-side 12V-2x6 sockets at 850W is unusual - useful if you want a spare 16-pin run for a future card rather than reusing an old cable. The 150mm-long body clears cable bays in most compact ATX cases.",
+   "source": "https://www.newegg.com/msi-atx12v-850-w-up-to-90-power-supplies-black-mpg-a850gs-pcie5/p/N82E16817701031",
+   "last_verified": "2026-07-29"
+  }
+ ],
+ "case": [
+  {
+   "id": "case-h7-flow",
+   "vendor": "NZXT",
+   "model": "H7 Flow (2024)",
+   "form_factor": "ATX",
+   "supports_form_factors": [
+    "ATX",
+    "mATX",
+    "ITX"
+   ],
+   "max_gpu_length_mm": 410,
+   "max_cpu_cooler_mm": 185,
+   "use_cases": [
+    "mid-tier",
+    "high-tier",
+    "airflow"
+   ],
+   "notes": "Best mainstream airflow case in 2026. Fits any GPU up to 410mm — including the long ROG Astral 5080.",
+   "last_verified": "2026-07-24"
+  },
+  {
+   "id": "case-meshify-2",
+   "vendor": "Fractal",
+   "model": "Meshify 2 Compact",
+   "form_factor": "ATX",
+   "supports_form_factors": [
+    "ATX",
+    "mATX",
+    "ITX"
+   ],
+   "max_gpu_length_mm": 341,
+   "max_cpu_cooler_mm": 169,
+   "use_cases": [
+    "mid-tier",
+    "smaller footprint"
+   ],
+   "notes": "Smaller than the H7 Flow but still ATX. GPU length cap at 341mm means careful with the longest cards (Astral 5080 at 358mm will NOT fit).",
+   "last_verified": "2026-06-09"
+  },
+  {
+   "id": "case-pop-air-mini",
+   "vendor": "Fractal",
+   "model": "Pop Air Mini",
+   "form_factor": "mATX",
+   "supports_form_factors": [
+    "mATX",
+    "ITX"
+   ],
+   "max_gpu_length_mm": 365,
+   "max_cpu_cooler_mm": 165,
+   "use_cases": [
+    "budget",
+    "mATX build"
+   ],
+   "notes": "The budget pick for mATX builds. Surprisingly long GPU clearance for the size.",
+   "last_verified": "2026-06-09"
+  },
+  {
+   "id": "case-o11-d-evo",
+   "vendor": "Lian Li",
+   "model": "O11 Dynamic EVO RGB",
+   "form_factor": "ATX",
+   "supports_form_factors": [
+    "ATX",
+    "mATX",
+    "ITX"
+   ],
+   "max_gpu_length_mm": 422,
+   "max_cpu_cooler_mm": 167,
+   "use_cases": [
+    "showcase build",
+    "watercooling"
+   ],
+   "notes": "Showcase case with the best layout for watercooling and dual-radiator setups. Premium price.",
+   "last_verified": "2026-07-24"
+  },
+  {
+   "id": "case-corsair-frame-4000d-rs-argb",
+   "vendor": "Corsair",
+   "model": "FRAME 4000D RS ARGB",
+   "form_factor": "ATX",
+   "supports_form_factors": [
+    "ATX",
+    "mATX",
+    "ITX"
+   ],
+   "max_gpu_length_mm": 430,
+   "max_cpu_cooler_mm": 170,
+   "use_cases": [
+    "gaming",
+    "workstation",
+    "air-cooling",
+    "aio-liquid-cooling"
+   ],
+   "notes": "430mm of card clearance and 170mm cooler height make this one of the few sub-$100 mid-towers that swallows a full 4-slot flagship GPU without measuring twice. Newegg lists it as CC-9011296-WW with reverse-connector (ASUS BTF / MSI Project Zero) motherboard cutouts, so plan cable routing before you buy a back-connect board.",
+   "source": "https://www.newegg.com/corsair-atx-mid-tower-frame-4000d-rs-argb-steel-tempered-glass-computer-case-black/p/N82E16811139228",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "case-nzxt-h5-flow-2024",
+   "vendor": "NZXT",
+   "model": "H5 Flow (2024 Edition, CC-H52FB-01)",
+   "form_factor": "ATX",
+   "supports_form_factors": [
+    "ATX",
+    "mATX",
+    "ITX"
+   ],
+   "max_gpu_length_mm": 410,
+   "max_cpu_cooler_mm": 170,
+   "use_cases": [
+    "gaming",
+    "first-build",
+    "air-cooling",
+    "aio-liquid-cooling"
+   ],
+   "notes": "410mm GPU and 170mm cooler clearance in a 465 x 225 x 430mm shell — unusually generous for the price. Top radiator is only 240mm; the 280mm option requires low-profile RAM, so check memory height before committing to a 280 AIO.",
+   "source": "https://www.newegg.com/nzxt-atx-mid-tower-h5-flow-sgcc-steel-dark-tinted-tempered-glass-case-black-cc-h52fb-01/p/N82E16811146365",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "case-lian-li-vector-v100rx",
+   "vendor": "Lian Li",
+   "model": "Vector V100RX (Black)",
+   "form_factor": "ATX",
+   "supports_form_factors": [
+    "ATX",
+    "mATX",
+    "ITX"
+   ],
+   "max_gpu_length_mm": 420,
+   "max_cpu_cooler_mm": 178,
+   "use_cases": [
+    "gaming",
+    "budget-build",
+    "air-cooling",
+    "showcase"
+   ],
+   "notes": "420mm GPU and 178mm cooler clearance with four ARGB fans included at $75 — the clearance numbers are near flagship-tier. It is a tall case at 484.65mm; measure desk-shelf height before ordering.",
+   "source": "https://lian-li.com/product/vector-v100/",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "case-thermaltake-view-270-plus-tg-argb",
+   "vendor": "Thermaltake",
+   "model": "View 270 Plus TG ARGB (CA-1Y7-00M1WN-01)",
+   "form_factor": "ATX",
+   "supports_form_factors": [
+    "ATX",
+    "mATX",
+    "ITX"
+   ],
+   "max_gpu_length_mm": 420,
+   "max_cpu_cooler_mm": 180,
+   "use_cases": [
+    "gaming",
+    "budget-build",
+    "showcase",
+    "aio-liquid-cooling"
+   ],
+   "notes": "420mm GPU and 180mm cooler clearance for under $70, with three ARGB fans included. Dual tempered glass on front and side means the intake path is restricted compared with a mesh case — treat it as a showcase chassis, not a thermal champion.",
+   "source": "https://www.newegg.com/thermaltake-e-atx-mid-tower-chassis-cases-black/p/2AM-000X-00321",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "case-montech-xr-black",
+   "vendor": "Montech",
+   "model": "XR (Black)",
+   "form_factor": "ATX",
+   "supports_form_factors": [
+    "ATX"
+   ],
+   "max_gpu_length_mm": 420,
+   "max_cpu_cooler_mm": 175,
+   "use_cases": [
+    "gaming",
+    "budget-build",
+    "air-cooling",
+    "showcase"
+   ],
+   "notes": "420mm GPU and 175mm cooler clearance with three ARGB PWM fans included at $70. Newegg's spec table lists ATX motherboard support only, so confirm mounting standoffs yourself if you plan a mATX or ITX board in it.",
+   "source": "https://www.newegg.com/montech-atx-mid-tower-cases-black-xr-b/p/2AM-00CN-00061",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "case-bequiet-pure-base-501-black",
+   "vendor": "be quiet!",
+   "model": "Pure Base 501 Black (BG073)",
+   "form_factor": "ATX",
+   "supports_form_factors": [
+    "ATX",
+    "mATX",
+    "ITX"
+   ],
+   "max_gpu_length_mm": 368,
+   "max_cpu_cooler_mm": 178,
+   "use_cases": [
+    "quiet-build",
+    "workstation",
+    "gaming",
+    "air-cooling"
+   ],
+   "notes": "368mm GPU clearance is the tightest of the ATX towers here — a 3.5-slot flagship card will fit but leaves little slack for a front radiator plus card. 178mm cooler height clears every mainstream tower air cooler, and the two Pure Wings 3 140mm PWM fans are the quiet-build draw.",
+   "source": "https://www.bequiet.com/en/case/5321",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "case-cooler-master-q300l",
+   "vendor": "Cooler Master",
+   "model": "MasterBox Q300L (MCB-Q300L-KANN-S00)",
+   "form_factor": "mATX",
+   "supports_form_factors": [
+    "mATX",
+    "ITX"
+   ],
+   "max_gpu_length_mm": 360,
+   "max_cpu_cooler_mm": 157,
+   "use_cases": [
+    "budget-build",
+    "home-server",
+    "office",
+    "first-build"
+   ],
+   "notes": "At $40 it still clears a 360mm card and a 157mm tower cooler, and it takes a full-size ATX PSU up to 160mm. No fans are included beyond the single rear unit and the side panel is acrylic, not glass — budget for intake fans.",
+   "source": "https://www.newegg.com/cooler-master-micro-atx-tower-masterbox-q300l-steel-plastic-computer-case-black/p/N82E16811119331",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "case-lian-li-a3-matx-black",
+   "vendor": "Lian Li",
+   "model": "A3-mATX (Black, A3X.US)",
+   "form_factor": "mATX",
+   "supports_form_factors": [
+    "mATX",
+    "ITX"
+   ],
+   "max_gpu_length_mm": 415,
+   "max_cpu_cooler_mm": 165,
+   "use_cases": [
+    "sff",
+    "gaming",
+    "air-cooling",
+    "aio-liquid-cooling"
+   ],
+   "notes": "26.3L mATX chassis that still takes a 415mm GPU and a 165mm tower cooler, plus a full ATX PSU up to 220mm — rare combination at this size. No fans are included at all, so add the fan budget to the $73 sticker.",
+   "source": "https://lian-li.com/product/a3-matx/",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "case-cooler-master-nr200",
+   "vendor": "Cooler Master",
+   "model": "NR200 (MCB-NR200-KNNN-S00)",
+   "form_factor": "ITX",
+   "supports_form_factors": [
+    "ITX"
+   ],
+   "max_gpu_length_mm": 330,
+   "max_cpu_cooler_mm": 155,
+   "use_cases": [
+    "sff",
+    "itx-build",
+    "gaming",
+    "air-cooling"
+   ],
+   "notes": "The reference small-form-factor case: 330mm triple-slot GPU and 155mm cooler height, but that cooler figure collapses to 76mm if you mount the GPU vertically. Requires an SFX or SFX-L power supply, not ATX.",
+   "source": "https://www.newegg.com/cooler-master-mini-itx-tower-masterbox-nr200-steel-plastic-mesh-computer-case-black-mcb-nr200-knnn-s00/p/N82E16811119407",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "case-fractal-design-ridge-black",
+   "vendor": "Fractal Design",
+   "model": "Ridge (Black)",
+   "form_factor": "ITX",
+   "supports_form_factors": [
+    "ITX"
+   ],
+   "max_gpu_length_mm": 325,
+   "max_cpu_cooler_mm": 70,
+   "use_cases": [
+    "sff",
+    "itx-build",
+    "console-style",
+    "gaming"
+   ],
+   "notes": "12.6L console-shaped ITX case. GPU length is 335mm bare but drops to 325mm once an SSD is installed, and card thickness is capped at 57mm if you fit the two 140mm side fans — the thickness limit, not the length, is what usually kills a build here. 70mm cooler height means a low-profile cooler or AIO only, and it needs an SFX/SFX-L PSU.",
+   "source": "https://www.fractal-design.com/products/cases/ridge/ridge/black/",
+   "last_verified": "2026-07-29"
+  },
+  {
+   "id": "case-fractal-design-terra-jade",
+   "vendor": "Fractal Design",
+   "model": "Terra (Jade)",
+   "form_factor": "ITX",
+   "supports_form_factors": [
+    "ITX"
+   ],
+   "max_gpu_length_mm": 322,
+   "max_cpu_cooler_mm": 48,
+   "use_cases": [
+    "sff",
+    "itx-build",
+    "desktop-console",
+    "quiet-build"
+   ],
+   "notes": "10.4L ITX case with a sliding central spine: the 48mm cooler-height figure is the max-GPU configuration, and moving the spine buys you up to 77mm of cooler height at the cost of GPU thickness. GPU length caps at 322mm; SFX or SFX-L PSU required.",
+   "source": "https://www.fractal-design.com/products/cases/terra/terra/jade/",
+   "last_verified": "2026-07-29"
+  }
+ ]
+}
