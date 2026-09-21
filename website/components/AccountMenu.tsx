@@ -66,10 +66,11 @@ export function AccountMenu({ email, username }: { email: string | null; usernam
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-haspopup="menu"
+        title={username || email || undefined}
         className="flex max-w-[180px] items-center gap-1.5 rounded-md border border-line bg-paper px-2.5 py-1.5 text-[13px] text-ink-2 hover:border-linestrong hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
       >
         <User size={14} aria-hidden className="flex-none" />
-        <span className="truncate">{username || email}</span>
+        <span className="max-w-[10ch] truncate">{username || email}</span>
         <ChevronDown size={13} aria-hidden className={`flex-none text-faint transition-transform ${open ? 'rotate-180' : ''}`} />
       </button>
       {open && (

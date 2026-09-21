@@ -2,7 +2,7 @@ import { cn } from '@/lib/utils';
 
 /**
  * The one and only tech//site wordmark.
- * JetBrains Mono ExtraBold, tight tracking, accent slashes — use this
+ * Pixels pixel face with mono fallback, accent slashes — use this
  * everywhere the brand appears (header, footer, hero, auth, admin).
  */
 export function BrandMark({
@@ -13,7 +13,7 @@ export function BrandMark({
   className?: string;
 }) {
   return (
-    <span className={cn('font-mono font-extrabold tracking-tight', className)}>
+    <span className={cn('font-pixel', className)}>
       tech<span className="text-accent">//</span>
       {name}
     </span>

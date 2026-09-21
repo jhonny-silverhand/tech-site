@@ -29,11 +29,19 @@ export default function SignupPage() {
       const { data, error } = await supabase.auth.signUp({ email, password });
       if (error) throw error;
       if (data.user) {
-        await supabase.from('profiles').upsert({
+        const { error: profileError } = await supabase.from('profiles').upsert({
           id: data.user.id,
           username: username.toLowerCase().replace(/[^a-z0-9_]/g, '_'),
           display_name: username,
         });
+        if (profileError) throw profileError;
+      }
+      // No session yet = email confirmation required before first login.
+      if (!data.session) {
+        setError(null);
+        router.push('/login?check-email=1');
+        router.refresh();
+        return;
       }
       router.push('/onboarding');
       router.refresh();

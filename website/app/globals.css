@@ -71,6 +71,20 @@ html {
   text-rendering: optimizeLegibility;
 }
 
+/* Pixels — pixel display face for the brand wordmark (legacy asset). */
+@font-face {
+  font-family: 'Pixels';
+  src: url('/fonts/Pixels.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+.font-pixel {
+  font-family: 'Pixels', 'JetBrains Mono Variable', ui-monospace, monospace;
+  letter-spacing: 0.02em;
+}
+
 body {
   background: var(--bg);
   color: var(--ink);

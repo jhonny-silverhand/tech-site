@@ -14,6 +14,7 @@ export default async function MyProfilePage() {
   if (!auth.user) redirect('/login');
   const { data: profile } = await supabase.from('profiles').select('*').eq('id', auth.user.id).maybeSingle();
   const p = (profile || {}) as { username?: string; display_name?: string | null; bio?: string | null; favorite_niches?: string[] };
+  const needsUsername = !p.username || /^user_[0-9a-f]{8}$/.test(p.username);
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
@@ -23,7 +24,7 @@ export default async function MyProfilePage() {
       <div className="mt-6 flex flex-col gap-10">
         <section>
           <h2 className="font-display text-xl font-semibold">Profile</h2>
-          <div className="mt-3"><AccountSettingsForm initialDisplayName={p.display_name || ''} initialBio={p.bio || ''} /></div>
+          <div className="mt-3"><AccountSettingsForm initialUsername={p.username || ''} initialDisplayName={p.display_name || ''} initialBio={p.bio || ''} highlightUsername={needsUsername} /></div>
         </section>
         <section>
           <h2 className="font-display text-xl font-semibold">Interests</h2>
