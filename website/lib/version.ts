@@ -1,5 +1,5 @@
 export function getVersion(): { version: string; commit: string; builtAt: string } {
-  return { version: '1.0.0', commit: 'local', builtAt: '' };
+  return { version: '1.1.0', commit: 'local', builtAt: '' };
 }
 
 export async function getVersionInfo(): Promise<{ version: string; commit: string; builtAt: string }> {

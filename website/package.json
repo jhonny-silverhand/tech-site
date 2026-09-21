@@ -1,7 +1,14 @@
 {
-  "name": "techsite",
-  "version": "1.0.0",
+  "name": "tech-site",
+  "version": "1.1.0",
   "private": true,
+  "description": "tech//site — practical guides across AI, code, and gadgets, with live AI shopping intelligence.",
+  "author": "Omkar Kardile",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jhonny-silverhand/tech-site.git",
+    "directory": "website"
+  },
   "scripts": {
     "dev": "node -e \"try { require('fs').rmSync('.next', { recursive: true, force: true }) } catch (e) {}\" && next dev --turbopack",
     "build": "node scripts/gen-version.mjs && next build",

@@ -3,6 +3,22 @@
 All notable changes to tech//site are documented here. Format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [1.1.0] - 2026-09-21
+
+### Added
+- Username onboarding — editable username with availability check in
+  settings; logins with auto `user_xxxxxxxx` handles route to setup;
+  signup surfaces profile errors and email-confirmation state.
+- Pixels brand font (legacy asset) for the wordmark.
+- `successsoft/dangersoft/warnsoft` theme tokens; compare search errors
+  render as banners instead of silent empty lists.
+- AI niche displays as "AI Tools" (slug unchanged).
+
+### Changed
+- Package identity: `tech-site` 1.1.0 with author/repo metadata.
+- Monorepo layout — app lives at `website/`, legacy code under
+  `archived/`, guides and research alongside.
+
 ## [1.0.0] - 2026-09-21
 
 Initial release of the rebuilt site (Next.js 15 + Supabase + live Gemini).
