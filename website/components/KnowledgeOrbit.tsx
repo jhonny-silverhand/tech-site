@@ -69,7 +69,7 @@ export function KnowledgeOrbit() {
         <div aria-hidden className="absolute inset-[104px] rounded-full border border-line dark:border-white/[0.07]" />
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="rounded-xl border border-line bg-paper px-6 py-4 text-center shadow-card backdrop-blur-sm dark:border-white/10 dark:bg-white/[0.03] dark:shadow-none">
-            <p className="font-mono text-[22px] font-bold tracking-tight text-ink dark:text-white">
+            <p className="font-pixel text-[22px] tracking-tight text-ink dark:text-white">
               tech<span className="text-accent">//</span>site
             </p>
             <p className="mt-0.5 font-mono text-[10px] uppercase tracking-[0.18em] text-muted dark:text-zinc-500">
