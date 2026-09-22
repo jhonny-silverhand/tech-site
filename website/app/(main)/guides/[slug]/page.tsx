@@ -27,7 +27,7 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
       <p className="mt-4 font-mono text-xs uppercase tracking-widest text-muted">{guide.category_slug}</p>
       <h1 className="mt-2 font-display text-3xl font-semibold leading-tight sm:text-4xl">{guide.title}</h1>
       {guide.excerpt && <p className="mt-3 font-tagline text-xl italic text-muted">{guide.excerpt}</p>}
-      <p className="mt-3 font-mono text-xs text-muted">By {guide.author_name || 'tech//site'} {guide.is_ai_assisted ? '· AI-assisted' : ''}</p>
+      <p className="mt-3 font-mono text-xs text-muted">By {guide.author_name || <span className="font-pixel text-[1.25em]">tech//site</span>} {guide.is_ai_assisted ? '· AI-assisted' : ''}</p>
 
       {recs.length > 0 && (
         <section aria-label="Top picks" className="mt-8">

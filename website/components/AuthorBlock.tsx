@@ -53,7 +53,7 @@ export async function AuthorBlock({
           {bio ? (
             <p className="mt-1 text-sm text-muted">{bio}</p>
           ) : (
-            <p className="mt-1 text-sm text-muted">Contributing writer at tech//site.</p>
+            <p className="mt-1 text-sm text-muted">Contributing writer at <span className="font-pixel text-[1.2em]">tech//site</span>.</p>
           )}
           <div className="mt-3 flex items-center gap-3">
             {authorId && <FollowButton authorId={authorId} initialFollowing={following} />}

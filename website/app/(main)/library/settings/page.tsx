@@ -24,7 +24,7 @@ export default async function LibrarySettingsPage({ searchParams }: { searchPara
       <h1 className="mt-4 font-display text-3xl font-semibold">Library settings</h1>
       {showSetup && (
         <p className="mt-3 rounded-md border border-accent/30 bg-accentsoft px-3 py-2 text-sm text-ink-2" role="status">
-          Pick your username below — it&apos;s how you appear across tech//site (reviews, comments, profile URL).
+          Pick your username below — it&apos;s how you appear across <span className="font-pixel text-[1.2em]">tech//site</span> (reviews, comments, profile URL).
         </p>
       )}
       <div className="mt-4 grid gap-6 lg:grid-cols-[220px_1fr]">
