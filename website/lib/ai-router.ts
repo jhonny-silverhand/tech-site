@@ -1,13 +1,13 @@
 /** Central AI chokepoint: every model call in the app flows through here.
  *
  *  Order: gemini-3.8-flash → gemini-3.7-flash → gemini-3.6-flash
- *  (single try each, 3 s gap between attempts), then Grok (xAI) if
- *  GROK_API_KEY is set. Keeps free-tier burn minimal: at most 3 Gemini
- *  calls per request, and Grok lives on a separate quota pool. */
+ *  (single try each, 3 s gap between attempts), then Groq (separate
+ *  vendor + quota pool) if GROQ_API_KEY is set. Keeps free-tier burn
+ *  minimal: at most 3 Gemini calls per request. */
 
 const GEMINI_MODELS = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash'];
 const GAP_MS = 3000;
-const GROK_MODEL = process.env.GROK_MODEL || 'grok-3';
+const GROQ_MODEL = process.env.GROQ_MODEL || 'openai/gpt-oss-120b';
 
 export class AIError extends Error {
   status: number;
@@ -45,12 +45,12 @@ async function geminiOnce(model: string, apiKey: string, prompt: string, json: b
   return text;
 }
 
-async function grokOnce(apiKey: string, prompt: string, json: boolean): Promise<string> {
-  const res = await fetch('https://api.x.ai/v1/chat/completions', {
+async function groqOnce(apiKey: string, prompt: string, json: boolean): Promise<string> {
+  const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
     headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      model: GROK_MODEL,
+      model: GROQ_MODEL,
       messages: [{ role: 'user', content: prompt }],
       temperature: 0.6,
       ...(json ? { response_format: { type: 'json_object' } } : {}),
@@ -58,18 +58,18 @@ async function grokOnce(apiKey: string, prompt: string, json: boolean): Promise<
   });
   if (!res.ok) {
     const body = (await res.text().catch(() => '')).slice(0, 200);
-    throw new AIError(`Grok: ${res.status} ${body}`, 502);
+    throw new AIError(`Groq: ${res.status} ${body}`, 502);
   }
   const data = (await res.json()) as { choices?: { message?: { content?: string } }[] };
   const text = data?.choices?.[0]?.message?.content;
-  if (!text) throw new AIError('Grok: empty response', 502);
+  if (!text) throw new AIError('Groq: empty response', 502);
   return text;
 }
 
 /** Raw text from the first model that answers. */
 export async function aiText(prompt: string): Promise<string> {
   const geminiKey = process.env.GEMINI_API_KEY;
-  if (!geminiKey && !process.env.GROK_API_KEY) throw new AIError('AI not configured', 503);
+  if (!geminiKey && !process.env.GROQ_API_KEY) throw new AIError('AI not configured', 503);
 
   if (geminiKey) {
     for (let i = 0; i < GEMINI_MODELS.length; i++) {
@@ -84,10 +84,10 @@ export async function aiText(prompt: string): Promise<string> {
     }
   }
 
-  const grokKey = process.env.GROK_API_KEY;
-  if (grokKey) {
-    console.error('[ai-router] switching to Grok');
-    return grokOnce(grokKey, prompt, false);
+  const groqKey = process.env.GROQ_API_KEY;
+  if (groqKey) {
+    console.error('[ai-router] switching to Groq');
+    return groqOnce(groqKey, prompt, false);
   }
   throw new AIError('AI service unavailable', 502);
 }
@@ -105,7 +105,7 @@ export async function aiJson(prompt: string): Promise<unknown> {
 
 async function aiTextJson(prompt: string): Promise<string> {
   const geminiKey = process.env.GEMINI_API_KEY;
-  if (!geminiKey && !process.env.GROK_API_KEY) throw new AIError('AI not configured', 503);
+  if (!geminiKey && !process.env.GROQ_API_KEY) throw new AIError('AI not configured', 503);
 
   if (geminiKey) {
     for (let i = 0; i < GEMINI_MODELS.length; i++) {
@@ -120,10 +120,10 @@ async function aiTextJson(prompt: string): Promise<string> {
     }
   }
 
-  const grokKey = process.env.GROK_API_KEY;
+  const grokKey = process.env.GROQ_API_KEY;
   if (grokKey) {
-    console.error('[ai-router] switching to Grok');
-    return grokOnce(grokKey, prompt, true);
+    console.error('[ai-router] switching to Groq');
+    return groqOnce(grokKey, prompt, true);
   }
   throw new AIError('AI service unavailable', 502);
 }

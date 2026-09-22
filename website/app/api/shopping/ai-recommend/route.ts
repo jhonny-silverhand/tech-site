@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { aiJson, AIError } from '@/lib/ai-router';
 
 export async function POST(request: NextRequest) {
-  if (!process.env.GEMINI_API_KEY && !process.env.GROK_API_KEY) {
+  if (!process.env.GEMINI_API_KEY && !process.env.GROQ_API_KEY) {
     return NextResponse.json({ error: 'AI not configured' }, { status: 503 });
   }
 
