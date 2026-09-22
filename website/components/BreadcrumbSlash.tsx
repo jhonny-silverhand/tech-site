@@ -8,7 +8,7 @@ export function BreadcrumbSlash({ items }: { items: { label: string; href?: stri
         <Fragment key={i}>
           {i > 0 && (
             <span className="text-accent" aria-hidden>
-              /
+              //
             </span>
           )}
           {item.href ? (

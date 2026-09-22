@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Scale } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Field';
+import { BreadcrumbSlash } from '@/components/BreadcrumbSlash';
 import type { Product } from '@/lib/types';
 
 export default function CompareIndexPage() {
@@ -46,7 +47,8 @@ export default function CompareIndexPage() {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
-      <p className="eyebrow">01 · Side by side</p>
+      <BreadcrumbSlash items={[{ label: 'Home', href: '/' }, { label: 'Compare' }]} />
+      <p className="eyebrow mt-4">01 · Side by side</p>
       <h1 className="t-page mt-1 flex items-center gap-2.5 text-[32px] sm:text-4xl"><Scale size={28} aria-hidden className="flex-none text-accent" /> Compare products</h1>
       <p className="mt-2 max-w-2xl text-[15px] leading-relaxed text-muted">Pick up to 3 products. We fetch fresh specs live and line up winners, pros &amp; cons, and a verdict.</p>
 
