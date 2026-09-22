@@ -1,12 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-
-const MODELS = ['gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-flash-latest'];
-const endpointFor = (model: string) =>
-  `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
+import { aiJson, AIError } from '@/lib/ai-router';
 
 export async function POST(request: NextRequest) {
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) {
+  if (!process.env.GEMINI_API_KEY && !process.env.GROK_API_KEY) {
     return NextResponse.json({ error: 'AI not configured' }, { status: 503 });
   }
 
@@ -57,52 +53,7 @@ RESPOND WITH ONLY a JSON object (no markdown fences), in exactly this shape:
 }`;
 
   try {
-    let res: Response | null = null;
-    let lastErr = '';
-    outer: for (const model of MODELS) {
-      for (let attempt = 0; attempt < 2; attempt++) {
-        res = await fetch(`${endpointFor(model)}?key=${apiKey}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ role: 'user', parts: [{ text: prompt }] }],
-            generationConfig: {
-              temperature: 0.7,
-              responseMimeType: 'application/json',
-            },
-          }),
-        });
-        if (res.ok) break outer;
-        if (res.status === 503 || res.status === 429) {
-          lastErr = await res.text().catch(() => '');
-          await new Promise(r => setTimeout(r, 1000 * (attempt + 1)));
-          continue;
-        }
-        lastErr = await res.text().catch(() => '');
-        break;
-      }
-      console.error(`[ai-recommend] model ${model} unavailable, trying fallback`);
-    }
-
-    if (!res || !res.ok) {
-      const errText = res ? await res.text().catch(() => '') : '';
-      console.error('[ai-recommend] Gemini error:', res?.status, errText.slice(0, 300));
-      return NextResponse.json({ error: 'AI service unavailable' }, { status: 502 });
-    }
-
-    const data = await res.json();
-    const raw: string | undefined = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!raw) {
-      return NextResponse.json({ error: 'AI returned empty response' }, { status: 502 });
-    }
-
-    const cleaned = raw.trim().replace(/^```(json)?\s*/i, '').replace(/```\s*$/i, '');
-    let parsed: { summary?: string; picks?: unknown[] };
-    try {
-      parsed = JSON.parse(cleaned);
-    } catch {
-      return NextResponse.json({ error: 'Could not parse AI response' }, { status: 502 });
-    }
+    const parsed = (await aiJson(prompt)) as { summary?: string; picks?: unknown[] };
 
     return NextResponse.json({
       summary: parsed.summary || '',
@@ -110,7 +61,11 @@ RESPOND WITH ONLY a JSON object (no markdown fences), in exactly this shape:
       query,
     });
   } catch (err) {
-    console.error('[ai-recommend] Error:', err);
-    return NextResponse.json({ error: 'Something went wrong' }, { status: 500 });
+    const status = err instanceof AIError ? err.status : 500;
+    console.error('[ai-recommend] Error:', err instanceof Error ? err.message.slice(0, 200) : err);
+    return NextResponse.json(
+      { error: err instanceof Error ? err.message : 'Something went wrong' },
+      { status }
+    );
   }
 }

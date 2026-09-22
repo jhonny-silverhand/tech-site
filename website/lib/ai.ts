@@ -1,37 +1,5 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
-import { withTimeout } from './with-timeout';
+import { aiText } from './ai-router';
 import type { AIRecommendation, PCBuild } from './types';
-
-const MODELS = ['gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-flash-latest'];
-
-function client() {
-  const key = process.env.GEMINI_API_KEY;
-  if (!key) throw new Error('GEMINI_API_KEY is not configured');
-  return new GoogleGenerativeAI(key);
-}
-
-function isRetriable(err: unknown): boolean {
-  const msg = err instanceof Error ? err.message : String(err);
-  return /\[404|\[429|\[503/.test(msg);
-}
-
-/** Generate content trying each model in order (retired/overloaded first). */
-async function generateWithFallback(prompt: string, timeoutMs: number, label: string): Promise<string> {
-  const genAI = client();
-  let lastErr: unknown = null;
-  for (const name of MODELS) {
-    try {
-      const m = genAI.getGenerativeModel({ model: name });
-      const res = await withTimeout(m.generateContent(prompt), timeoutMs, `Gemini ${label}`);
-      return res.response.text().trim();
-    } catch (err) {
-      lastErr = err;
-      console.error(`[ai] model ${name} failed for ${label}, trying fallback`);
-      if (!isRetriable(err)) break;
-    }
-  }
-  throw lastErr instanceof Error ? lastErr : new Error(`Gemini ${label} failed`);
-}
 
 function extractJson(text: string): string {
   // Strip code fences if the model wraps output.
@@ -64,7 +32,7 @@ Requirements:
 - End with a short "Key takeaways" bullet list.
 - Use fenced code blocks with language tags for any code/commands.
 - Return ONLY the Markdown article body, no preamble.`;
-  return generateWithFallback(prompt, 60000, 'draft generation');
+  return aiText(prompt);
 }
 
 export async function recommendProducts(
@@ -93,7 +61,7 @@ Return ONLY a JSON array where each item is:
  "reasoning": string (2-3 sentences), "pros": [2-3 strings], "cons": [1-2 strings],
  "estimated_price_inr": number, "product_slug": string (only if it clearly matches a catalog item, else omit)}
 No markdown fences, no commentary — raw JSON only.`;
-  const text = await generateWithFallback(prompt, 60000, 'recommendations');
+  const text = await aiText(prompt);
   const parsed = JSON.parse(extractJson(text));
   const arr = Array.isArray(parsed) ? parsed : parsed.recommendations || parsed.products || [];
   return arr as AIRecommendation[];
@@ -112,7 +80,7 @@ Return ONLY a JSON array where each item is:
  "components": [{"category": string, "name": string, "price_inr": number, "reasoning": string (1 sentence)}],
  "notes": string (2 sentences on who this build suits)}
 Raw JSON only, no fences, no commentary.`;
-  const text = await generateWithFallback(prompt, 90000, 'PC builds');
+  const text = await aiText(prompt);
   const parsed = JSON.parse(extractJson(text));
   const arr = Array.isArray(parsed) ? parsed : parsed.builds || [];
   return arr as PCBuild[];
