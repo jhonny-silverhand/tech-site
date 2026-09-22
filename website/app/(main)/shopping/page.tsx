@@ -52,6 +52,7 @@ export default function ShoppingPage() {
 function ShoppingPageInner() {
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
+  const [slow, setSlow] = useState(false);
   const [result, setResult] = useState<AIResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const searchParams = useSearchParams();
@@ -69,8 +70,10 @@ function ShoppingPageInner() {
   async function handleSearch(q: string) {
     if (!q.trim()) return;
     setLoading(true);
+    setSlow(false);
     setError(null);
     setResult(null);
+    const slowTimer = setTimeout(() => setSlow(true), 5000);
 
     try {
       const res = await fetch('/api/shopping/ai-recommend', {
@@ -85,6 +88,8 @@ function ShoppingPageInner() {
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to get recommendations');
     } finally {
+      clearTimeout(slowTimer);
+      setSlow(false);
       setLoading(false);
     }
   }
@@ -93,6 +98,7 @@ function ShoppingPageInner() {
     setQuery('');
     setResult(null);
     setError(null);
+    setSlow(false);
   }
 
   return (
@@ -162,6 +168,11 @@ function ShoppingPageInner() {
           <div className="text-center py-16" role="status" aria-label="Loading recommendations">
             <Loader2 size={32} className="text-[#E85D5D] animate-spin mx-auto mb-3" />
             <p className="font-mono text-[13px] text-[#23233B]/50 dark:text-white/50">AI is analyzing options for you…</p>
+            {slow && (
+              <p className="mx-auto mt-3 max-w-md rounded-lg border border-[#E8A13D]/50 bg-[#FFD93D]/20 px-4 py-2 font-mono text-[12px] leading-relaxed text-[#9A6B00] dark:border-[#FFD93D]/25 dark:bg-[#FFD93D]/10 dark:text-[#FFD93D]" aria-live="polite">
+                The AI servers are experiencing heavy load — this might take 20–30 seconds more. Please wait, your picks are on the way.
+              </p>
+            )}
           </div>
         )}
 

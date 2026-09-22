@@ -26,9 +26,12 @@ INSTRUCTIONS:
 1. Recommend 3-5 products that best match the user's needs.
 2. For each product, provide: name, brand, category, a short tagline (why it's recommended), 4-6 key features, who it's best for, and actual buying links for Indian e-commerce.
 3. Generate real, accurate product names and specs based on your knowledge up to early 2025. Use current/most recent models available in India.
-4. For buying links, use this format:
-   - Amazon India: https://www.amazon.in/s?k={product name with + for spaces}
-   - Flipkart: https://www.flipkart.com/search?q={product name with + for spaces}
+4. For buying links, give the REAL product page URL whenever you know it
+   (e.g. https://www.amazon.in/dp/B0XXXXXXX for Amazon,
+   https://www.flipkart.com/.../p/... for Flipkart). Only when unsure,
+   fall back to search URLs:
+    - Amazon India search: https://www.amazon.in/s?k={product name with + for spaces}
+    - Flipkart search: https://www.flipkart.com/search?q={product name with + for spaces}
 5. Include price ranges in INR (₹) based on typical Indian market pricing.
 6. Add a brief summary explaining your top pick.
 
@@ -45,8 +48,8 @@ RESPOND WITH ONLY a JSON object (no markdown fences), in exactly this shape:
       "bestFor": "Who this is ideal for",
       "priceRange": "₹XX,XXX - ₹XX,XXX",
       "links": {
-        "amazon": "https://www.amazon.in/s?k=...",
-        "flipkart": "https://www.flipkart.com/search?q=..."
+        "amazon": "real product URL (https://www.amazon.in/dp/...) or search URL",
+        "flipkart": "real product URL (https://www.flipkart.com/.../p/...) or search URL"
       }
     }
   ]
