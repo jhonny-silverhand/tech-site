@@ -16,7 +16,7 @@ export function AdminNav() {
   const pathname = usePathname();
   return (
     <nav className="flex items-center gap-1 overflow-x-auto border-b border-line bg-paper px-4">
-      <BrandMark name="admin" className="mr-3 text-[24px] leading-none" />
+      <BrandMark name="admin" className="mr-3 text-[32px] leading-none" />
       {ITEMS.map((i) => (
         <Link
           key={i.href}

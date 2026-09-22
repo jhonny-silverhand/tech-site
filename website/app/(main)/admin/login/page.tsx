@@ -35,7 +35,7 @@ export default function AdminLoginPage() {
 
   return (
     <div className="mx-auto max-w-md px-4 py-16">
-      <BrandMark name="admin" className="text-sm" />
+      <BrandMark name="admin" className="text-[32px] leading-none" />
       <h1 className="mt-2 font-display text-3xl font-semibold">Admin login</h1>
       <p className="mt-1 text-sm text-muted">Separate JWT auth — not a user account.</p>
       <form onSubmit={submit} className="mt-6 flex flex-col gap-4">
