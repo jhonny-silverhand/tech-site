@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>tech//site — Practical answers, not filler</title>
+<meta name="description" content="A multi-niche technology publication with editorial guides, a personal knowledge space, a creator platform, and AI-powered shopping intelligence. Next.js 15 + Supabase." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,600&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #f3f3f1;
+    --paper: #ffffff;
+    --paper-2: #e9e9e6;
+    --ink: #141417;
+    --ink-2: #3d3d46;
+    --muted: #5b5e68;
+    --faint: #8d9099;
+    --line: #dfdfdb;
+    --line-strong: #c9c9c3;
+    --accent: #3d63f2;
+    --accent-ink: #2a49c8;
+    --accent-soft: #e8edfe;
+    --void: #0a0b0f;
+    --shadow-card: 0 1px 2px rgb(20 20 23 / 0.06);
+    --shadow-lift: 0 8px 24px -8px rgb(20 20 23 / 0.14), 0 2px 6px -2px rgb(20 20 23 / 0.08);
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --accent-rgb: 61 99 242;
+    --on-accent: #ffffff;
+    --hover: rgb(20 20 23 / 0.05);
+    --nav-bg: rgb(243 243 241 / 0.78);
+    --ring-faint: rgb(20 20 23 / 0.06);
+    --sw-border: rgb(20 20 23 / 0.08);
+    --glass: rgb(255 255 255 / 0.55);
+    --glass-strong: rgb(255 255 255 / 0.72);
+    --glass-border: rgb(255 255 255 / 0.7);
+    --glass-ring: inset 0 1px 0 rgb(255 255 255 / 0.65);
+    --glass-blur: 14px;
+  }
+
+  [data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #0a0b0f;
+    --paper: #12141b;
+    --paper-2: #0e1016;
+    --ink: #f1f2f6;
+    --ink-2: #c9cdd9;
+    --muted: #9aa1b3;
+    --faint: #6c7385;
+    --line: #1f2430;
+    --line-strong: #2e3444;
+    --accent: #7aa2ff;
+    --accent-ink: #a5b4fc;
+    --accent-soft: rgb(122 162 255 / 0.14);
+    --void: #050608;
+    --shadow-card: 0 1px 2px rgb(0 0 0 / 0.45);
+    --shadow-lift: 0 8px 24px -8px rgb(0 0 0 / 0.55), 0 2px 6px -2px rgb(0 0 0 / 0.4);
+    --accent-rgb: 122 162 255;
+    --on-accent: #0a0b0f;
+    --hover: rgb(241 242 246 / 0.06);
+    --nav-bg: rgb(10 11 15 / 0.78);
+    --ring-faint: rgb(241 242 246 / 0.06);
+    --sw-border: rgb(241 242 246 / 0.1);
+    --glass: rgb(18 20 27 / 0.55);
+    --glass-strong: rgb(10 11 15 / 0.72);
+    --glass-border: rgb(241 242 246 / 0.09);
+    --glass-ring: inset 0 1px 0 rgb(241 242 246 / 0.06);
+    --glass-blur: 16px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; background: var(--bg); }
+
+  /* Pixels — brand wordmark face (same as production BrandMark / font-pixel) */
+  @font-face {
+    font-family: "Pixels";
+    src: url("fonts/Pixels.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    transition: background-color 0.25s ease, color 0.25s ease;
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+    font-feature-settings: "cv11", "ss01";
+    -webkit-font-smoothing: antialiased;
+    text-wrap: pretty;
+  }
+
+  ::selection { background: var(--accent); color: #fff; }
+
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; display: block; }
+
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+  .font-display { font-family: "Fraunces", Georgia, serif; }
+  .font-tagline { font-family: "Cormorant Garamond", Georgia, serif; font-style: italic; }
+  .font-mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
+  .font-pixel { font-family: "Pixels", "JetBrains Mono", ui-monospace, monospace; letter-spacing: 0.02em; }
+  .brand { font-family: "Pixels", "JetBrains Mono", ui-monospace, monospace; font-weight: 400; letter-spacing: 0.02em; }
+  .brand .sl { color: var(--accent); }
+
+  .eyebrow {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--faint);
+  }
+
+  /* ---------- Nav ---------- */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: var(--nav-bg);
+    backdrop-filter: blur(16px) saturate(1.5);
+    -webkit-backdrop-filter: blur(16px) saturate(1.5);
+    border-bottom: 1px solid var(--line);
+  }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .nav { background: var(--bg); }
+  }
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 56px; gap: 24px;
+  }
+  .nav-brand { font-size: 23px; }
+  .nav-links { display: flex; gap: 4px; align-items: center; }
+  .nav-links a {
+    font-size: 13px; font-weight: 500; color: var(--muted);
+    padding: 7px 12px; border-radius: 6px;
+    transition: color 0.15s, background 0.15s;
+  }
+  .nav-links a:hover { color: var(--ink); background: var(--hover); }
+  .nav-cta {
+    font-size: 13px !important; font-weight: 500 !important;
+    background: var(--accent) !important; color: var(--on-accent) !important;
+    padding: 8px 16px !important; border-radius: 6px !important;
+  }
+  .nav-cta:hover { filter: brightness(1.08); background: var(--accent) !important; }
+  .nav-toggle { display: none; }
+  .theme-toggle {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 34px; height: 34px; margin-left: 4px;
+    border-radius: 8px; cursor: pointer;
+    background: var(--glass); border: 1px solid var(--glass-border);
+    color: var(--ink-2); box-shadow: var(--glass-ring);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+  .theme-toggle:hover { color: var(--ink); background: var(--glass-strong); }
+  .theme-toggle svg { display: block; }
+  .theme-toggle .icon-sun { display: none; }
+  [data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+  [data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+
+  @media (max-width: 820px) {
+    .nav-links a:not(.nav-cta) { display: none; }
+  }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative; overflow: hidden;
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+  }
+  .hero::before {
+    content: ""; position: absolute; inset: 0 0 auto 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgb(var(--accent-rgb) / 0.5), transparent);
+  }
+  .hero::after {
+    content: ""; position: absolute; top: -128px; left: 50%;
+    width: 672px; height: 256px; transform: translateX(-50%);
+    background: rgb(var(--accent-rgb) / 0.12); filter: blur(64px);
+    pointer-events: none;
+  }
+  .hero-inner {
+    position: relative; padding: 96px 0 80px;
+    display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 56px; align-items: center;
+  }
+  @media (max-width: 900px) {
+    .hero-inner { grid-template-columns: 1fr; padding: 64px 0 56px; gap: 40px; }
+  }
+
+  .hero h1 {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: clamp(38px, 5vw, 56px);
+    font-weight: 600; line-height: 1.08; letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .hero h1 em { font-style: normal; color: var(--accent); }
+  .hero .dek {
+    margin-top: 20px; font-size: 20px; line-height: 1.5;
+    color: var(--muted); max-width: 34ch;
+  }
+  .hero-tag {
+    margin-top: 8px; font-family: "Cormorant Garamond", Georgia, serif;
+    font-style: italic; font-size: 22px; color: var(--ink-2);
+  }
+  .hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    height: 44px; padding: 0 22px; border-radius: 6px;
+    font-size: 14px; font-weight: 500; cursor: pointer; border: none;
+    transition: transform 0.1s, filter 0.15s, background 0.15s, border-color 0.15s;
+  }
+  .btn:active { transform: translateY(1px); }
+  .btn-primary { background: var(--accent); color: var(--on-accent); }
+  .btn-primary:hover { filter: brightness(1.1); }
+  .btn-ghost {
+    background: var(--glass); color: var(--ink-2);
+    border: 1px solid var(--line-strong);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  }
+  .btn-ghost:hover { border-color: var(--ink); color: var(--ink); }
+
+  .hero-stats {
+    display: flex; flex-wrap: wrap; gap: 28px; margin-top: 40px;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 11px; color: var(--muted);
+  }
+  .hero-stats strong {
+    display: block; font-size: 22px; font-weight: 700;
+    color: var(--ink); letter-spacing: -0.02em; margin-bottom: 2px;
+  }
+
+  /* Hero visual: orbit-style niche ring */
+  .orbit {
+    position: relative; width: 100%; aspect-ratio: 1; max-width: 420px;
+    margin: 0 auto;
+  }
+  .orbit-ring {
+    position: absolute; inset: 12%; border: 1px solid var(--line);
+    border-radius: 50%;
+  }
+  .orbit-ring.inner { inset: 26%; border-color: var(--ring-faint); }
+  .orbit-core {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    text-align: center;
+  }
+  .orbit-core .card {
+    background: var(--glass-strong); border: 1px solid var(--glass-border);
+    border-radius: 10px; padding: 14px 22px;
+    box-shadow: var(--shadow-card), var(--glass-ring);
+    backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur));
+  }
+  .orbit-core .word {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 26px; font-weight: 700; color: var(--ink);
+  }
+  .orbit-core .sub {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--faint); margin-top: 3px;
+  }
+  .orbit-node {
+    position: absolute; top: 50%; left: 50%;
+    display: inline-flex; align-items: center; gap: 7px;
+    background: var(--glass); border: 1px solid var(--glass-border);
+    border-radius: 999px; padding: 7px 13px;
+    font-size: 12px; font-weight: 500; color: var(--ink-2);
+    box-shadow: var(--shadow-card), var(--glass-ring);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    white-space: nowrap;
+    transform: translate(-50%, -50%);
+  }
+  .orbit-node .dot { width: 7px; height: 7px; border-radius: 50%; flex: none; }
+
+  /* ---------- Sections ---------- */
+  section { padding: 88px 0; }
+  section.alt { background: var(--paper); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+
+  .sec-head { max-width: 640px; margin-bottom: 48px; }
+  .sec-head h2 {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: clamp(28px, 3.4vw, 38px); font-weight: 600;
+    line-height: 1.15; letter-spacing: -0.015em; margin-top: 10px;
+    color: var(--ink);
+  }
+  .sec-head p { margin-top: 14px; font-size: 17px; color: var(--muted); line-height: 1.6; }
+
+  /* Pillars */
+  .pillars { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  @media (max-width: 760px) { .pillars { grid-template-columns: 1fr; } }
+  .pillar {
+    background: var(--glass);
+    backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-ring);
+    border-radius: 12px; padding: 28px;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  }
+  .pillar:hover { border-color: var(--line-strong); transform: translateY(-2px); box-shadow: var(--shadow-lift); }
+  .pillar-num {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 11px; letter-spacing: 0.14em; color: var(--accent);
+    margin-bottom: 14px;
+  }
+  .pillar h3 {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 21px; font-weight: 600; letter-spacing: -0.01em;
+    color: var(--ink); margin-bottom: 10px;
+  }
+  .pillar p { font-size: 14.5px; color: var(--muted); line-height: 1.6; }
+  .pillar ul { margin-top: 14px; list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
+  .pillar ul li {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 11px; color: var(--ink-2);
+    background: var(--paper); border: 1px solid var(--line);
+    border-radius: 5px; padding: 4px 8px;
+  }
+  .alt .pillar { background: var(--glass); }
+
+  /* Feature rows */
+  .feature-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 56px;
+    align-items: center; padding: 56px 0;
+  }
+  .feature-row + .feature-row { border-top: 1px solid var(--line); }
+  .feature-row.flip .f-visual { order: -1; }
+  @media (max-width: 860px) {
+    .feature-row { grid-template-columns: 1fr; gap: 28px; padding: 40px 0; }
+    .feature-row.flip .f-visual { order: 0; }
+  }
+  .f-copy h3 {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: clamp(24px, 2.6vw, 30px); font-weight: 600;
+    letter-spacing: -0.015em; line-height: 1.2; color: var(--ink);
+    margin-top: 10px;
+  }
+  .f-copy p { margin-top: 14px; font-size: 15.5px; color: var(--muted); line-height: 1.65; max-width: 48ch; }
+  .f-list { margin-top: 20px; list-style: none; display: grid; gap: 10px; }
+  .f-list li {
+    display: flex; gap: 10px; align-items: flex-start;
+    font-size: 14.5px; color: var(--ink-2); line-height: 1.5;
+  }
+  .f-list li::before {
+    content: ""; flex: none; width: 6px; height: 6px; margin-top: 8px;
+    border-radius: 50%; background: var(--accent);
+  }
+
+  .f-visual {
+    background: var(--bg); border: 1px solid var(--line);
+    border-radius: 14px; padding: 24px; min-height: 280px;
+    position: relative; overflow: hidden;
+  }
+  .alt .f-visual { background: var(--paper-2); }
+
+  /* Mock UI bits inside visuals */
+  .mock-bar {
+    display: flex; align-items: center; gap: 8px;
+    padding-bottom: 14px; margin-bottom: 16px;
+    border-bottom: 1px solid var(--line);
+  }
+  .mock-bar span {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 11px; color: var(--faint); letter-spacing: 0.08em;
+  }
+  .mock-card {
+    background: var(--paper); border: 1px solid var(--line);
+    border-radius: 8px; padding: 14px 16px; margin-bottom: 10px;
+    box-shadow: var(--shadow-card);
+  }
+  .alt .mock-card { background: var(--bg); }
+  .mock-card .t { font-size: 13.5px; font-weight: 600; color: var(--ink); }
+  .mock-card .m {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 10.5px; color: var(--faint); margin-top: 4px;
+  }
+  .mock-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .chip {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 3px 8px; border-radius: 4px; color: #fff; flex: none;
+  }
+  .mock-pkg { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+  .mock-pkg span {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 10.5px; padding: 4px 8px; border-radius: 4px;
+    background: var(--accent-soft); color: var(--accent-ink);
+  }
+  .price { font-family: "JetBrains Mono", ui-monospace, monospace; font-weight: 700; color: var(--ink); }
+  .price-sub { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 10.5px; color: var(--faint); }
+
+  .lib-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .lib-item {
+    background: var(--paper); border: 1px solid var(--line);
+    border-radius: 8px; padding: 12px;
+  }
+  .alt .lib-item { background: var(--bg); }
+  .lib-item .n {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 18px; font-weight: 700; color: var(--ink);
+  }
+  .lib-item .l { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  .cmdk {
+    background: var(--glass-strong); border: 1px solid var(--glass-border);
+    border-radius: 10px; box-shadow: var(--shadow-lift), var(--glass-ring); overflow: hidden;
+    backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur));
+  }
+  .alt .cmdk { background: var(--glass-strong); }
+  .cmdk-input {
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 16px; border-bottom: 1px solid var(--line);
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 13px; color: var(--muted);
+  }
+  .cmdk-input kbd {
+    margin-left: auto; font-size: 10px; padding: 2px 6px;
+    border: 1px solid var(--line); border-radius: 4px; color: var(--faint);
+  }
+  .cmdk-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 16px; font-size: 13.5px; color: var(--ink-2);
+  }
+  .cmdk-item.active { background: var(--accent-soft); color: var(--accent-ink); }
+  .cmdk-item .tag {
+    margin-left: auto; font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 10px; color: var(--faint);
+  }
+
+  /* Niches */
+  .niche-grid {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px;
+  }
+  @media (max-width: 960px) { .niche-grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 560px) { .niche-grid { grid-template-columns: repeat(2, 1fr); } }
+  .niche-card {
+    background: var(--glass); border: 1px solid var(--glass-border);
+    backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur));
+    box-shadow: var(--glass-ring);
+    border-radius: 10px; padding: 18px 16px;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  }
+  .niche-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lift); border-color: var(--line-strong); }
+  .niche-card .swatch {
+    width: 10px; height: 10px; border-radius: 50%; margin-bottom: 12px;
+  }
+  .niche-card h4 { font-size: 14.5px; font-weight: 600; color: var(--ink); letter-spacing: -0.01em; }
+  .niche-card .tagline {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-style: italic; font-size: 15px; color: var(--muted); margin-top: 3px;
+  }
+  .niche-card .desc { font-size: 12.5px; color: var(--faint); margin-top: 8px; line-height: 1.45; }
+
+  /* Design system */
+  .ds-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: start; }
+  @media (max-width: 860px) { .ds-grid { grid-template-columns: 1fr; } }
+  .ds-principles { display: grid; gap: 18px; }
+  .ds-item { display: grid; grid-template-columns: 28px 1fr; gap: 14px; }
+  .ds-item .idx {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 12px; font-weight: 700; color: var(--accent); padding-top: 2px;
+  }
+  .ds-item h4 { font-size: 15px; font-weight: 600; color: var(--ink); }
+  .ds-item p { font-size: 14px; color: var(--muted); margin-top: 4px; line-height: 1.55; }
+
+  .swatchboard { display: grid; gap: 10px; }
+  .swatch-row {
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px;
+  }
+  .sw {
+    aspect-ratio: 1; border-radius: 8px; border: 1px solid var(--sw-border);
+    display: flex; align-items: flex-end; padding: 6px;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 8.5px; color: rgb(255 255 255 / 0.85);
+    letter-spacing: 0.02em;
+  }
+  .sw.light-txt { color: rgb(20 20 23 / 0.7); }
+  .type-specimen { margin-top: 20px; display: grid; gap: 10px; }
+  .type-line {
+    background: var(--glass); border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    box-shadow: var(--glass-ring);
+    border-radius: 8px; padding: 14px 16px;
+    display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+  }
+  .type-line .label {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 10px; color: var(--faint); letter-spacing: 0.08em; text-transform: uppercase;
+    flex: none;
+  }
+
+  /* Stack */
+  .stack-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  @media (max-width: 860px) { .stack-grid { grid-template-columns: repeat(2, 1fr); } }
+  .stack-card {
+    background: var(--glass); border: 1px solid var(--glass-border);
+    backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur));
+    box-shadow: var(--glass-ring);
+    border-radius: 10px; padding: 20px;
+  }
+  .stack-card .cat {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--faint); margin-bottom: 10px;
+  }
+  .stack-card h4 { font-size: 15px; font-weight: 600; color: var(--ink); }
+  .stack-card p { font-size: 13px; color: var(--muted); margin-top: 6px; line-height: 1.5; }
+  .stack-card code {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 12px; color: var(--accent-ink);
+    background: var(--accent-soft); padding: 1px 5px; border-radius: 4px;
+  }
+
+  /* Quote band */
+  .quote-band {
+    background: var(--void); color: #f1f2f6;
+    padding: 88px 0; text-align: center;
+  }
+  .quote-band blockquote {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: clamp(26px, 3.6vw, 40px); font-weight: 500;
+    line-height: 1.25; letter-spacing: -0.015em;
+    max-width: 18ch; margin: 0 auto;
+  }
+  .quote-band blockquote em { font-style: normal; color: #7aa2ff; }
+  .quote-band .attrib {
+    margin-top: 24px; font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: #646b7e;
+  }
+
+  /* Who it's for + closing CTA */
+  .who-grid {
+    display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 56px; align-items: center;
+  }
+  @media (max-width: 860px) { .who-grid { grid-template-columns: 1fr; gap: 40px; } }
+  .who-title {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: clamp(28px, 3.4vw, 38px); font-weight: 600;
+    line-height: 1.15; letter-spacing: -0.015em; margin-top: 10px; color: var(--ink);
+  }
+  .who-list { display: grid; gap: 14px; margin-top: 28px; }
+  .who-item {
+    display: grid; grid-template-columns: 40px 1fr; gap: 16px; align-items: start;
+    background: var(--glass); border: 1px solid var(--glass-border);
+    backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur));
+    box-shadow: var(--glass-ring);
+    border-radius: 12px; padding: 18px;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  }
+  .who-item:hover { border-color: var(--line-strong); transform: translateY(-2px); box-shadow: var(--shadow-lift), var(--glass-ring); }
+  .who-item .ic {
+    width: 40px; height: 40px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--accent-soft); color: var(--accent-ink);
+  }
+  .who-item h4 { font-size: 15px; font-weight: 600; color: var(--ink); padding-top: 2px; }
+  .who-item p { font-size: 13.5px; color: var(--muted); margin-top: 4px; line-height: 1.55; }
+  .close-cta {
+    background: var(--glass-strong);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px; padding: 36px 32px;
+    backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur));
+    box-shadow: var(--shadow-lift), var(--glass-ring);
+  }
+  .close-cta h2 {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: clamp(26px, 3vw, 34px); font-weight: 600;
+    letter-spacing: -0.015em; color: var(--ink); margin-top: 10px;
+  }
+  .close-cta p { margin-top: 12px; font-size: 15px; color: var(--muted); line-height: 1.6; }
+  .close-cta .hero-ctas { margin-top: 24px; }
+
+  /* FAQ */
+  .faq-list { display: grid; gap: 10px; max-width: 760px; }
+  .faq-list details {
+    background: var(--glass); border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    box-shadow: var(--glass-ring);
+    border-radius: 10px; padding: 0 18px;
+  }
+  .faq-list summary {
+    cursor: pointer; list-style: none;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding: 16px 0; font-size: 15px; font-weight: 600; color: var(--ink);
+  }
+  .faq-list summary::-webkit-details-marker { display: none; }
+  .faq-list summary::after {
+    content: "+"; font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 16px; color: var(--faint); flex: none; transition: color 0.15s;
+  }
+  .faq-list details[open] summary::after { content: "\2212"; color: var(--accent); }
+  .faq-list details p {
+    padding: 0 0 16px; font-size: 14.5px; color: var(--muted);
+    line-height: 1.6; max-width: 64ch;
+  }
+
+  /* Newsletter */
+  .news-card {
+    display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: center;
+    background: var(--glass-strong); border: 1px solid var(--glass-border);
+    border-radius: 14px; padding: 36px 40px;
+    backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur));
+    box-shadow: var(--shadow-lift), var(--glass-ring);
+  }
+  @media (max-width: 760px) { .news-card { grid-template-columns: 1fr; gap: 22px; padding: 28px 24px; } }
+  .news-title {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: clamp(24px, 2.8vw, 32px); font-weight: 600;
+    letter-spacing: -0.015em; color: var(--ink); margin-top: 10px;
+  }
+  .news-sub { margin-top: 10px; font-size: 15px; color: var(--muted); line-height: 1.6; max-width: 44ch; }
+  .news-form { display: flex; gap: 10px; flex-wrap: wrap; }
+  .news-form input {
+    height: 44px; min-width: 240px; flex: 1;
+    padding: 0 14px; border-radius: 8px;
+    border: 1px solid var(--line-strong);
+    background: var(--glass); color: var(--ink);
+    font-family: "Inter", system-ui, sans-serif; font-size: 14px;
+    outline: none; transition: border-color 0.15s;
+  }
+  .news-form input:focus { border-color: var(--accent); }
+  .news-form input::placeholder { color: var(--faint); }
+  .news-note { margin-top: 10px; font-size: 12.5px; color: var(--faint); }
+  .news-note.ok { color: var(--accent-ink); }
+
+  /* Footer */
+  footer {
+    background: var(--paper-2); border-top: 1px solid var(--line);
+    padding: 48px 0 32px; color: var(--muted); font-size: 14px;
+  }
+  .footer-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 32px; }
+  @media (max-width: 800px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+  .footer-grid h5 {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 10.5px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--faint); margin-bottom: 14px;
+  }
+  .footer-grid ul { list-style: none; display: grid; gap: 8px; }
+  .footer-grid a { color: var(--ink-2); font-size: 14px; transition: color 0.15s; }
+  .footer-grid a:hover { color: var(--ink); }
+  .footer-brand .brand { font-size: 36px; color: var(--ink); }
+  .footer-brand .tag {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-style: italic; font-size: 17px; color: var(--ink-2);
+    margin-top: 12px; max-width: 28ch; line-height: 1.4;
+  }
+  .footer-bottom {
+    margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--line);
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 11px; color: var(--faint);
+  }
+
+  /* Reveal on scroll */
+  .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.55s var(--ease), transform 0.55s var(--ease); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+<script>
+  // Set theme before first paint (system preference or saved choice)
+  (function () {
+    try {
+      var t = localStorage.getItem("theme");
+      if (t !== "light" && t !== "dark") {
+        t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      }
+      document.documentElement.dataset.theme = t;
+    } catch (e) {
+      document.documentElement.dataset.theme = "light";
+    }
+  })();
+</script>
+</head>
+<body>
+
+<!-- ========== NAV ========== -->
+<nav class="nav" aria-label="Primary">
+  <div class="wrap nav-inner">
+    <a href="#" class="nav-brand brand" aria-label="tech//site home">tech<span class="sl">//</span>site</a>
+    <div class="nav-links">
+      <a href="#platform">Platform</a>
+      <a href="#features">Features</a>
+      <a href="#niches">Niches</a>
+      <a href="#design">Design</a>
+      <a href="#stack">Stack</a>
+      <a href="#start" class="nav-cta">Get started</a>
+      <button type="button" class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+        <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ========== HERO ========== -->
+<header class="hero">
+  <div class="wrap hero-inner">
+    <div>
+      <p class="eyebrow">Editorial · Knowledge · Shopping Intelligence</p>
+      <h1 style="margin-top:14px">Practical answers, <em>not filler</em> — across code, devices, and money.</h1>
+      <p class="dek">In-depth guides, honest product intelligence, and AI tools that respect your time.</p>
+      <p class="hero-tag">A personal technology publication — built with care.</p>
+
+      <div class="hero-ctas">
+        <a href="#start" class="btn btn-primary">
+          Explore the platform
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+        <a href="https://tech-site-new.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
+          Live site
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+        </a>
+        <a href="https://ko-fi.com/whysoserious_omik" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
+          Support on Ko-fi
+        </a>
+      </div>
+
+      <div class="hero-stats">
+        <div><strong>10</strong>editorial niches</div>
+        <div><strong>51</strong>production routes</div>
+        <div><strong>20</strong>database tables</div>
+        <div><strong>₹</strong>India-first pricing</div>
+      </div>
+    </div>
+
+    <!-- Knowledge Orbit (static marketing rendition) -->
+    <div class="orbit" aria-hidden="true">
+      <div class="orbit-ring"></div>
+      <div class="orbit-ring inner"></div>
+      <div class="orbit-core">
+        <div class="card">
+          <div class="word font-pixel">tech<span style="color:var(--accent)">//</span>site</div>
+          <div class="sub">10 topics · pick one</div>
+        </div>
+      </div>
+      <!-- nodes positioned via inline transform using trig approximations for 10 points -->
+      <span class="orbit-node" style="transform:translate(calc(-50% + 0px), calc(-50% + -158px))"><span class="dot" style="background:#4F7DFF"></span>AI Tools</span>
+      <span class="orbit-node" style="transform:translate(calc(-50% + 92.8px), calc(-50% + -128.8px))"><span class="dot" style="background:#10B981"></span>Programming</span>
+      <span class="orbit-node" style="transform:translate(calc(-50% + 149.9px), calc(-50% + -48.8px))"><span class="dot" style="background:#84CC16"></span>Android</span>
+      <span class="orbit-node" style="transform:translate(calc(-50% + 149.9px), calc(-50% + 48.8px))"><span class="dot" style="background:#06B6D4"></span>Windows</span>
+      <span class="orbit-node" style="transform:translate(calc(-50% + 92.8px), calc(-50% + 128.8px))"><span class="dot" style="background:#F59E0B"></span>Gadgets</span>
+      <span class="orbit-node" style="transform:translate(calc(-50% + 0px), calc(-50% + 158px))"><span class="dot" style="background:#EF4444"></span>Gaming</span>
+      <span class="orbit-node" style="transform:translate(calc(-50% + -92.8px), calc(-50% + 128.8px))"><span class="dot" style="background:#8B5CF6"></span>Career</span>
+      <span class="orbit-node" style="transform:translate(calc(-50% + -149.9px), calc(-50% + 48.8px))"><span class="dot" style="background:#14B8A6"></span>Finance</span>
+      <span class="orbit-node" style="transform:translate(calc(-50% + -149.9px), calc(-50% + -48.8px))"><span class="dot" style="background:#EC4899"></span>Productivity</span>
+      <span class="orbit-node" style="transform:translate(calc(-50% + -92.8px), calc(-50% + -128.8px))"><span class="dot" style="background:#FF6B35"></span>PC Hardware</span>
+    </div>
+  </div>
+</header>
+
+<!-- ========== FOUR PILLARS ========== -->
+<section id="platform">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">01 · The platform</p>
+      <h2>Four products, one coherent system.</h2>
+      <p>tech//site evolved from a multi-niche publication into a four-sided platform — each side real, each side earning its place in the information architecture.</p>
+    </div>
+
+    <div class="pillars">
+      <article class="pillar reveal">
+        <p class="pillar-num">01 / PUBLICATION</p>
+        <h3>Editorial Publication</h3>
+        <p>A serious multi-niche technology publication. Table of contents, code syntax highlighting, reading progress, related posts, and a niche-specific ambient color wash on every article.</p>
+        <ul>
+          <li>Markdown-backed</li><li>TOC</li><li>Syntax highlight</li><li>Reading progress</li><li>Niche color wash</li>
+        </ul>
+      </article>
+
+      <article class="pillar reveal">
+        <p class="pillar-num">02 / LIBRARY</p>
+        <h3>Personal Knowledge Space</h3>
+        <p>Not a vanity profile — a private working library. Bookmarks, an intentional reading queue, auto-recorded history, text highlights with private notes, and named collections.</p>
+        <ul>
+          <li>Saved</li><li>Queue</li><li>History</li><li>Highlights</li><li>Notes</li><li>Collections</li>
+        </ul>
+      </article>
+
+      <article class="pillar reveal">
+        <p class="pillar-num">03 / CREATOR</p>
+        <h3>Creator &amp; Community</h3>
+        <p>Open signup for writers who publish manually — no AI on that side, enforced by Row Level Security, not hidden UI. Public profiles, author &amp; topic follows, comments with ownership.</p>
+        <ul>
+          <li>Profiles</li><li>Follow</li><li>Comments</li><li>Onboarding</li><li>Editor</li>
+        </ul>
+      </article>
+
+      <article class="pillar reveal">
+        <p class="pillar-num">04 / COMMERCE</p>
+        <h3>Shopping Intelligence</h3>
+        <p>Live product specs, side-by-side comparisons, and budget-aware recommendations — fetched at request time from Gemini, with AI-estimated Indian street prices and retailer links.</p>
+        <ul>
+          <li>Compare</li><li>Recommend</li><li>Buying guides</li><li>Live prices</li><li>PC builder</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FEATURE DEEP DIVES ========== -->
+<section id="features" class="alt">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">02 · Capabilities</p>
+      <h2>What it actually does.</h2>
+      <p>Every claim below ships in the codebase — no vaporware, no "coming soon" placeholders dressed as features.</p>
+    </div>
+
+    <!-- Reading -->
+    <div class="feature-row reveal">
+      <div class="f-copy">
+        <p class="eyebrow">Editorial</p>
+        <h3>Articles built for reading, not skimming past ads.</h3>
+        <p>Every post gets a table of contents, live reading progress, related posts, and a faint ambient wash in its niche color. Code blocks stay a fixed dark surface in both themes — because code should look the same everywhere.</p>
+        <ul class="f-list">
+          <li>Niche-aware editorial treatments (Finance mono-figures, AI citation pills, Gaming cinematic hero)</li>
+          <li>Self-hosted faces: Pixels (wordmark), Fraunces, Cormorant Garamond, Inter, JetBrains Mono</li>
+          <li>Light + dark themes with system-preference awareness, no flash of wrong theme</li>
+        </ul>
+      </div>
+      <div class="f-visual">
+        <div class="mock-bar"><span>ARTICLE · AI TOOLS</span></div>
+        <div class="mock-card">
+          <div class="mock-row">
+            <div class="t">7 Free AI Writing Assistants Beyond ChatGPT</div>
+            <span class="chip" style="background:#4F7DFF">AI</span>
+          </div>
+          <div class="m">12 min read · Meera Krishnan · updated 2d ago</div>
+        </div>
+        <div class="mock-card">
+          <div class="m" style="margin-bottom:8px">TABLE OF CONTENTS</div>
+          <div style="font-size:13px;color:var(--ink-2);line-height:2">
+            1. Why leave ChatGPT<br />
+            2. The seven picks, tested<br />
+            3. Prompt frameworks that transfer<br />
+            4. What we'd actually pay for
+          </div>
+        </div>
+        <div class="mock-card" style="margin-bottom:0">
+          <div class="mock-row">
+            <span style="font-size:13px;color:var(--muted)">Reading progress</span>
+            <span class="price" style="font-size:13px">64%</span>
+          </div>
+          <div style="height:5px;background:var(--line);border-radius:99px;margin-top:8px;overflow:hidden">
+            <div style="height:100%;width:64%;background:var(--accent);border-radius:99px"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Library -->
+    <div class="feature-row flip reveal">
+      <div class="f-copy">
+        <p class="eyebrow">Knowledge space</p>
+        <h3>A library that behaves like a tool, not a trophy case.</h3>
+        <p>Saved articles, an intentional reading queue, auto-recorded history, text highlights you can annotate privately, and named collections. All Supabase-backed with Row Level Security — your data is yours.</p>
+        <ul class="f-list">
+          <li>Continue Reading surfaces your most recent entry automatically</li>
+          <li>Highlights store the quote + context, not just an offset</li>
+          <li>Collections: create, rename, delete — visible on public profiles if you choose</li>
+        </ul>
+      </div>
+      <div class="f-visual">
+        <div class="mock-bar"><span>LIBRARY · YOUR SPACE</span></div>
+        <div class="lib-grid">
+          <div class="lib-item"><div class="n">24</div><div class="l">Saved</div></div>
+          <div class="lib-item"><div class="n">7</div><div class="l">In queue</div></div>
+          <div class="lib-item"><div class="n">61</div><div class="l">Articles read</div></div>
+          <div class="lib-item"><div class="n">12</div><div class="l">Highlights</div></div>
+        </div>
+        <div class="mock-card" style="margin-top:10px;margin-bottom:0">
+          <div class="m" style="margin-bottom:6px">CONTINUE READING</div>
+          <div class="t">Debugging Node.js Memory Leaks: A Field Guide</div>
+          <div class="m">Programming · 64% complete</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search -->
+    <div class="feature-row reveal">
+      <div class="f-copy">
+        <p class="eyebrow">Command palette</p>
+        <h3>Everything is one keystroke away.</h3>
+        <p><code class="font-mono" style="font-size:13px;background:var(--accent-soft);color:var(--accent-ink);padding:2px 6px;border-radius:4px">Cmd/Ctrl + K</code> or <code class="font-mono" style="font-size:13px;background:var(--accent-soft);color:var(--accent-ink);padding:2px 6px;border-radius:4px">/</code> opens a Spotlight-style palette across articles, niches, products, and buying guides. Solid panel, neutral focus ring — no blue outline theater.</p>
+        <ul class="f-list">
+          <li>Fuzzy search over the full content index</li>
+          <li>Products and guides indexed alongside posts</li>
+          <li>Works identically regardless of niche — search is never forked</li>
+        </ul>
+      </div>
+      <div class="f-visual">
+        <div class="cmdk">
+          <div class="cmdk-input">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+            Search articles, products, niches…
+            <kbd>⌘K</kbd>
+          </div>
+          <div class="cmdk-item active">
+            <span class="dot" style="width:7px;height:7px;border-radius:50%;background:#4F7DFF"></span>
+            Best Phones Under ₹25,000 in 2026
+            <span class="tag">GUIDE</span>
+          </div>
+          <div class="cmdk-item">
+            <span class="dot" style="width:7px;height:7px;border-radius:50%;background:#10B981"></span>
+            Understanding React Server Components
+            <span class="tag">POST</span>
+          </div>
+          <div class="cmdk-item">
+            <span class="dot" style="width:7px;height:7px;border-radius:50%;background:#F59E0B"></span>
+            Compare: laptops under ₹60,000
+            <span class="tag">PRODUCT</span>
+          </div>
+          <div class="cmdk-item">
+            <span class="dot" style="width:7px;height:7px;border-radius:50%;background:#EF4444"></span>
+            Gaming — FPS, settings &amp; builds
+            <span class="tag">NICHE</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Shopping -->
+    <div class="feature-row flip reveal">
+      <div class="f-copy">
+        <p class="eyebrow">Shopping intelligence</p>
+        <h3>Recommendations with reasoning, not sponsored rankings.</h3>
+        <p>Product search, detail pages, and side-by-side comparisons are fetched live from Gemini at request time. Specs, winners per row, pros/cons, verdicts, and AI-estimated Indian street prices — labeled honestly, linked to retailers for verification.</p>
+        <ul class="f-list">
+          <li>Natural-language shopping assistant at <span class="font-mono" style="font-size:13px">/shopping</span></li>
+          <li>AI PC builder: budget + use-case builds with component reasoning</li>
+          <li>Side-by-side comparison for 2–4 products at <span class="font-mono" style="font-size:13px">/compare</span></li>
+        </ul>
+      </div>
+      <div class="f-visual">
+        <div class="mock-bar"><span>SHOPPING INTELLIGENCE · LIVE</span></div>
+        <div class="mock-card">
+          <div class="mock-row">
+            <div>
+              <div class="t">Best phone under ₹25,000</div>
+              <div class="m">5 picks · cameras, battery, updates compared</div>
+            </div>
+            <span class="chip" style="background:#147A3C">VERDICT</span>
+          </div>
+        </div>
+        <div class="mock-card">
+          <div class="mock-row">
+            <div>
+              <div class="t">Nothing Phone (3a) 5G</div>
+              <div class="m">8/128 · 50MP OIS · 5000mAh</div>
+            </div>
+            <div style="text-align:right">
+              <div class="price">₹23,999</div>
+              <div class="price-sub">est. street</div>
+            </div>
+          </div>
+          <div class="mock-pkg">
+            <span>Amazon</span><span>Flipkart</span><span>Croma</span>
+          </div>
+        </div>
+        <div class="mock-card" style="margin-bottom:0">
+          <div class="mock-row">
+            <div>
+              <div class="t">Poco F6 5G</div>
+              <div class="m">8/256 · SD 8s Gen 3 · 120W</div>
+            </div>
+            <div style="text-align:right">
+              <div class="price">₹21,499</div>
+              <div class="price-sub">est. street</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dual publishing -->
+    <div class="feature-row reveal">
+      <div class="f-copy">
+        <p class="eyebrow">Split publishing model</p>
+        <h3>One admin with AI. Writers without it. Enforced at the database.</h3>
+        <p>A single admin account gets full CRUD plus a Gemini drafting panel — drafts land in the editor for review, nothing auto-publishes. Regular users sign up and write manually; the no-AI boundary is enforced by Supabase Row Level Security, not a hidden button.</p>
+        <ul class="f-list">
+          <li>Admin: custom JWT cookie auth, image upload, niche-aware publish</li>
+          <li>Users: Supabase Auth + RLS, Medium-style markdown editor</li>
+          <li>Dual data mode — every page works with or without a live DB connection</li>
+        </ul>
+      </div>
+      <div class="f-visual">
+        <div class="mock-bar"><span>PUBLISHING MODEL</span></div>
+        <div class="mock-card">
+          <div class="mock-row">
+            <div>
+              <div class="t">Admin <span style="font-weight:400;color:var(--faint)">· operator</span></div>
+              <div class="m">JWT cookie · full CRUD · AI drafts (Gemini)</div>
+            </div>
+            <span class="chip" style="background:var(--accent)">AI ON</span>
+          </div>
+        </div>
+        <div class="mock-card">
+          <div class="mock-row">
+            <div>
+              <div class="t">Readers &amp; writers <span style="font-weight:400;color:var(--faint)">· community</span></div>
+              <div class="m">Supabase Auth · RLS-scoped · manual publish</div>
+            </div>
+            <span class="chip" style="background:#5b5e68">AI OFF</span>
+          </div>
+        </div>
+        <div class="mock-card" style="margin-bottom:0">
+          <div class="m" style="margin-bottom:8px">ROW LEVEL SECURITY</div>
+          <div class="font-mono" style="font-size:11.5px;color:var(--ink-2);line-height:1.7">
+            <span style="color:var(--accent-ink)">policy</span> writer_publishes_own_posts<br />
+            <span style="color:var(--faint)">using</span> (auth.uid() = author_id)<br />
+            <span style="color:var(--faint)">check</span> (auth.uid() = author_id)
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== NICHES ========== -->
+<section id="niches">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">03 · Taxonomy</p>
+      <h2>Ten niches. Each with its own editorial color.</h2>
+      <p>Color is a system in <span class="font-mono" style="font-size:14px">lib/niches.ts</span>, not a one-off — it reaches tags, blockquotes, table headers, the ambient article wash, and the admin publish button via a single CSS variable.</p>
+    </div>
+
+    <div class="niche-grid reveal">
+      <div class="niche-card">
+        <div class="swatch" style="background:#4F7DFF"></div>
+        <h4>AI Tools</h4>
+        <p class="tagline">Models, prompts &amp; workflows</p>
+        <p class="desc">Practical AI tooling that actually saves time.</p>
+      </div>
+      <div class="niche-card">
+        <div class="swatch" style="background:#10B981"></div>
+        <h4>Programming</h4>
+        <p class="tagline">Code that ships</p>
+        <p class="desc">Web dev, debugging, architecture, engineering craft.</p>
+      </div>
+      <div class="niche-card">
+        <div class="swatch" style="background:#84CC16"></div>
+        <h4>Android</h4>
+        <p class="tagline">Master your phone</p>
+        <p class="desc">Tips, fixes, apps and buying advice.</p>
+      </div>
+      <div class="niche-card">
+        <div class="swatch" style="background:#06B6D4"></div>
+        <h4>Windows</h4>
+        <p class="tagline">Faster PCs</p>
+        <p class="desc">Optimization, troubleshooting, power-user guides.</p>
+      </div>
+      <div class="niche-card">
+        <div class="swatch" style="background:#F59E0B"></div>
+        <h4>Gadgets</h4>
+        <p class="tagline">Phones, laptops &amp; audio</p>
+        <p class="desc">Honest reviews and buying guides with real prices.</p>
+      </div>
+      <div class="niche-card">
+        <div class="swatch" style="background:#EF4444"></div>
+        <h4>Gaming</h4>
+        <p class="tagline">FPS, settings &amp; builds</p>
+        <p class="desc">Game settings, performance tuning, PC builds.</p>
+      </div>
+      <div class="niche-card">
+        <div class="swatch" style="background:#8B5CF6"></div>
+        <h4>Career</h4>
+        <p class="tagline">Interviews &amp; growth</p>
+        <p class="desc">Interview prep, resumes, engineering career growth.</p>
+      </div>
+      <div class="niche-card">
+        <div class="swatch" style="background:#14B8A6"></div>
+        <h4>Finance</h4>
+        <p class="tagline">Money, smartly</p>
+        <p class="desc">Credit cards, investing, personal finance for techies.</p>
+      </div>
+      <div class="niche-card">
+        <div class="swatch" style="background:#EC4899"></div>
+        <h4>Productivity</h4>
+        <p class="tagline">Systems that stick</p>
+        <p class="desc">Note-taking, templates, workflows, deep work.</p>
+      </div>
+      <div class="niche-card">
+        <div class="swatch" style="background:#FF6B35"></div>
+        <h4>PC Hardware</h4>
+        <p class="tagline">Builds &amp; benchmarks</p>
+        <p class="desc">CPUs, GPUs, builds and component buying guides.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== QUOTE ========== -->
+<div class="quote-band">
+  <div class="wrap reveal">
+    <blockquote>Restraint is a competitive <em>aesthetic</em>, not a lack of ambition.</blockquote>
+    <p class="attrib">Design research · 3.0 editorial direction</p>
+  </div>
+</div>
+
+<!-- ========== DESIGN SYSTEM ========== -->
+<section id="design" class="alt">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">04 · Design language</p>
+      <h2>Content first. Borders over shadows. One accent.</h2>
+      <p>A hierarchical, content-first interface influenced by Linear, Stripe, and Apple's Liquid Glass principles — explicitly <em>not</em> glassmorphism. Hierarchy comes from position, scale, spacing, and typography before it ever comes from decoration.</p>
+    </div>
+
+    <div class="ds-grid">
+      <div class="ds-principles reveal">
+        <div class="ds-item">
+          <span class="idx">01</span>
+          <div>
+            <h4>Two-layer interface model</h4>
+            <p>Content layer dominates. UI/navigation floats. Transparency must be functional — every translucent surface answers “why should you see through this?”</p>
+          </div>
+        </div>
+        <div class="ds-item">
+          <span class="idx">02</span>
+          <div>
+            <h4>No glass-on-glass (hard rule)</h4>
+            <p>Nested glass surfaces produce mud. Elements sitting on glass get solid fills, typography, and spacing — never another blur layer.</p>
+          </div>
+        </div>
+        <div class="ds-item">
+          <span class="idx">03</span>
+          <div>
+            <h4>Single accent, four-step surface hierarchy</h4>
+            <p>bg &lt; sunken &lt; paper &lt; elev in light; sunken &lt; bg &lt; paper &lt; elev in dark. <span class="font-mono" style="font-size:12.5px">void</span> and <span class="font-mono" style="font-size:12.5px">accent</span> stay fixed across themes on purpose.</p>
+          </div>
+        </div>
+        <div class="ds-item">
+          <span class="idx">04</span>
+          <div>
+            <h4>Motion demonstrates, never decorates</h4>
+            <p>The Knowledge Orbit tilts a few degrees toward your cursor — it does not auto-rotate. Continuous motion is exactly what <span class="font-mono" style="font-size:12.5px">prefers-reduced-motion</span> users opt out of.</p>
+          </div>
+        </div>
+        <div class="ds-item">
+          <span class="idx">05</span>
+          <div>
+            <h4>Typography does the hierarchy work</h4>
+            <p>Display → page title → section → primary → secondary → metadata. Size, weight, and contrast — not borders and shadows — carry the structure.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal">
+          <p class="eyebrow" style="margin-bottom:12px">Core tokens</p>
+        <div class="swatchboard">
+          <div class="swatch-row">
+            <div class="sw light-txt" style="background:#f3f3f1">bg</div>
+            <div class="sw light-txt" style="background:#e9e9e6">sunken</div>
+            <div class="sw light-txt" style="background:#ffffff">paper</div>
+            <div class="sw" style="background:#141417">ink</div>
+            <div class="sw" style="background:#5b5e68">muted</div>
+            <div class="sw" style="background:#3d63f2">accent</div>
+          </div>
+          <div class="swatch-row">
+            <div class="sw" style="background:#0a0b0f">bg·dk</div>
+            <div class="sw" style="background:#12141b">paper·dk</div>
+            <div class="sw" style="background:#1a1e29">elev·dk</div>
+            <div class="sw light-txt" style="background:#f1f2f6">ink·dk</div>
+            <div class="sw light-txt" style="background:#9aa1b3">muted·dk</div>
+            <div class="sw" style="background:#7aa2ff">accent·dk</div>
+          </div>
+        </div>
+
+        <div class="type-specimen">
+        <div class="type-line">
+          <span class="font-pixel" style="font-size:26px">tech<span style="color:var(--accent)">//</span>site</span>
+          <span class="label">brand · pixels</span>
+        </div>
+        <div class="type-line">
+          <span class="font-display" style="font-size:26px;font-weight:600;letter-spacing:-0.02em">Fraunces Display</span>
+          <span class="label">headings</span>
+        </div>
+        <div class="type-line">
+          <span style="font-size:15px">Inter Variable body copy</span>
+          <span class="label">body</span>
+        </div>
+          <div class="type-line">
+            <span class="font-mono" style="font-size:14px">JetBrains Mono 0123456789</span>
+            <span class="label">code · meta</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== STACK ========== -->
+<section id="stack">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">05 · Engineering</p>
+      <h2>The stack, without the buzzwords.</h2>
+      <p>Next.js 15 App Router, React 19, TypeScript, Tailwind, Supabase, and Gemini — chosen because each one removes a category of problem rather than adding a category of config.</p>
+    </div>
+
+    <div class="stack-grid reveal">
+      <div class="stack-card">
+        <p class="cat">Framework</p>
+        <h4>Next.js 15 + React 19</h4>
+        <p>App Router, Server Components, Turbopack dev, route groups for chrome-free auth pages.</p>
+      </div>
+      <div class="stack-card">
+        <p class="cat">Data</p>
+        <h4>Supabase</h4>
+        <p>Postgres, Auth, Storage. <code>20 tables</code>, full RLS policies, versioned schema files.</p>
+      </div>
+      <div class="stack-card">
+        <p class="cat">Intelligence</p>
+        <h4>Gemini API</h4>
+        <p>Live product data, shopping recommendations, PC builds, admin draft generation.</p>
+      </div>
+      <div class="stack-card">
+        <p class="cat">Styling</p>
+        <h4>Tailwind CSS</h4>
+        <p>CSS-variable theme tokens, self-hosted variable fonts, zero runtime Google Fonts requests.</p>
+      </div>
+      <div class="stack-card">
+        <p class="cat">Auth</p>
+        <h4>Two systems, on purpose</h4>
+        <p>Admin: custom JWT cookie. Readers: Supabase Auth + RLS. Different trust boundaries, different mechanisms.</p>
+      </div>
+      <div class="stack-card">
+        <p class="cat">Content</p>
+        <h4>Markdown pipeline</h4>
+        <p>react-markdown + remark-gfm + rehype-highlight + rehype-slug, plus a custom figure-highlight plugin.</p>
+      </div>
+      <div class="stack-card">
+        <p class="cat">Performance</p>
+        <h4>Guardrails, not guesses</h4>
+        <p>Shared <code>withTimeout</code> on every Supabase call in the critical path. 2.5s cap — a broken config can't take every page to 7.4s.</p>
+      </div>
+      <div class="stack-card">
+        <p class="cat">Deploy</p>
+        <h4>Vercel</h4>
+        <p>Speed Insights + Analytics. Edge middleware for session refresh. <code>npm run build</code> from clean <code>.next</code>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== WHO IT'S FOR + CLOSING CTA ========== -->
+<section id="start">
+  <div class="wrap who-grid">
+    <div class="reveal">
+      <p class="eyebrow">06 · Who it's for</p>
+      <h2 class="who-title">Built for people who are tired of filler.</h2>
+      <div class="who-list">
+        <div class="who-item">
+          <div class="ic" aria-hidden="true">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </div>
+          <div>
+            <h4>Readers who want depth</h4>
+            <p>Long-form guides with tables of contents, honest trade-offs, and zero ad-chasing word count.</p>
+          </div>
+        </div>
+        <div class="who-item">
+          <div class="ic" aria-hidden="true">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+          </div>
+          <div>
+            <h4>Creators who want their own space</h4>
+            <p>A calm writing desk, libraries, and dashboards — a private publication, not a content mill.</p>
+          </div>
+        </div>
+        <div class="who-item">
+          <div class="ic" aria-hidden="true">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg>
+          </div>
+          <div>
+            <h4>Buyers who want the truth</h4>
+            <p>Price history, comparisons, and AI PC builds that will tell you when not to spend.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <aside class="close-cta reveal">
+      <p class="eyebrow">See it for yourself</p>
+      <h2>Everything live, right now.</h2>
+      <p>The publication ships with real sample content — no setup, no waitlist.</p>
+      <div class="hero-ctas">
+        <a href="https://tech-site-new.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+          Open live demo
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+        </a>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- ========== FAQ ========== -->
+<section id="faq" class="alt">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">07 · FAQ</p>
+      <h2>Straight answers.</h2>
+      <p>The questions people actually ask.</p>
+    </div>
+    <div class="faq-list reveal">
+      <details>
+        <summary>Is this a public blog or a private one?</summary>
+        <p>Private by default. It's a personal publication — your content, your rules. No ads, no trackers, no engagement bait; posts go public only when you choose.</p>
+      </details>
+      <details>
+        <summary>Do I need a database to run it?</summary>
+        <p>No. The site loads immediately with real sample content. Supabase only kicks in for accounts, saved libraries, and creator tools when you're ready for them.</p>
+      </details>
+      <details>
+        <summary>What does it cost?</summary>
+        <p>Reading and exploring are free. If the project saves you time, a Ko-fi tip keeps it alive — no subscriptions, no paywalls.</p>
+      </details>
+      <details>
+        <summary>How is it funded?</summary>
+        <p>No ads and no trackers. Ko-fi support covers hosting and coffee — that's the whole business model.</p>
+      </details>
+      <details>
+        <summary>What's under the hood?</summary>
+        <p>Next.js 15, React 19, Supabase, and Tailwind, deployed on Vercel with edge middleware and a hand-tuned design system in both themes.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ========== NEWSLETTER ========== -->
+<section id="newsletter">
+  <div class="wrap">
+    <div class="news-card reveal">
+      <div>
+        <p class="eyebrow">08 · Newsletter</p>
+        <h2 class="news-title">New guides, no noise.</h2>
+        <p class="news-sub">One email when something worth reading ships. Unsubscribe anytime.</p>
+      </div>
+      <form id="news-form" novalidate>
+        <div class="news-form">
+          <input type="email" name="email" placeholder="you@example.com" required aria-label="Email address" autocomplete="email" />
+          <button type="submit" class="btn btn-primary">Subscribe</button>
+        </div>
+        <p class="news-note" id="news-note">Showcase form — nothing is sent anywhere.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="brand">tech<span class="sl" style="color:var(--accent)">//</span>site</div>
+        <p class="tag">Practical answers, not filler — across code, devices, and money.</p>
+      </div>
+      <div>
+        <h5>Product</h5>
+        <ul>
+          <li><a href="https://tech-site-new.vercel.app/shopping">Shopping Intelligence</a></li>
+          <li><a href="https://tech-site-new.vercel.app/pc-builder">AI PC Builder</a></li>
+          <li><a href="https://tech-site-new.vercel.app/compare">Compare Products</a></li>
+          <li><a href="https://tech-site-new.vercel.app/guides">Buying Guides</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Explore</h5>
+        <ul>
+          <li><a href="https://tech-site-new.vercel.app/library">Library</a></li>
+          <li><a href="https://tech-site-new.vercel.app/dashboard">Dashboard</a></li>
+          <li><a href="https://tech-site-new.vercel.app/write">Write</a></li>
+          <li><a href="https://tech-site-new.vercel.app/onboarding">Get Started</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Company</h5>
+        <ul>
+          <li><a href="https://tech-site-new.vercel.app/about">About</a></li>
+          <li><a href="https://tech-site-new.vercel.app/contact">Contact</a></li>
+          <li><a href="https://tech-site-new.vercel.app/privacy">Privacy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 tech//site. All rights reserved.</span>
+      <span>Made with care in India. · Showcase page · not part of the production bundle</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal — respects prefers-reduced-motion via CSS
+  (function () {
+    var els = document.querySelectorAll(".reveal");
+    if (!("IntersectionObserver" in window)) {
+      els.forEach(function (el) { el.classList.add("in"); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+    els.forEach(function (el) { io.observe(el); });
+  })();
+
+  // Dark mode toggle
+  (function () {
+    var btn = document.querySelector(".theme-toggle");
+    if (!btn) return;
+    btn.addEventListener("click", function () {
+      var next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+      document.documentElement.dataset.theme = next;
+      try { localStorage.setItem("theme", next); } catch (e) {}
+    });
+  })();
+
+  // Newsletter (static demo — no backend)
+  (function () {
+    var form = document.getElementById("news-form");
+    if (!form) return;
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var input = form.querySelector("input[type=email]");
+      var note = document.getElementById("news-note");
+      if (input && input.value && input.checkValidity()) {
+        if (note) {
+          note.textContent = "You're on the list — demo only, nothing was sent.";
+          note.classList.add("ok");
+        }
+        form.reset();
+      } else if (note) {
+        note.textContent = "Please enter a valid email address.";
+        note.classList.remove("ok");
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>
