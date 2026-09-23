@@ -86,8 +86,8 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       {product.description && <p className="mt-3 text-[15px] leading-relaxed text-muted">{product.description}</p>}
 
       <h2 className="mt-8 font-display text-xl font-semibold">Specifications</h2>
-      <div className="mt-3 overflow-hidden rounded-folder border border-line">
-        <table className="w-full text-sm">
+      <div className="mt-3 overflow-x-auto rounded-folder border border-line">
+        <table className="w-full min-w-[420px] text-sm">
           <tbody>
             {(product.specs || []).sort((a, b) => (a.display_order || 0) - (b.display_order || 0)).map((s, i) => (
               <tr key={i} className={i % 2 ? 'bg-paper' : 'bg-bg'}>

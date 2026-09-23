@@ -486,6 +486,13 @@ footer {
   border: 1px solid var(--line);
   white-space: nowrap;
 }
+/* Small screens: let long inline code wrap instead of forcing page overflow */
+@media (max-width: 767px) {
+  .prose-tech :not(pre) > code {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+}
 /* Code blocks — always dark brand surface */
 .prose-tech pre {
   background: #0a0b0f !important;

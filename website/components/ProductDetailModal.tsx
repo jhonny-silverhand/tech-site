@@ -148,8 +148,8 @@ export function ProductDetailModalHost() {
               {state.product.specs.length > 0 && (
                 <>
                   <h3 className="mt-8 font-display text-2xl font-bold">Specifications</h3>
-                  <div className="mt-3 overflow-hidden rounded-folder border border-line">
-                    <table className="w-full text-sm">
+                  <div className="mt-3 overflow-x-auto rounded-folder border border-line">
+                    <table className="w-full min-w-[420px] text-sm">
                       <tbody>
                         {[...state.product.specs]
                           .sort((a, b) => (a.display_order || 0) - (b.display_order || 0))
