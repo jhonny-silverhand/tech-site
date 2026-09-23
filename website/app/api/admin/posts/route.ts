@@ -15,6 +15,21 @@ export async function GET() {
   return NextResponse.json({ posts });
 }
 
+export async function PATCH(req: Request) {
+  if (!(await isAdminRequest())) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  try {
+    const body = await req.json();
+    const { id, cover_image_url } = body;
+    if (!id || !cover_image_url) return NextResponse.json({ error: 'id and cover_image_url required' }, { status: 400 });
+    const supabase = adminDb();
+    const { data, error } = await supabase.from('posts').update({ cover_image_url }).eq('id', id).select('*').single();
+    if (error) throw new Error(error.message);
+    return NextResponse.json({ post: data });
+  } catch (err) {
+    return NextResponse.json({ error: err instanceof Error ? err.message : 'Update failed' }, { status: 500 });
+  }
+}
+
 export async function POST(req: Request) {
   if (!(await isAdminRequest())) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   try {
@@ -30,7 +45,7 @@ export async function POST(req: Request) {
       excerpt: String(body.excerpt || excerptOf(content)),
       content,
       niche,
-      cover_image_url: coverFor(slug, String(body.cover_image_url || '')),
+      cover_image_url: coverFor(slug, String(body.cover_image_url || ''), niche),
       status: body.status === 'published' ? 'published' : 'draft',
       author_name: 'tech//site Editorial',
       reading_time: readingTime(content),

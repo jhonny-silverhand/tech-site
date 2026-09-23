@@ -7,24 +7,35 @@ import { isSupabaseConfigured } from './supabase/config';
 import { createClient, createAdminClient } from './supabase/server';
 import { readingTime, slugify } from './utils';
 import { nicheColor } from './niches';
+import { COVER_POOLS, DEFAULT_COVER_POOL } from './cover-pools';
 
 export const CARD_COLUMNS =
   'id, slug, title, excerpt, niche, author_id, author_name, author_avatar, cover_image_url, published_at, reading_time, seo_title, seo_description, status, featured, tags, niche_color, is_ai_assisted, created_at, updated_at';
 
 /**
  * Every article ships a picture — no exceptions. Explicit covers
- * (upload or pasted URL) win; otherwise a stable picsum seed keyed by
- * slug, so the same article always gets the same photo.
+ * (upload or pasted URL) win; otherwise a deterministic pick from the
+ * curated per-niche pool of freely licensed photos (see lib/cover-pools.ts),
+ * keyed by slug, so the same article always gets the same photo.
  */
-export function coverFor(slug: string, existing?: string | null): string {
+export function coverFor(slug: string, existing?: string | null, niche?: string | null): string {
   const url = (existing || '').trim();
   if (url) return url;
+  const pool = (niche && COVER_POOLS[niche]) || DEFAULT_COVER_POOL;
+  if (pool.length > 0) return pool[hashSlug(slug) % pool.length];
   return `https://picsum.photos/seed/${slug}/1200/675`;
 }
 
+/** djb2 — deterministic per-slug index into a cover pool. */
+function hashSlug(slug: string): number {
+  let h = 5381;
+  for (let i = 0; i < slug.length; i++) h = ((h * 33) ^ slug.charCodeAt(i)) >>> 0;
+  return h;
+}
+
 /** Read-time backfill — guarantees every card/post carries a picture, even old DB rows. */
-export function withCover<T extends { slug: string; cover_image_url: string | null }>(p: T): T {
-  const cover = coverFor(p.slug, p.cover_image_url);
+export function withCover<T extends { slug: string; niche: string; cover_image_url: string | null }>(p: T): T {
+  const cover = coverFor(p.slug, p.cover_image_url, p.niche);
   return cover === p.cover_image_url ? p : { ...p, cover_image_url: cover };
 }
 
@@ -50,7 +61,7 @@ function seedPostsAll(): Post[] {
       excerpt: s.excerpt,
       content,
       niche: s.niche,
-      cover_image_url: coverFor(s.slug, null),
+      cover_image_url: coverFor(s.slug, null, s.niche),
       status: 'published' as const,
       author_id: null,
       author_name: s.author_name,
@@ -260,7 +271,7 @@ export async function createUserPost(input: {
     excerpt: input.excerpt,
     content: input.content,
     niche: input.niche,
-    cover_image_url: coverFor(slug, input.cover_image_url),
+    cover_image_url: coverFor(slug, input.cover_image_url, input.niche),
     status: 'published',
     author_id: input.author_id,
     author_name: input.author_name,
