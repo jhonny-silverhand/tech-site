@@ -3,6 +3,7 @@
 import dynamic from 'next/dynamic';
 import { RouteProgress } from './RouteProgress';
 import { ThemeCelebration } from './ThemeCelebration';
+import { SiteToast } from './SiteToast';
 
 const CommandPalette = dynamic(() => import('./CommandPalette').then((m) => m.CommandPalette), {
   ssr: false,
@@ -21,6 +22,7 @@ export function ClientShell({ children }: { children: React.ReactNode }) {
       <ThemeCelebration />
       {children}
       <CommandPalette />
+      <SiteToast />
       {onVercel && <SpeedInsights />}
     </>
   );
