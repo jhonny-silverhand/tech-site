@@ -3,6 +3,38 @@
 All notable changes to tech//site are documented here. Format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [1.3.0] - 2026-11-09
+
+### Backfilled — shipped 2026-09-22 → 2026-09-24, previously undocumented
+*(16 commits had no changelog entries; backfilled factually from git history during the 2026-11-09 documentation review)*
+- **Central AI router** (`lib/ai-router.ts`): every model call now flows through one
+  chokepoint — `gemini-3.8-flash → 3.7-flash → 3.6-flash` (single try each, 3 s gap),
+  then Groq `openai/gpt-oss-120b` fallback via `GROQ_API_KEY` (separate quota pool).
+  `lib/gemini.ts` reduced to a compatibility shim. (`cc2a5c3`, `9aebd28`)
+- **Real retailer links from model output + heavy-load notice** on `/shopping`. (`f2e2ae9`)
+- **Breadcrumb separators `//`** + breadcrumb on the compare index. (`b3333b6`)
+- **Marketing showcase served at `/showcase`** (static HTML + Pixels font). (`59d1674`)
+- **Pixel neko day/night theme switch** — cat artwork, tight 10 KB face crops,
+  celebration popup, simple Sun/Moon toggle via `techsite:theme-changed`. (`1e516dd`, `38dd306`, `90de0b2`)
+- **Admin dashboard overhaul** — stats, drafts attention, quick actions, delete;
+  Pixels wordmark sizing pass (40 px sitewide, 32 px admin nav/login; `//` on all
+  brand mentions except copyright). (`3153fa3`, `7966496`, `c30f0de`)
+- **Desktop-view notice popup** on small displays. (`9c5d53b`)
+- **Site-wide corner toast**, auto-dismiss 4 s. (`be52192`)
+- **Curated per-niche cover pools** replace random picsum covers (`lib/cover-pools.ts`). (`833fa1a`)
+- **Mobile overflow fixes** — long inline code wraps, product spec tables scroll. (`4af2bf4`)
+- **Compacts + marketing fonts committed** (`compacts/markdown-file-review.md`). (`01287e1`)
+
+### Added — 2026-11-09
+- **Root documentation set** (owner-mandated standing workflow): `compact.md`,
+  `technical-documentation.md`, `business-documentation.md`, `decisions.md`,
+  `help.md`; root `README.md` refreshed (10-niche taxonomy, live-AI shopping,
+  current schema/env pointers); legacy status note added to root `CHANGELOG.md`.
+- Documentation review flagged (recorded in `decisions.md`): `package.json` still
+  `1.1.0` vs this changelog; committed `public/version.json` stale at `1.0.0`;
+  `website/temp.md` is an unrelated GitHub-profile draft; Groq/Resend keys exposed
+  in a past chat session need rotation.
+
 ## [1.2.0] - 2026-09-21
 
 ### Added

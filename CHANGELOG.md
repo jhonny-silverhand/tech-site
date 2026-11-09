@@ -2,6 +2,8 @@
 
 All notable changes to this project are logged here, newest first. Version numbers are informal (this isn't published to npm) — they just track meaningful rounds of changes.
 
+> **Status note (added 2026-11-09):** this file is the **legacy changelog of the pre-rebuild project** (v1.0 → v4.3, 2026-07-18 → 2026-09-12; an intermediate scraped-catalog snapshot with its own 4.x log lives under `archived/website-backup/`). The current application (`website/`) is a rebuild and keeps its changelog at **`website/CHANGELOG.md`** (1.x series, newest first). Entries below are preserved as-is for history — note that two different sections are numbered 4.2 (2026-09-11 and 2026-09-10).
+
 ---
 
 ## 4.0 — Editorial Knowledge Platform + Shopping Intelligence
