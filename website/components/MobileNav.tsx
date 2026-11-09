@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Menu, X, Search } from 'lucide-react';
+import { Menu, X, Search } from '@/components/icons';
 import { NICHES } from '@/lib/niches';
 import { AccountMenu } from './AccountMenu';
 

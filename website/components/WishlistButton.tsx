@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Heart } from 'lucide-react';
+import { Heart } from '@/components/icons';
 import { toggleWishlist } from '@/lib/library';
 
 export function WishlistButton({

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Bookmark } from 'lucide-react';
+import { Bookmark } from '@/components/icons';
 import { toggleBookmark } from '@/lib/library';
 
 export function BookmarkButton({

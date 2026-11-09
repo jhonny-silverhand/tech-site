@@ -44,7 +44,7 @@ export async function AuthorBlock({
   return (
     <section aria-label="About the author" className="rounded-folder border border-line bg-paper p-5">
       <div className="flex items-start gap-4">
-        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-ink font-display text-xl font-semibold text-bg">
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center bg-ink font-display text-xl font-semibold text-bg">
           {initial}
         </div>
         <div className="min-w-0 flex-1">

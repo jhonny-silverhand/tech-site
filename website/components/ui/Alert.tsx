@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { AlertCircle, CheckCircle2, Info, TriangleAlert } from 'lucide-react';
+import { AlertCircle, CheckCircle2, Info, TriangleAlert } from '@/components/icons';
 import { cn } from '@/lib/utils';
 
 type Tone = 'error' | 'warning' | 'success' | 'info';

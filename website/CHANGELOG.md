@@ -3,6 +3,42 @@
 All notable changes to tech//site are documented here. Format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [1.4.0] - 2026-11-09
+
+### Redesign — "Silkscreen" design system v3 (icons + tokens + /shopping)
+*(Method: awwwards-skill workflow from github.com/juliobsz/skills — concept, art direction,
+typography, motion — applied with focus on /shopping. System documented in `DESIGN.md`.)*
+
+- **Sharp-flat icon system** (`components/icons/`, 69 glyphs): replaces lucide-react
+  site-wide (35 import sites). Hand-drawn in the Streamline "Sharp Flat" visual language —
+  24 px grid, fill-only, mitered corners, two-tone (`currentColor` + 34 % `sf-tone2` tint),
+  lucide-compatible API (`size`/`className`). Rationale: the official Streamline set is
+  paid (subscription npm token); the visual language is replicated instead. lucide-react,
+  Inter, Fraunces and Cormorant Garamond dependencies removed.
+- **Typography switch — Archivo Variable** (self-hosted width-axis 62–125 %): display cut
+  `font-stretch: 125 %` w800, text cut normal width; JetBrains Mono unchanged; serif voices
+  (Fraunces/Cormorant) and Inter removed from type scale, prose and Tailwind config.
+- **Geometry — radius 0 sitewide**: Tailwind radius scale overridden to 0 px (only
+  `rounded-full` kept for true circles — dots, orbit rings, spinner); pill chips and
+  avatars converted to square in 16 files; `.card`/`.chip`/`.elev`/`.sunken` sharp.
+- **Signal accent**: blue `#3d63f2` → red-orange `#D9481F` (light) / `#FF6B3D` (dark),
+  text-safe `#BE3A0E` / `#FF8A5E` (AA-verified 4.7:1 / 8.5:1). Favicon `//` mark follows.
+- **`/shopping` deep redesign**: console hero (four-corner status strip, poster statement,
+  `>`-prompt query input, scanline sweep while the AI chain works), loading state with
+  cycling stage readout (PARSING → SPECS → PRICES → RANKING) + elapsed counter, results as
+  a ranked ledger (tabular rank numerals, top-pick signal bar, feature chips, flood-hover
+  buy buttons), pipeline strip, query tips, dark next-instruments footer strip. Page's
+  hardcoded cream/teal palette removed — now fully on site tokens (light + dark).
+- **Homepage shopping panel** (`ShoppingIntelligenceHero`) restyled to the console language;
+  `ProductCard` and compare/pc-builder pages inherit the new system via tokens.
+- **Motion system** (globals.css): `.snap-in` settle entrances, `.scanline` sweep,
+  `.flood` button fills, `.icon-nudge` arrow travel, `.roll`/`.draw` nav hovers — all with
+  `:focus-visible` and reduced-motion fallbacks.
+- **Docs:** `website/DESIGN.md` added (concept card + system, awwwards-skill artifact);
+  `package.json` version aligned to changelog (1.1.0 → 1.4.0, resolving a flagged drift).
+- QA: `tsc --noEmit` clean; `next build` clean (54 routes); /shopping, /, /compare
+  verified by screenshot in light + dark + 390 px mobile (VLM review loop, 6 icons iterated).
+
 ## [1.3.0] - 2026-11-09
 
 ### Backfilled — shipped 2026-09-22 → 2026-09-24, previously undocumented

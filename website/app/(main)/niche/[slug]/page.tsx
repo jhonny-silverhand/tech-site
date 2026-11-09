@@ -44,7 +44,7 @@ export default async function NichePage({ params }: { params: Promise<{ slug: st
       <BreadcrumbSlash items={[{ label: 'Home', href: '/' }, { label: niche.name }]} />
       <div className="mt-5 flex flex-wrap items-end justify-between gap-4 border-b border-line pb-7">
         <div className="min-w-0">
-          <p className="inline-flex items-center gap-2 rounded-full border border-line bg-paper px-3 py-1 font-mono text-[11px] text-muted">
+          <p className="inline-flex items-center gap-2 border border-line bg-paper px-3 py-1 font-mono text-[11px] text-muted">
             <span className="h-[8px] w-[8px] rounded-full" style={{ background: niche.color }} aria-hidden />
             Topic · <span className="t-numeric">{posts.length} article{posts.length === 1 ? '' : 's'}</span>
           </p>

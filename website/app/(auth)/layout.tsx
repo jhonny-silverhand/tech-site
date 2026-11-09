@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Bookmark, Library, Highlighter, Sparkles } from 'lucide-react';
+import { Bookmark, Library, Highlighter, Sparkles } from '@/components/icons';
 import { BrandMark } from '@/components/BrandMark';
 
 const PERKS = [

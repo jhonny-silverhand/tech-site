@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Sun, Moon } from 'lucide-react';
+import { Sun, Moon } from '@/components/icons';
 
 function currentTheme(): 'light' | 'dark' {
   if (typeof document === 'undefined') return 'light';

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Sparkles, Upload } from 'lucide-react';
+import { Sparkles, Upload } from '@/components/icons';
 import { NICHES } from '@/lib/niches';
 import { Input, Textarea, Field } from '../ui/Field';
 import { Button } from '../ui/Button';

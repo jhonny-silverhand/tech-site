@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Search, CornerDownLeft, FileText, Package, Compass, ArrowUp, ArrowDown, X } from 'lucide-react';
+import { Search, CornerDownLeft, FileText, Package, Compass, ArrowUp, ArrowDown, X } from '@/components/icons';
 import type { SearchIndexItem } from '@/lib/types';
 
 function score(query: string, text: string): number {
@@ -120,7 +120,7 @@ export function CommandPalette() {
       >
         {/* ── Finder-style field: big glyph, large text, soft keys ── */}
         <div className="flex items-center gap-3 border-b border-line px-5">
-          <Search size={19} className="flex-none text-faint" aria-hidden strokeWidth={2.2} />
+          <Search size={19} className="flex-none text-faint" aria-hidden />
           <input
             ref={inputRef}
             value={query}
@@ -148,7 +148,7 @@ export function CommandPalette() {
             <button
               onClick={() => setQuery('')}
               aria-label="Clear search"
-              className="flex h-6 w-6 flex-none items-center justify-center rounded-full bg-black/10 text-muted hover:bg-black/20 hover:text-ink dark:bg-white/15 dark:hover:bg-white/25 dark:hover:text-white"
+              className="flex h-6 w-6 flex-none items-center justify-center bg-black/10 text-muted hover:bg-black/20 hover:text-ink dark:bg-white/15 dark:hover:bg-white/25 dark:hover:text-white"
             >
               <X size={13} aria-hidden />
             </button>

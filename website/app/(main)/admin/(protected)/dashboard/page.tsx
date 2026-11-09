@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Plus, Pencil, FileText, CheckCircle2, PenLine, Sparkles, ExternalLink, LayoutGrid } from 'lucide-react';
+import { Plus, Pencil, FileText, CheckCircle2, PenLine, Sparkles, ExternalLink, LayoutGrid } from '@/components/icons';
 import { getAllPostsAdmin, countPublishedPosts } from '@/lib/data';
 import { getAdminEmail } from '@/lib/auth';
 import { formatDate } from '@/lib/utils';
@@ -41,7 +41,7 @@ export default async function AdminDashboardPage() {
         <div className="min-w-0">
           <p className="eyebrow">tech//admin</p>
           <h1 className="t-page mt-1 text-3xl sm:text-4xl">Dashboard</h1>
-          <p className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-line bg-paper px-2.5 py-1 font-mono text-[11px] text-muted">
+          <p className="mt-2 inline-flex items-center gap-1.5 border border-line bg-paper px-2.5 py-1 font-mono text-[11px] text-muted">
             <span className="status-dot" aria-hidden /> Signed in as {email}
           </p>
         </div>
@@ -74,7 +74,7 @@ export default async function AdminDashboardPage() {
       {drafts.length > 0 && (
         <section aria-label="Drafts needing attention" className="mt-8">
           <div className="mb-3 flex items-baseline justify-between">
-            <h2 className="t-section text-[20px]">Needs attention <span className="ml-1 rounded-full bg-warnsoft px-2 py-0.5 align-middle font-mono text-[11px] text-warn">{drafts.length}</span></h2>
+            <h2 className="t-section text-[20px]">Needs attention <span className="ml-1 bg-warnsoft px-2 py-0.5 align-middle font-mono text-[11px] text-warn">{drafts.length}</span></h2>
           </div>
           <ul className="card divide-y divide-line overflow-hidden">
             {drafts.slice(0, 5).map((p) => {

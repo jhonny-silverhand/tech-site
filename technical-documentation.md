@@ -34,13 +34,13 @@ tech-site/
 | Layer | Technology |
 |---|---|
 | Framework | Next.js 15 App Router (`^15.1.6`), React 19, TypeScript 5.6 |
-| Styling | Tailwind CSS 3.4, CSS-variable theme tokens, self-hosted Fontsource variable fonts (Fraunces, Cormorant Garamond, Inter, JetBrains Mono) + local `Pixels.ttf` brand font |
+| Styling | Tailwind CSS 3.4, CSS-variable theme tokens (design system v3 "Silkscreen": radius 0, signal accent), self-hosted Fontsource variable fonts (Archivo incl. width axis, JetBrains Mono) + local `Pixels.ttf` brand font |
 | Database/Auth | Supabase (PostgreSQL + Auth + Storage + RLS), `@supabase/ssr` 0.5 |
 | AI | Gemini REST (direct fetch) with fallback chain + Groq — see §6 |
 | Admin auth | `jose` (JWT) + `bcryptjs`, httpOnly cookie `tech_site_admin_session`, 7-day expiry |
 | Email | Resend HTTP API (contact form, no SDK) |
 | Markdown | react-markdown 9 + remark-gfm + rehype-highlight + rehype-slug |
-| Icons/UI | lucide-react, custom `components/ui/` primitives |
+| Icons/UI | Custom sharp-flat two-tone icon system `components/icons/` (69 glyphs, lucide-name-compatible, currentColor + `sf-tone2` 34 % tint), custom `components/ui/` primitives. lucide-react removed 2026-11-09 |
 | Analytics | Vercel Speed Insights (rendered only when `NEXT_PUBLIC_VERCEL_ENV` is set) + Vercel Web Analytics |
 | Deploy | Vercel (Root Directory `website`, `next build`; build runs `scripts/gen-version.mjs` first) |
 
@@ -86,9 +86,12 @@ Scripts (`website/package.json`): `dev` (wipes `.next`, then `next dev --turbopa
 - **Admin:** single account, separate from Supabase Auth. `POST /api/admin/login` verifies bcrypt hash (`ADMIN_PASSWORD_HASH_B64`, base64-encoded so `$` chars survive `.env` parsing) and sets a signed JWT cookie; `(protected)` layout guards routes; admin API uses the service-role client.
 - **Split publishing model (enforced):** admin can generate AI drafts; regular users get no AI anywhere — admin-only routes + RLS.
 
-## 8. Theming & UI system
+## 8. Theming & UI system (v3 "Silkscreen" — 2026-11-09, see `website/DESIGN.md`)
 
-- Hierarchical surface tokens (`bg → sunken → paper → elev`), warm-paper light / blue-charcoal dark; theme persisted in `localStorage`, `prefers-color-scheme` fallback, FOUC-safe inline init script in `app/layout.tsx`.
+- Concept: precision instrument panel / PCB. Sharp corners everywhere (Tailwind radius scale overridden to 0 px; only `rounded-full` survives for true circles — dots, orbit rings, spinner). Signal accent `#D9481F` light / `#FF6B3D` dark (text-safe `--accent-ink` AA-verified). Typography: Archivo Variable, display cut `font-stretch: 125 %` w800 (`.font-display`, `.t-display/.t-page/.t-section`), JetBrains Mono for data (`t-meta`, chips, code). Serif fonts removed.
+- Icon system: `components/icons/` — 24 px grid, fill-only, two-tone (`currentColor` primary + `.sf-tone2` secondary), lucide-compatible API. Import from `@/components/icons`.
+- Motion utilities in `globals.css`: `.snap-in`, `.scanline`, `.flood`, `.icon-nudge`, `.roll`, `.draw` — all reduced-motion safe.
+- Hierarchical surface tokens (`bg → sunken → paper → elev`), cool-paper light / blue-charcoal dark; theme persisted in `localStorage`, `prefers-color-scheme` fallback, FOUC-safe inline init script in `app/layout.tsx`.
 - Known trap (bit us twice): `bg-ink` flips to a light color in dark mode — use `bg-void` for always-dark surfaces.
 - `Pixels.ttf` wordmark font (~38–40 px) on header/footer/orbit/auth/admin/OG image, except copyright line.
 - Neko cat day/night toggle (`public/theme-cat-*.png` + tight face crops) with `ThemeCelebration` popup driven by the `techsite:theme-changed` custom event; `RouteProgress` YouTube-style route loading bar; `SiteToast` corner toast (4 s auto-dismiss); desktop-view notice popup on small displays.

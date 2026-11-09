@@ -8,6 +8,8 @@ tech//site's stated mission (site hero + `website/README.md`): **"Practical answ
 
 Positioning *(inferred from tagline and editorial rules)*: a quality-first alternative to SEO-spam tech content, where recommendations are transparent about being AI-sourced.
 
+**2026-11-09 — product surface redesign (v3 "Silkscreen", website/CHANGELOG 1.4.0):** site-wide icon/type/color/geometry refresh plus a rebuilt `/shopping` experience (console-style query with live AI status readout, ranked-ledger results). User-visible intent: the shopping tool now *shows its work* — the AI pipeline stages and elapsed time are visible while results load, reinforcing the transparent-AI positioning above. No business rules, pricing sources, or data flows changed.
+
 ## 2. Users & audiences
 
 | Audience | What they get | Auth |

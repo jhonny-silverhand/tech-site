@@ -1,12 +1,13 @@
 'use client';
 
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import {
   Sparkles, ArrowRight, Loader2, Star, Check, Zap, Target, RotateCcw, ExternalLink,
   Camera, Laptop, Headphones, Monitor, Watch, Keyboard, Dumbbell, GraduationCap,
-} from 'lucide-react';
+  Scale, Cpu,
+} from '@/components/icons';
 
 /* ─── types ─── */
 interface ProductPick {
@@ -30,15 +31,18 @@ interface AIResult {
 }
 
 const SUGGESTIONS = [
-  { label: 'Best camera phone under 30k', icon: Camera, pop: 'text-[#E85D5D] dark:text-[#FF8E8E]' },
-  { label: 'Laptop for coding under 60k', icon: Laptop, pop: 'text-[#4D96FF] dark:text-[#8AB4FF]' },
-  { label: 'Noise cancelling headphones', icon: Headphones, pop: 'text-[#0EA5A5] dark:text-[#4ECDC4]' },
-  { label: 'Gaming monitor under 25k', icon: Monitor, pop: 'text-[#9B5DE5] dark:text-[#C39BFF]' },
-  { label: 'Smartwatch for fitness', icon: Watch, pop: 'text-[#F15BB5] dark:text-[#FF8ED4]' },
-  { label: 'Mechanical keyboard for typing', icon: Keyboard, pop: 'text-[#E85D5D] dark:text-[#FF8E8E]' },
-  { label: 'Wireless earbuds for gym', icon: Dumbbell, pop: 'text-[#0EA5A5] dark:text-[#4ECDC4]' },
-  { label: 'Student laptop under 40k', icon: GraduationCap, pop: 'text-[#B7791F] dark:text-[#FFD93D]' },
+  { label: 'Best camera phone under 30k', icon: Camera },
+  { label: 'Laptop for coding under 60k', icon: Laptop },
+  { label: 'Noise cancelling headphones', icon: Headphones },
+  { label: 'Gaming monitor under 25k', icon: Monitor },
+  { label: 'Smartwatch for fitness', icon: Watch },
+  { label: 'Mechanical keyboard for typing', icon: Keyboard },
+  { label: 'Wireless earbuds for gym', icon: Dumbbell },
+  { label: 'Student laptop under 40k', icon: GraduationCap },
 ];
+
+/* Scan stages — the console narrates what the AI chain is doing */
+const SCAN_STAGES = ['PARSING QUERY', 'GATHERING SPECS', 'CHECKING PRICES', 'RANKING PICKS'];
 
 /* ─── page ─── */
 export default function ShoppingPage() {
@@ -55,7 +59,10 @@ function ShoppingPageInner() {
   const [slow, setSlow] = useState(false);
   const [result, setResult] = useState<AIResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [stage, setStage] = useState(0);
+  const [elapsed, setElapsed] = useState(0);
   const searchParams = useSearchParams();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // Deep-link support: /shopping?q=laptops (hero category quick-links)
   useEffect(() => {
@@ -66,6 +73,19 @@ function ShoppingPageInner() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Instrument readout: cycle scan stages + tick the elapsed counter while the AI works
+  useEffect(() => {
+    if (!loading) return;
+    setStage(0);
+    setElapsed(0);
+    const stageTimer = setInterval(() => setStage((s) => (s + 1) % SCAN_STAGES.length), 2600);
+    const tick = setInterval(() => setElapsed((e) => e + 1), 1000);
+    return () => {
+      clearInterval(stageTimer);
+      clearInterval(tick);
+    };
+  }, [loading]);
 
   async function handleSearch(q: string) {
     if (!q.trim()) return;
@@ -99,60 +119,102 @@ function ShoppingPageInner() {
     setResult(null);
     setError(null);
     setSlow(false);
+    inputRef.current?.focus();
   }
 
-  return (
-    <div className="min-h-screen bg-[#FFF8ED] text-[#23233B] dark:bg-[#16152E] dark:text-[#F4F2FF]">
-      {/* ═══ HERO ═══ */}
-      <section className="relative overflow-hidden border-b border-[#F0E2C4] dark:border-white/10">
-        <div aria-hidden className="pointer-events-none absolute -top-24 -left-24 h-80 w-80 rounded-full bg-[#FFD93D]/40 blur-3xl dark:bg-[#FFD93D]/15" />
-        <div aria-hidden className="pointer-events-none absolute -top-16 right-[-6rem] h-96 w-96 rounded-full bg-[#FF6B6B]/25 blur-3xl dark:bg-[#FF6B6B]/15" />
-        <div aria-hidden className="pointer-events-none absolute top-40 left-1/3 h-64 w-64 rounded-full bg-[#4ECDC4]/25 blur-3xl dark:bg-[#4ECDC4]/10" />
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 py-20 text-center relative">
-          <div className="inline-flex items-center gap-2 rounded-full border border-[#E8A13D]/50 bg-[#FFD93D]/25 px-4 py-2 mb-6 dark:border-[#FFD93D]/30 dark:bg-[#FFD93D]/10">
-            <Sparkles size={16} className="text-[#C77B1A] dark:text-[#FFD93D]" />
-            <span className="font-mono text-[11px] uppercase tracking-widest text-[#9A6B00] dark:text-[#FFD93D]">AI-Powered Shopping</span>
-          </div>
-          <h1 className="font-display text-4xl sm:text-6xl leading-[1.08] font-bold mb-5">
-            <span>Smarter Shopping.</span><br />
-            <span className="text-[#E85D5D] dark:text-[#FF8E8E]">Better Decisions.</span>
-          </h1>
-          <p className="text-[17px] leading-relaxed text-[#23233B]/60 dark:text-[#F4F2FF]/60 max-w-xl mx-auto mb-10">
-            Tell us what you need — our AI analyzes specs, reviews, and prices across Indian e-commerce to find your best options.
-          </p>
+  const idle = !result && !loading && !error;
 
-          {/* Search */}
-          <div className="max-w-xl mx-auto">
-            <div className="relative">
-              <input
-                value={query}
-                onChange={e => setQuery(e.target.value)}
-                onKeyDown={e => { if (e.key === 'Enter') handleSearch(query); }}
-                placeholder='Try "best phone under 30k for camera" or "laptop for coding"'
-                aria-label="Describe what you want to buy"
-                className="w-full pl-5 pr-32 py-4 rounded-2xl bg-white border border-[#EBD9B4] text-[#23233B] placeholder:text-[#23233B]/35 text-[15px] shadow-[0_2px_12px_-4px_rgb(232_161_61/0.25)] focus:outline-none focus:border-[#E85D5D]/60 focus:ring-2 focus:ring-[#E85D5D]/25 transition-all dark:bg-white/5 dark:border-white/15 dark:text-white dark:placeholder:text-white/30"
-              />
-              <button
-                onClick={() => handleSearch(query)}
-                disabled={loading || !query.trim()}
-                className="absolute right-2 top-1/2 -translate-y-1/2 bg-[#E85D5D] hover:bg-[#D14E4E] disabled:opacity-40 text-white rounded-xl px-5 py-2.5 font-mono text-[12px] uppercase tracking-wide transition-all flex items-center gap-1.5 shadow-[0_4px_14px_-4px_rgb(232_93_93/0.6)]"
+  return (
+    <div className="min-h-screen bg-bg text-ink">
+      {/* ═══ CONSOLE HERO ═══ */}
+      <section className="relative border-b border-line">
+        {/* corner meta — the four-corner frame */}
+        <div className="mx-auto max-w-5xl px-4 sm:px-6">
+          <div className="flex items-center justify-between pt-5 font-mono text-[10px] uppercase tracking-[0.14em] text-muted">
+            <span className="flex items-center gap-2">
+              <span className="status-dot" data-state={loading ? 'busy' : 'idle'} aria-hidden />
+              {loading ? 'chain live' : 'standby'}
+            </span>
+            <span className="hidden sm:inline">gemini 3.8 → 3.7 → 3.6 · groq fallback</span>
+            <span>₹ inr · amazon.in · flipkart</span>
+          </div>
+
+          {/* poster statement — full width */}
+          <p className="eyebrow mb-4 flex items-center gap-2">
+            <Sparkles size={13} className="text-accent" aria-hidden />
+            01 / ai shopping intelligence
+          </p>
+          <h1 className="font-display text-[clamp(2.6rem,1.6rem+6.5vw,5rem)] uppercase leading-[1.0] tracking-[-0.015em]">
+            Describe it.
+            <br />
+            <span className="text-accent">We rank it.</span>
+          </h1>
+
+          <div className="mt-8 grid gap-8 pb-14 sm:pb-16 lg:grid-cols-[1fr_0.9fr] lg:items-end">
+            <div>
+              <p className="t-dek max-w-md text-[15px] leading-relaxed">
+                Budget, use case, deal-breakers — type it like you&apos;d tell a friend. The AI
+                reads specs, reviews and Indian street prices, then hands you a ranked shortlist
+                with live buying links.
+              </p>
+            </div>
+
+            {/* Console input */}
+            <div className="lg:pb-2">
+              <label
+                htmlFor="shopping-query"
+                className="mb-2 block font-mono text-[10px] uppercase tracking-[0.14em] text-muted"
               >
-                {loading ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
-                Ask AI
-              </button>
+                query input
+              </label>
+              <div className="border-2 border-ink/80 bg-paper shadow-lift transition-colors focus-within:border-accent dark:border-ink/60">
+                <div className="flex items-stretch">
+                  <span className="flex select-none items-center border-r border-line px-3 font-mono text-[12px] text-faint" aria-hidden>
+                    &gt;
+                  </span>
+                  <input
+                    id="shopping-query"
+                    ref={inputRef}
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') handleSearch(query);
+                    }}
+                    placeholder="best phone under 30k"
+                    aria-label="Describe what you want to buy"
+                    className="min-w-0 flex-1 bg-transparent px-3 py-3.5 text-[14px] text-ink placeholder:text-faint focus:outline-none"
+                  />
+                  <button
+                    onClick={() => handleSearch(query)}
+                    disabled={loading || !query.trim()}
+                    className="flood flex items-center gap-2 border-l-2 border-ink/80 bg-ink px-4 font-mono text-[11px] font-medium uppercase tracking-[0.1em] text-bg transition-colors hover:text-white disabled:opacity-40 dark:border-ink/60"
+                  >
+                    {loading ? <Loader2 size={13} className="animate-spin" aria-hidden /> : <Zap size={13} aria-hidden />}
+                    run
+                  </button>
+                </div>
+                {/* scanline — the sweep while the chain works */}
+                {loading && <div className="scanline" role="progressbar" aria-label="AI is working" />}
+              </div>
+              <p className="mt-2 font-mono text-[10px] text-muted">
+                press enter · results are ai-estimates, verify at retailer
+              </p>
             </div>
           </div>
 
-          {/* Quick suggestions */}
-          {!result && !loading && (
-            <div className="flex flex-wrap justify-center gap-2 mt-6">
-              {SUGGESTIONS.map(s => (
+          {/* Presets — sharp chips with device glyphs */}
+          {(idle || loading) && (
+            <div className="flex flex-wrap gap-1.5 pb-8">
+              {SUGGESTIONS.map((s) => (
                 <button
                   key={s.label}
-                  onClick={() => { setQuery(s.label); handleSearch(s.label); }}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-[#EBD9B4] bg-white px-4 py-2 text-[13px] text-[#23233B]/70 hover:border-[#E85D5D]/50 hover:text-[#23233B] hover:bg-[#FFF3D6] transition-all dark:border-white/10 dark:bg-white/5 dark:text-white/60 dark:hover:border-white/30 dark:hover:text-white dark:hover:bg-white/10"
+                  onClick={() => {
+                    setQuery(s.label);
+                    handleSearch(s.label);
+                  }}
+                  className="inline-flex items-center gap-2 border border-line bg-paper px-3 py-1.5 font-mono text-[11px] text-muted transition-colors hover:border-accent/60 hover:bg-accentsoft hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                 >
-                  <s.icon size={13} className={s.pop} aria-hidden />
+                  <s.icon size={14} className="text-faint" aria-hidden />
                   {s.label}
                 </button>
               ))}
@@ -161,16 +223,31 @@ function ShoppingPageInner() {
         </div>
       </section>
 
-      {/* ═══ RESULTS ═══ */}
-      <section className="mx-auto max-w-5xl px-4 sm:px-6 py-12">
-        {/* Loading */}
+      {/* ═══ RESULTS / STATES ═══ */}
+      <section className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
+        {/* Loading — the instrument narrates */}
         {loading && (
-          <div className="text-center py-16" role="status" aria-label="Loading recommendations">
-            <Loader2 size={32} className="text-[#E85D5D] animate-spin mx-auto mb-3" />
-            <p className="font-mono text-[13px] text-[#23233B]/50 dark:text-white/50">AI is analyzing options for you…</p>
+          <div role="status" aria-label="Loading recommendations" className="py-10">
+            <div className="mb-6 flex items-baseline justify-between border-b border-line pb-3 font-mono text-[11px] uppercase tracking-[0.12em]">
+              <span className="text-accent">
+                {SCAN_STAGES[stage]}
+                <span className="blink-cursor" aria-hidden />
+              </span>
+              <span className="t-numeric text-faint">{String(elapsed).padStart(2, '0')}s</span>
+            </div>
+            <div className="mx-auto mb-6 max-w-md">
+              <Loader2 size={28} className="mx-auto animate-spin text-accent" aria-hidden />
+            </div>
+            <p className="text-center font-mono text-[12px] text-muted">
+              analyzing options for &quot;{query}&quot;…
+            </p>
             {slow && (
-              <p className="mx-auto mt-3 max-w-md rounded-lg border border-[#E8A13D]/50 bg-[#FFD93D]/20 px-4 py-2 font-mono text-[12px] leading-relaxed text-[#9A6B00] dark:border-[#FFD93D]/25 dark:bg-[#FFD93D]/10 dark:text-[#FFD93D]" aria-live="polite">
-                The AI servers are experiencing heavy load — this might take 20–30 seconds more. Please wait, your picks are on the way.
+              <p
+                className="mx-auto mt-3 max-w-md border-l-2 border-warn bg-warnsoft px-4 py-2 font-mono text-[12px] leading-relaxed text-warn"
+                aria-live="polite"
+              >
+                The AI servers are under heavy load — this can take 20–30 seconds more. Your picks
+                are still on the way.
               </p>
             )}
           </div>
@@ -178,134 +255,180 @@ function ShoppingPageInner() {
 
         {/* Error */}
         {error && (
-          <div className="text-center py-16" role="alert">
-            <p className="font-display text-xl text-[#23233B]/80 dark:text-white/80 mb-3">{error}</p>
-            <button onClick={handleReset} className="font-mono text-[12px] text-[#E85D5D] hover:text-[#D14E4E]">
-              ← Try another query
+          <div role="alert" className="py-10 text-center">
+            <p className="t-section mb-3 text-[20px] text-ink/80">{error}</p>
+            <button
+              onClick={handleReset}
+              className="inline-flex items-center gap-2 border border-line bg-paper px-4 py-2 font-mono text-[12px] text-muted transition-colors hover:border-accent/60 hover:text-ink"
+            >
+              <RotateCcw size={12} aria-hidden /> New query
             </button>
           </div>
         )}
 
-        {/* Result */}
+        {/* Result — ranked ledger */}
         {result && !loading && (
-          <div>
-            {/* Header */}
-            <div className="flex items-start justify-between mb-8">
+          <div className="snap-in">
+            {/* Ledger header */}
+            <div className="mb-8 flex flex-wrap items-end justify-between gap-4 border-b-2 border-ink/80 pb-4 dark:border-ink/60">
               <div>
-                <p className="font-mono text-[11px] uppercase tracking-wide text-[#E85D5D] dark:text-[#FF8E8E] mb-2">AI Recommendation</p>
-                <h2 className="font-display text-2xl sm:text-3xl mb-2">{result.summary}</h2>
-                <p className="font-mono text-[12px] text-[#23233B]/40 dark:text-white/40">Based on: &quot;{result.query}&quot;</p>
+                <p className="eyebrow mb-2 flex items-center gap-2 text-accent">
+                  <Star size={12} aria-hidden /> verdict
+                </p>
+                <h2 className="t-page max-w-2xl text-[24px] sm:text-[30px]">{result.summary}</h2>
+                <p className="mt-2 font-mono text-[11px] text-faint">
+                  query: &quot;{result.query}&quot; · {result.picks.length} picks · ai-estimated
+                </p>
               </div>
-              <button onClick={handleReset} className="flex items-center gap-1.5 rounded-lg border border-[#EBD9B4] bg-white px-3 py-2 text-[12px] text-[#23233B]/50 hover:text-[#23233B] hover:border-[#E85D5D]/40 transition-all flex-shrink-0 dark:border-white/10 dark:bg-white/5 dark:text-white/50 dark:hover:text-white dark:hover:border-white/30">
-                <RotateCcw size={12} /> New search
+              <button
+                onClick={handleReset}
+                className="flex items-center gap-1.5 border border-line bg-paper px-3 py-2 font-mono text-[11px] text-muted transition-colors hover:border-accent/60 hover:text-ink"
+              >
+                <RotateCcw size={12} aria-hidden /> new search
               </button>
             </div>
 
-            {/* Picks */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Ledger rows */}
+            <ol className="border-t border-line">
               {result.picks.map((pick, i) => (
-                <div key={pick.name + i} className="group rounded-2xl border border-[#EBD9B4] bg-white hover:border-[#E85D5D]/40 hover:shadow-[0_12px_32px_-12px_rgb(232_93_93/0.35)] transition-all p-5 dark:border-white/10 dark:bg-white/[0.04] dark:hover:border-white/25 dark:hover:shadow-[0_12px_32px_-12px_rgb(0_0_0/0.7)]">
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex items-center gap-2">
+                <li
+                  key={pick.name + i}
+                  style={{ animationDelay: `${i * 70}ms` }}
+                  className="group relative snap-in border-b border-line"
+                >
+                  {/* top-pick marker: signal bar down the left edge */}
+                  {i === 0 && (
+                    <span
+                      aria-hidden
+                      className="absolute bottom-0 left-0 top-0 w-[3px] bg-accent"
+                    />
+                  )}
+                  <div className="grid gap-5 py-6 pl-4 pr-1 transition-colors sm:pl-6 lg:grid-cols-[auto_1fr_auto]">
+                    {/* rank */}
+                    <div className="flex items-start gap-3 lg:w-[72px] lg:flex-col lg:gap-1">
+                      <span className="t-numeric font-display text-[34px] leading-none text-ink/90 lg:text-[40px]">
+                        {String(i + 1).padStart(2, '0')}
+                      </span>
                       {i === 0 && (
-                        <span className="bg-[#FFD93D] text-[#5C4300] text-[10px] font-mono uppercase tracking-wide px-2.5 py-1 rounded-md">
-                          ★ Top Pick
+                        <span className="mt-1.5 inline-flex items-center gap-1 bg-accent px-1.5 py-0.5 font-mono text-[9px] font-medium uppercase tracking-[0.1em] text-white">
+                          <Star size={9} aria-hidden /> top pick
                         </span>
                       )}
-                      <span className="font-mono text-[11px] text-[#23233B]/30 dark:text-white/30">#{i + 1}</span>
                     </div>
-                    <span className="font-mono text-[10px] text-[#23233B]/40 bg-[#FFF3D6] border border-[#EBD9B4] px-2 py-0.5 rounded dark:text-white/50 dark:bg-white/5 dark:border-white/10">{pick.category}</span>
-                  </div>
 
-                  <h3 className="font-display text-xl mb-1">{pick.name}</h3>
-                  <p className="font-mono text-[12px] text-[#0E9494] dark:text-[#4ECDC4] mb-1">{pick.tagline}</p>
-                  <p className="font-mono text-[13px] text-green-700 dark:text-green-400 mb-3">{pick.priceRange}</p>
+                    {/* body */}
+                    <div className="min-w-0">
+                      <h3 className="t-section text-[19px] leading-tight">{pick.name}</h3>
+                      <p className="mt-0.5 font-mono text-[11px] uppercase tracking-wide text-accent">
+                        {pick.tagline}
+                      </p>
+                      <div className="mt-3 flex flex-wrap gap-1.5">
+                        {pick.features.map((f) => (
+                          <span
+                            key={f}
+                            className="inline-flex items-center gap-1.5 border border-line bg-paper px-2 py-0.5 font-mono text-[10.5px] text-muted"
+                          >
+                            <Check size={10} className="text-success" aria-hidden />
+                            {f}
+                          </span>
+                        ))}
+                      </div>
+                      <div className="mt-3 flex items-start gap-2">
+                        <Target size={12} className="mt-0.5 flex-none text-accent" aria-hidden />
+                        <p className="font-mono text-[11px] leading-relaxed text-muted">
+                          <span className="text-ink/70">best for:</span> {pick.bestFor}
+                        </p>
+                      </div>
+                    </div>
 
-                  {/* Features */}
-                  <div className="flex flex-wrap gap-1.5 mb-4">
-                    {pick.features.map(f => (
-                      <span key={f} className="inline-flex items-center gap-1 text-[11px] text-[#23233B]/60 bg-[#F7FBF7] border border-[#CDE8CD] px-2.5 py-1 rounded-md dark:text-white/60 dark:bg-white/5 dark:border-white/10">
-                        <Check size={10} className="text-green-600 dark:text-green-400" />
-                        {f}
-                      </span>
-                    ))}
+                    {/* price + buy column */}
+                    <div className="flex flex-col items-start gap-3 lg:items-end">
+                      <div className="lg:text-right">
+                        <p className="t-numeric font-display text-[20px] leading-none text-ink">
+                          {pick.priceRange}
+                        </p>
+                        <p className="mt-1 font-mono text-[10px] uppercase tracking-wide text-faint">
+                          est. range · {pick.category}
+                        </p>
+                      </div>
+                      <div className="flex w-full gap-2 lg:w-auto">
+                        <a
+                          href={pick.links?.amazon || `https://www.amazon.in/s?k=${encodeURIComponent(pick.name)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flood inline-flex flex-1 items-center justify-center gap-1.5 border border-ink/70 px-3 py-2 font-mono text-[11px] text-ink transition-colors hover:text-white lg:flex-none"
+                        >
+                          amazon.in <ExternalLink size={10} className="icon-nudge" aria-hidden />
+                        </a>
+                        <a
+                          href={pick.links?.flipkart || `https://www.flipkart.com/search?q=${encodeURIComponent(pick.name)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flood inline-flex flex-1 items-center justify-center gap-1.5 border border-ink/70 px-3 py-2 font-mono text-[11px] text-ink transition-colors hover:text-white lg:flex-none"
+                        >
+                          flipkart <ExternalLink size={10} className="icon-nudge" aria-hidden />
+                        </a>
+                      </div>
+                    </div>
                   </div>
-
-                  {/* Best for */}
-                  <div className="flex items-start gap-2 pt-3 border-t border-[#F0E2C4] dark:border-white/10 mb-4">
-                    <Target size={12} className="text-[#E85D5D] dark:text-[#FF8E8E] mt-0.5 flex-shrink-0" />
-                    <p className="font-mono text-[11px] text-[#23233B]/50 dark:text-white/50">
-                      <span className="text-[#23233B]/70 dark:text-white/70">Best for:</span> {pick.bestFor}
-                    </p>
-                  </div>
-
-                  {/* Buy links */}
-                  <div className="flex gap-2">
-                    <a
-                      href={pick.links?.amazon || `https://www.amazon.in/s?k=${encodeURIComponent(pick.name)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 flex items-center justify-center gap-1.5 rounded-lg bg-[#FF9900]/10 border border-[#FF9900]/40 px-3 py-2 font-mono text-[11px] text-[#B26A00] hover:bg-[#FF9900]/20 transition-all dark:text-[#FF9900]"
-                    >
-                      Amazon.in <ExternalLink size={10} />
-                    </a>
-                    <a
-                      href={pick.links?.flipkart || `https://www.flipkart.com/search?q=${encodeURIComponent(pick.name)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 flex items-center justify-center gap-1.5 rounded-lg bg-[#2874F0]/10 border border-[#2874F0]/40 px-3 py-2 font-mono text-[11px] text-[#1D5BBF] hover:bg-[#2874F0]/20 transition-all dark:text-[#6EA8FF]"
-                    >
-                      Flipkart <ExternalLink size={10} />
-                    </a>
-                  </div>
-                </div>
+                </li>
               ))}
-            </div>
+            </ol>
 
             {/* Bottom CTA */}
             <div className="mt-10 text-center">
-              <p className="font-mono text-[12px] text-[#23233B]/30 dark:text-white/30 mb-4">Want to compare these products side by side?</p>
+              <p className="mb-4 font-mono text-[12px] text-faint">
+                want the full spec-by-spec breakdown?
+              </p>
               <Link
                 href="/compare"
-                className="inline-flex items-center gap-2 rounded-xl border border-[#E85D5D]/40 bg-[#E85D5D]/10 px-6 py-3 font-mono text-[12px] text-[#D14E4E] hover:bg-[#E85D5D]/20 transition-all dark:text-[#FF8E8E]"
+                className="inline-flex items-center gap-2 border-2 border-accent bg-accentsoft px-6 py-3 font-mono text-[12px] font-medium uppercase tracking-[0.08em] text-accent-ink transition-colors hover:bg-accent hover:text-white"
               >
-                Compare Products <ArrowRight size={14} />
+                compare products <ArrowRight size={14} className="icon-nudge" aria-hidden />
               </Link>
             </div>
           </div>
         )}
 
-        {/* Empty state */}
-        {!result && !loading && !error && (
-          <div className="text-center py-16">
-            <div className="w-16 h-16 rounded-2xl bg-[#FFD93D]/30 border border-[#E8A13D]/40 flex items-center justify-center mx-auto mb-4 dark:bg-[#FFD93D]/10 dark:border-[#FFD93D]/20">
-              <Sparkles size={28} className="text-[#C77B1A] dark:text-[#FFD93D]" />
+        {/* Empty state — awaiting input */}
+        {idle && (
+          <div className="py-14 text-center">
+            <div className="mx-auto mb-5 flex h-[72px] w-[72px] items-center justify-center border-2 border-line bg-paper">
+              <Sparkles size={34} className="text-accent" aria-hidden />
             </div>
-            <p className="font-display text-xl text-[#23233B]/80 dark:text-white/80 mb-2">What are you looking for?</p>
-            <p className="font-mono text-[13px] text-[#23233B]/40 dark:text-white/40 max-w-md mx-auto">
-              Type your needs naturally — budget, use case, priorities — and our AI will find the best options with direct buying links.
+            <p className="font-display text-[22px] uppercase tracking-wide text-ink/85">
+              awaiting input
+            </p>
+            <p className="mx-auto mt-2 max-w-md font-mono text-[12px] leading-relaxed text-muted">
+              type your needs naturally — budget, use case, priorities — and the console returns a
+              ranked shortlist with direct buying links.
             </p>
           </div>
         )}
       </section>
 
-      {/* ═══ HOW IT WORKS ═══ */}
-      {!result && !loading && (
-        <section className="border-t border-[#F0E2C4] bg-[#FFF3D6]/60 dark:border-white/10 dark:bg-white/[0.02]">
-          <div className="mx-auto max-w-5xl px-4 sm:px-6 py-12">
-            <h2 className="font-display text-xl text-center mb-8">How it works</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {/* ═══ HOW IT WORKS — numbered strip ═══ */}
+      {idle && (
+        <section className="border-t border-line bg-paper-2/60">
+          <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
+            <h2 className="eyebrow mb-8 text-center">02 / pipeline</h2>
+            <div className="grid gap-px border border-line bg-line sm:grid-cols-3">
               {[
-                { icon: Zap, tint: 'bg-[#FFD93D]/30 text-[#9A6B00] dark:bg-[#FFD93D]/10 dark:text-[#FFD93D]', title: 'Tell us your needs', desc: 'Budget, use case, priorities — just type naturally.' },
-                { icon: Sparkles, tint: 'bg-[#FF6B6B]/15 text-[#D14E4E] dark:bg-[#FF6B6B]/10 dark:text-[#FF8E8E]', title: 'AI analyzes options', desc: 'We compare specs, reviews, and prices across Amazon & Flipkart.' },
-                { icon: Star, tint: 'bg-[#4ECDC4]/20 text-[#0E7C7C] dark:bg-[#4ECDC4]/10 dark:text-[#4ECDC4]', title: 'Get curated picks', desc: 'Top picks with features, prices, and direct buying links.' },
-              ].map(item => (
-                <div key={item.title} className="text-center">
-                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center mx-auto mb-3 ${item.tint}`}>
-                    <item.icon size={18} aria-hidden />
+                { icon: Zap, n: '01', title: 'Parse', desc: 'Budget, use case, priorities — plain language in.' },
+                { icon: Sparkles, n: '02', title: 'Analyze', desc: 'Specs, reviews and prices compared across Amazon & Flipkart.' },
+                { icon: Star, n: '03', title: 'Rank', desc: 'A numbered shortlist with features, prices and buy links.' },
+              ].map((item) => (
+                <div key={item.n} className="bg-bg p-6">
+                  <div className="mb-3 flex items-center justify-between">
+                    <span className="flex h-10 w-10 items-center justify-center border border-line bg-paper">
+                      <item.icon size={18} className="text-accent" aria-hidden />
+                    </span>
+                    <span className="t-numeric font-mono text-[12px] text-faint">{item.n}</span>
                   </div>
-                  <h3 className="font-display text-[15px] mb-1">{item.title}</h3>
-                  <p className="font-mono text-[12px] text-[#23233B]/40 dark:text-white/40">{item.desc}</p>
+                  <h3 className="t-section mb-1 font-mono text-[13px] uppercase tracking-[0.08em]">
+                    {item.title}
+                  </h3>
+                  <p className="font-mono text-[11px] leading-relaxed text-muted">{item.desc}</p>
                 </div>
               ))}
             </div>
@@ -314,26 +437,68 @@ function ShoppingPageInner() {
       )}
 
       {/* ═══ GUIDE ═══ */}
-      {!result && !loading && (
-        <section className="border-t border-[#F0E2C4] dark:border-white/10">
-          <div className="mx-auto max-w-5xl px-4 sm:px-6 py-12">
-            <h2 className="font-display text-xl text-center mb-6">Tips for better results</h2>
-            <div className="max-w-2xl mx-auto space-y-4">
+      {idle && (
+        <section className="border-t border-line">
+          <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
+            <h2 className="eyebrow mb-6 text-center">03 / better queries</h2>
+            <div className="mx-auto max-w-2xl">
               {[
-                { tip: 'Be specific about your budget', example: '"Best phone under 25k" beats "good phone"' },
-                { tip: 'Mention your primary use', example: '"Laptop for video editing" gets different results than "laptop for browsing"' },
-                { tip: 'Include brand preferences', example: '"Sony or Bose noise cancelling headphones" narrows the field' },
-                { tip: 'Mention deal-breakers', example: '"Android phone, no Samsung, under 30k" filters out unwanted options' },
+                { tip: 'Be specific about your budget', example: '"best phone under 25k" beats "good phone"' },
+                { tip: 'Mention your primary use', example: '"laptop for video editing" gets different results than "laptop for browsing"' },
+                { tip: 'Include brand preferences', example: '"sony or bose noise cancelling headphones" narrows the field' },
+                { tip: 'Mention deal-breakers', example: '"android phone, no samsung, under 30k" filters out unwanted options' },
               ].map((item, i) => (
-                <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-white border border-[#EBD9B4] dark:bg-white/5 dark:border-white/10">
-                  <Check size={14} className="text-[#0E9494] dark:text-[#4ECDC4] mt-1 flex-shrink-0" />
+                <div
+                  key={i}
+                  className="flex items-start gap-3 border-b border-line py-3 first:border-t"
+                >
+                  <span className="t-numeric mt-0.5 font-mono text-[11px] text-accent">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
                   <div>
-                    <p className="font-display text-[14px] mb-0.5">{item.tip}</p>
-                    <p className="font-mono text-[11px] text-[#23233B]/40 dark:text-white/40">Example: {item.example}</p>
+                    <p className="text-[14px] font-medium text-ink">{item.tip}</p>
+                    <p className="mt-0.5 font-mono text-[11px] text-faint">eg: {item.example}</p>
                   </div>
                 </div>
               ))}
             </div>
+          </div>
+        </section>
+      )}
+
+      {/* ═══ FOOTER STRIP — next instruments ═══ */}
+      {idle && (
+        <section className="border-t border-line bg-void text-white">
+          <div className="mx-auto grid max-w-5xl gap-px px-4 py-0 sm:grid-cols-2 sm:px-6">
+            {[
+              {
+                href: '/compare',
+                icon: Scale,
+                title: 'Compare',
+                desc: 'Spec-by-spec verdicts between products.',
+              },
+              {
+                href: '/pc-builder',
+                icon: Cpu,
+                title: 'PC Builder',
+                desc: 'Balance a full build against your budget.',
+              },
+            ].map((c) => (
+              <Link
+                key={c.href}
+                href={c.href}
+                className="group flex items-center justify-between gap-4 border-t border-white/10 py-6 first:border-t-0 sm:border-t-0 sm:py-8"
+              >
+                <div className="flex items-center gap-4">
+                  <c.icon size={26} className="text-accent" aria-hidden />
+                  <div>
+                    <p className="font-display text-[16px] uppercase tracking-wide">{c.title}</p>
+                    <p className="mt-0.5 font-mono text-[11px] text-zinc-400">{c.desc}</p>
+                  </div>
+                </div>
+                <ArrowRight size={18} className="icon-nudge flex-none text-zinc-500 group-hover:text-accent" aria-hidden />
+              </Link>
+            ))}
           </div>
         </section>
       )}

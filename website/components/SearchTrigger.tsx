@@ -1,6 +1,6 @@
 'use client';
 
-import { Search } from 'lucide-react';
+import { Search } from '@/components/icons';
 
 export function SearchTrigger() {
   function open() {
@@ -12,7 +12,7 @@ export function SearchTrigger() {
       onClick={open}
       aria-label="Search (Ctrl+K)"
       title="Search (Ctrl+K)"
-      className="hidden items-center gap-2 rounded-full border border-line bg-paper py-1.5 pl-3 pr-2 font-mono text-[11px] text-muted hover:border-linestrong hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent lg:inline-flex"
+      className="hidden items-center gap-2 border border-line bg-paper py-1.5 pl-3 pr-2 font-mono text-[11px] text-muted hover:border-linestrong hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent lg:inline-flex"
     >
       <Search size={13} aria-hidden />
       <span className="tracking-wide">Search</span>

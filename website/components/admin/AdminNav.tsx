@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Tags, PenLine, LogOut } from 'lucide-react';
+import { LayoutDashboard, Tags, PenLine, LogOut } from '@/components/icons';
 import { cn } from '@/lib/utils';
 import { BrandMark } from '@/components/BrandMark';
 

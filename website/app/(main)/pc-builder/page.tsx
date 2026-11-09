@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Cpu, ExternalLink, ChevronDown } from 'lucide-react';
+import { Cpu, ExternalLink, ChevronDown } from '@/components/icons';
 import { Button } from '@/components/ui/Button';
 import { Field, Input, Select } from '@/components/ui/Field';
 import { Badge } from '@/components/ui/Badge';

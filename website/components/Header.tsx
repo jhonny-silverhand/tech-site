@@ -80,7 +80,7 @@ export async function Header() {
             <Link
               key={n.slug}
               href={`/niche/${n.slug}`}
-              className="inline-flex flex-none items-center gap-1.5 rounded-full border border-line bg-paper px-2.5 py-1 font-mono text-[11px] uppercase tracking-wide text-muted transition-colors hover:border-linestrong hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              className="inline-flex flex-none items-center gap-1.5 border border-line bg-paper px-2.5 py-1 font-mono text-[11px] uppercase tracking-wide text-muted transition-colors hover:border-linestrong hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             >
               <span className="h-[6px] w-[6px] flex-none rounded-full" style={{ background: n.color }} aria-hidden />
               /{n.slug}

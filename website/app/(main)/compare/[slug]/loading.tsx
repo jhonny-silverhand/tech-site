@@ -1,4 +1,4 @@
-import { Scale, Sparkles } from 'lucide-react';
+import { Scale, Sparkles } from '@/components/icons';
 
 export default function CompareLoading() {
   return (

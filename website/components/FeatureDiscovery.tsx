@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Sparkles, X } from 'lucide-react';
+import { Sparkles, X } from '@/components/icons';
 
 const TIPS = [
   { id: 'cmdk', text: 'Press Ctrl/⌘ + K to search every article, product and guide instantly.', href: null as string | null },

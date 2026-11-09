@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Trophy, Sparkles, IndianRupee, ThumbsUp, ThumbsDown, ExternalLink } from 'lucide-react';
+import { Trophy, Sparkles, IndianRupee, ThumbsUp, ThumbsDown, ExternalLink } from '@/components/icons';
 import { compareProductsLive } from '@/lib/live-products';
 import { lowestPrice } from '@/lib/products-client';
 import { BreadcrumbSlash } from '@/components/BreadcrumbSlash';

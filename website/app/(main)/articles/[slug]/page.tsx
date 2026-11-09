@@ -144,7 +144,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
             <div className="flex flex-wrap items-center gap-2">
               <NicheTag slug={post.niche} color={ambientColor} />
               {post.is_ai_assisted && (
-                <span className="rounded-full border border-line px-2.5 py-0.5 font-mono text-[11px] text-muted">AI-assisted</span>
+                <span className="border border-line px-2.5 py-0.5 font-mono text-[11px] text-muted">AI-assisted</span>
               )}
             </div>
             <h1 className="t-display mt-3 text-[32px] sm:text-[44px]">

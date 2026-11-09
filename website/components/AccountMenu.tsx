@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { User, LogOut, LayoutDashboard, Library, PenLine, ChevronDown } from 'lucide-react';
+import { User, LogOut, LayoutDashboard, Library, PenLine, ChevronDown } from '@/components/icons';
 import { createClient } from '@/lib/supabase/client';
 import { isSupabaseConfigured } from '@/lib/supabase/config';
 

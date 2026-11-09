@@ -75,7 +75,7 @@ export function Select(props: SelectHTMLAttributes<HTMLSelectElement>) {
       aria-invalid={props['aria-invalid']}
       className={cn(controlBase, 'h-10 cursor-pointer appearance-none bg-[right_0.65rem_center] pr-8', props.className)}
       style={{
-        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")`,
+        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%239ca3af' d='M4.5 9 12 16.5 19.5 9h-3.6L12 12.9 8.1 9Z'/%3E%3C/svg%3E")`,
         backgroundRepeat: 'no-repeat',
         ...props.style,
       }}

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { FolderPlus } from 'lucide-react';
+import { FolderPlus } from '@/components/icons';
 import { getMyCollections, addToCollection } from '@/lib/library';
 
 export function CollectionPicker({ postId }: { postId: string }) {

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Bookmark, History, ListVideo, FolderOpen, Settings } from 'lucide-react';
+import { Bookmark, History, ListVideo, FolderOpen, Settings } from '@/components/icons';
 
 const ITEMS = [
   { href: '/library', label: 'Bookmarks', icon: Bookmark },

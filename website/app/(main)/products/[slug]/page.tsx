@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Sparkles, ExternalLink, TrendingDown, BarChart3 } from 'lucide-react';
+import { Sparkles, ExternalLink, TrendingDown, BarChart3 } from '@/components/icons';
 import { getProductDetailLive } from '@/lib/live-products';
 import { getAllBuyingGuides } from '@/lib/data';
 import { createClient } from '@/lib/supabase/server';

@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink } from '@/components/icons';
 import { getBuyingGuideBySlug, getGuideRecommendations } from '@/lib/data';
 import { BreadcrumbSlash } from '@/components/BreadcrumbSlash';
 import { MarkdownContent } from '@/components/MarkdownContent';
@@ -37,7 +37,7 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
               const price = r.product ? lowestPrice(r.product) : null;
               return (
                 <div key={r.id} className="rounded-folder border border-line bg-paper p-5">
-                  <span className="w-fit rounded-full bg-ink px-2.5 py-0.5 font-mono text-[11px] uppercase text-bg">{r.label}</span>
+                  <span className="w-fit bg-ink px-2.5 py-0.5 font-mono text-[11px] uppercase text-bg">{r.label}</span>
                   <h3 className="mt-2 font-display text-lg font-semibold">
                     {r.product ? <Link href={`/products/${r.product.slug}`} className="hover:text-accentink">{r.product.name}</Link> : r.label}
                   </h3>

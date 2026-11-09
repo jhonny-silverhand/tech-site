@@ -1,7 +1,5 @@
 import type { Metadata } from 'next';
-import '@fontsource-variable/fraunces';
-import '@fontsource-variable/cormorant-garamond';
-import '@fontsource-variable/inter';
+import '@fontsource-variable/archivo/wdth.css';
 import '@fontsource-variable/jetbrains-mono';
 import './globals.css';
 import { ClientShell } from '@/components/ClientShell';
