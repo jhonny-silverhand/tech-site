@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight } from '@/components/icons';
+import { ArrowRight } from 'lucide-react';
 import { getAllBuyingGuides } from '@/lib/data';
 import { BreadcrumbSlash } from '@/components/BreadcrumbSlash';
 

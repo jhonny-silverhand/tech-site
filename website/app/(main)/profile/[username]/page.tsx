@@ -34,7 +34,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
       <BreadcrumbSlash items={[{ label: 'Home', href: '/' }, { label: `@${p.username}` }]} />
       <div className="mt-4 flex items-start gap-4">
-        <div className="flex h-16 w-16 items-center justify-center bg-ink font-display text-2xl font-semibold text-bg">
+        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-ink font-display text-2xl font-semibold text-bg">
           {(p.display_name || p.username).charAt(0).toUpperCase()}
         </div>
         <div className="flex-1">

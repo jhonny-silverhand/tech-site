@@ -41,7 +41,7 @@ export function ProfileSettingsClient({ initialNiches }: { initialNiches: string
               key={n.slug}
               onClick={() => toggle(n.slug)}
               aria-pressed={on}
-              className={`inline-flex items-center gap-1.5 border px-3 py-1.5 text-sm ${
+              className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm ${
                 on ? 'border-transparent bg-ink text-bg' : 'border-line bg-paper text-muted hover:text-ink'
               }`}
             >

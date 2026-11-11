@@ -1,6 +1,6 @@
 # compact — tech//site
 
-**Updated:** 2026-11-09 · **Repo:** github.com/jhonny-silverhand/tech-site · **Branch:** `main` @ Silkscreen redesign (1.4.0, 2026-11-09) · **Live:** https://tech-site-new.vercel.app/
+**Updated:** 2026-11-11 · **Repo:** github.com/jhonny-silverhand/tech-site · **Branch:** `main` @ 1.4.1 skin-revert of the Silkscreen redesign (2026-11-11) · **Live:** https://tech-site-new.vercel.app/
 
 Read this file first when cold-starting on this project.
 `website/compact.md` and `compacts/*.md` are **historical** session-compaction summaries (frozen); this root file is the canonical one.
@@ -12,12 +12,12 @@ Maintain and further develop **tech//site** — a hybrid multi-niche technology 
 ## Important Details
 
 - **Layout:** `website/` = the app (start here) · `Guides/` = setup docs + legacy SQL · `archived/website-backup/` = frozen pre-rebuild snapshot (its own 4.x changelog) · `marketing-page/` = static marketing page, also served in-app at `/showcase` · `prompt.md` = original 1,278-line build spec (**historical**, uses the old taxonomy) · `compacts/` = old session summary · `data/last-scrape.json` = legacy scrape record (products are live-AI now, not scraped).
-- **Stack:** Next.js 15 App Router + React 19 + TypeScript + Tailwind 3.4 · Supabase (Postgres + Auth + Storage) · Gemini + Groq via `lib/ai-router.ts` · Resend (contact) · **custom sharp-flat icon system `components/icons/`** (lucide removed) · Fontsource Archivo (wdth axis) + JetBrains Mono + local `Pixels.ttf` brand font.
+- **Stack:** Next.js 15 App Router + React 19 + TypeScript + Tailwind 3.4 · Supabase (Postgres + Auth + Storage) · Gemini + Groq via `lib/ai-router.ts` · Resend (contact) · lucide-react icons (restored 2026-11-11 from the 1.4.0 sharp-flat system) · Fontsource Fraunces + Cormorant Garamond + Inter + JetBrains Mono + local `Pixels.ttf` brand font.
 - **Database:** 20 tables, source of truth = `website/supabase/schema.sql` (idempotent, includes `featured` column on `posts`, RLS everywhere, `handle_new_user` trigger creates `user_xxxxxxxx` usernames). Storage bucket `post-images`. Live project: `pploiphhwdmerwonqrct.supabase.co` (old abandoned project: `kgflqrpdcaxccvuxyhff`). `Guides/sql/` = legacy v4.0-era SQL, reference only.
 - **AI subsystem:** central chokepoint `lib/ai-router.ts` — `gemini-3.8-flash → gemini-3.7-flash → gemini-3.6-flash` (single try each, 3 s gap), then Groq `openai/gpt-oss-120b` (separate quota pool, needs `GROQ_API_KEY`). `lib/gemini.ts` is now a compatibility shim over the router. Products are **100% live from the model at request time** (`lib/live-products.ts`) — no offline catalog; prices are AI estimates labeled in the UI; Amazon.in/Flipkart search links generated per product.
 - **Auth (two systems):** users = Supabase email auth + RLS (split publishing: users write manually, **no AI**, enforced at DB level); admin = separate JWT cookie `tech_site_admin_session` (7-day, `jose` + bcrypt via `ADMIN_EMAIL` / `ADMIN_PASSWORD_HASH_B64` / `ADMIN_SESSION_SECRET`), login at `/admin/login`. Dev credential on record: `admin@techsite.com` / `admin123` — **needs rotation**.
 - **Contact:** `POST /api/contact` → Resend → `jhonnysilverhand.069@gmail.com`.
-- **Theming (v3 Silkscreen, 2026-11-09):** design system in `website/DESIGN.md` — concept "instrument panel/PCB"; radius 0 sitewide (Tailwind scale override; `rounded-full` only for true circles); signal accent #D9481F light / #FF6B3D dark; Archivo Expanded display (`font-stretch:125%`) + JetBrains Mono; two-tone icons (`currentColor` + `.sf-tone2`); motion utilities `.snap-in/.scanline/.flood/.icon-nudge/.roll/.draw`. Hierarchical tokens (`bg→sunken→paper→elev`), cool-paper light / blue-charcoal dark, persisted + `prefers-color-scheme`, FOUC-safe init; Pixels font wordmarks; neko cat day/night toggle + celebration popup (`techsite:theme-changed`).
+- **Theming (v2 restored, 2026-11-11):** design system v2 (`website/app/globals.css`) — warm-paper light / blue-charcoal dark, accent `#3d63f2`/`#7aa2ff`, rounded radii 4–16 px, Fraunces display + Cormorant Garamond tagline + Inter body + JetBrains Mono; hierarchical tokens (`bg→sunken→paper→elev`), `.card`/`.chip`/`.eyebrow`/`.status-dot`/`.t-*` utilities; persisted + `prefers-color-scheme`, FOUC-safe init; Pixels font wordmarks; neko cat day/night toggle + celebration popup (`techsite:theme-changed`). The 1.4.0 "Silkscreen" skin (radius 0, signal accent `#D9481F`/`#FF6B3D`, Archivo, motion utilities) was reverted in 1.4.1 per owner request — only the `/shopping` console **layout** was kept (see Work State).
 - **Taxonomy (`lib/niches.ts`, 10):** `ai, programming, android, windows, gadgets, gaming, career, finance, productivity, pc-hardware`. Slugs are immutable (URLs, sitemap, `topic_follows`). Display label for `ai` is "AI Tools".
 - **Dev discipline:** `npm run dev` self-cleans `.next` and runs Turbopack; **never** share `.next` between dev and build (vendor-chunk 500s); restart dev after any `.env.local` edit; critical-path Supabase calls wrapped in `withTimeout` (2.5 s).
 - **Env vars:** see `website/.env.example` + `website/docs/environment.md` — Supabase ×3, `ADMIN_*` ×3, `GEMINI_API_KEY`, `GROQ_API_KEY`/`GROQ_MODEL`, `RESEND_API_KEY`/`CONTACT_TO`/`CONTACT_FROM`, `NEXT_PUBLIC_SITE_URL`.
@@ -28,17 +28,17 @@ Maintain and further develop **tech//site** — a hybrid multi-niche technology 
 
 ### Completed
 - Editorial publication (articles, niches, TOC, related posts, cinematic gaming hero), personal Library (bookmarks/history/queue/collections/highlights/private notes), creator platform (profiles, follows, comments, onboarding, editor), admin dashboard overhaul (stats, quick actions, delete), live shopping/compare/pc-builder, `/showcase` marketing page, per-niche cover pools (`lib/cover-pools.ts`), site-wide corner toast (4 s auto-dismiss), desktop-view notice on small displays, mobile overflow fixes, contact form, route loading bar.
-- **Silkscreen redesign (1.4.0, 2026-11-09):** sharp-flat icon system (69 glyphs, lucide removed), Archivo Expanded typography (serifs + Inter removed), radius-0 + signal-accent tokens, `/shopping` rebuilt as an AI console (scanline signature, stage readout, ranked ledger) on site tokens, `DESIGN.md`. Owner directives applied: Streamline sharp-flat icon language (hand-drawn — official set is paid) + awwwards-skill methodology (repo has no `/shopping` skill; interpreted as focus on our /shopping route).
-- Full history: `website/CHANGELOG.md` 1.0 → 1.4.0 + `decisions.md`.
+- **Silkscreen redesign (1.4.0, 2026-11-09) → skin reverted (1.4.1, 2026-11-11):** owner rejected the visual changes ("only keep the current layout, everything else revert"). Reverted: sharp-flat icons → lucide-react (35 import sites), Archivo → Fraunces/Cormorant/Inter, radius-0 → rounded scale, signal accent → `#3d63f2`, favicon recolor, motion utilities, `website/DESIGN.md` deleted. **Kept from 1.4.0:** the `/shopping` console *layout* — corner meta strip, two-column hero with labeled query input (`>` prompt, label, helper line), cycling stage readout + elapsed counter, ranked ledger rows (rank column / body / price+buy column, top-pick marker), numbered How-it-works & tips sections, next-instruments footer cards — now styled in the original cream/coral palette with original texts, lucide icons and Fraunces type.
+- Full history: `website/CHANGELOG.md` 1.0 → 1.4.1 + `decisions.md`.
 
 ### Active
 - **`featured` schema-cache bug (open):** "Could not find the 'featured' column of 'posts' in the schema cache". The column exists in `website/supabase/schema.sql` (line 57) and a live REST probe `GET /rest/v1/posts?select=featured` on the live project returned `200 [{"featured":true}]` (per compaction notes). Suspected stale PostgREST schema cache or a query hitting a different table/project. Unresolved at last session end (2026-09-2x).
 
 ### Blocked
-- None hard. Pending hygiene: rotate Groq/Resend keys (exposed in a past chat session), rotate admin dev password (`admin123`). *(package.json version drift resolved in 1.4.0 — now 1.4.0 = changelog; `website/public/version.json` remains a stale build artifact, regenerated per build.)*
+- None hard. Pending hygiene: rotate Groq/Resend keys (exposed in a past chat session), rotate admin dev password (`admin123`). *(package.json version = `1.4.1`, aligned with the changelog entry documenting the revert; `website/public/version.json` is a build artifact regenerated per build.)*
 
 ## Next Move
-1. Verify the Silkscreen redesign on the live deploy once Vercel rebuilds (spot-check `/shopping` light+dark+mobile, admin dashboard, article prose in Archivo). Deploy note: with env vars set, real data replaces seed fallback seen in sandbox.
+1. Verify the 1.4.1 skin revert on the live deploy once Vercel rebuilds (spot-check `/` — blue accent, serif headings, rounded pills, lucide icons — and `/shopping` light+dark+mobile: cream/coral skin with the kept console layout). Deploy note: with env vars set, real data replaces seed fallback seen in sandbox.
 2. Resolve the `featured` schema-cache bug: diff `website/supabase/schema.sql` `posts` columns vs the live DB, identify the failing query/table, reload the PostgREST schema cache (Supabase: `NOTIFY pgrst, 'reload schema';` or dashboard restart), re-run loopbacks (`tsc --noEmit`, key pages, admin/products APIs).
 3. Rotate exposed keys + admin password; update Vercel env vars.
 4. Agree next feature work with the owner.
@@ -48,7 +48,7 @@ Maintain and further develop **tech//site** — a hybrid multi-niche technology 
 - `website/lib/data.ts` (CARD_COLUMNS, seed fallback), `website/lib/niches.ts`, `website/lib/cover-pools.ts`, `website/lib/library.ts`, `website/lib/products.ts`, `website/lib/auth.ts`, `website/lib/with-timeout.ts`
 - `website/supabase/schema.sql` — DB source of truth · `website/middleware.ts` (session refresh only)
 - `website/app/(main)/page.tsx` (homepage, 4-way `Promise.all`) · `website/app/api/**` (admin, products, shopping, pc-builder, compare, contact, wishlist, search-index, currency)
-- `website/components/icons/` — sharp-flat icon system (base/arrows/system/content/shopping + index) · `website/components/` — Header/Footer/CommandPalette/ProductCard/ThemeToggle/ThemeCelebration/RouteProgress/SiteToast + `ui/` primitives
+- `website/components/` — Header/Footer/CommandPalette/ProductCard/ShoppingIntelligenceHero/ThemeToggle/ThemeCelebration/RouteProgress/SiteToast + `ui/` primitives (icon set: `lucide-react`, restored 2026-11-11)
 - Docs: this file, `README.md`, `CHANGELOG.md` (legacy), `website/CHANGELOG.md` (current), `technical-documentation.md`, `business-documentation.md`, `decisions.md`, `help.md`
 
 ## Documentation rules (standing, owner-mandated)

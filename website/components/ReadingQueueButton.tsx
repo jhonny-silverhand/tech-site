@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ListPlus, Check } from '@/components/icons';
+import { ListPlus, Check } from 'lucide-react';
 import { toggleQueue } from '@/lib/library';
 
 export function ReadingQueueButton({

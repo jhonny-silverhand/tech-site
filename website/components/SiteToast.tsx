@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Sparkles, X } from '@/components/icons';
+import { Sparkles, X } from 'lucide-react';
 
 const SHOW_AFTER_MS = 600;
 const DISMISS_AFTER_MS = 4000;

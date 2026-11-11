@@ -59,7 +59,7 @@ export default function OnboardingPage() {
                 key={n.slug}
                 onClick={() => toggle(n.slug)}
                 aria-pressed={on}
-                className={`inline-flex items-center gap-1.5 border px-4 py-2 text-sm ${on ? 'border-transparent bg-ink text-bg' : 'border-line bg-paper text-muted hover:text-ink'}`}
+                className={`inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm ${on ? 'border-transparent bg-ink text-bg' : 'border-line bg-paper text-muted hover:text-ink'}`}
               >
                 <span className="h-2 w-2 rounded-full" style={{ background: n.color }} />
                 {n.name}

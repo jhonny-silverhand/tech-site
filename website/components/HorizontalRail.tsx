@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight } from '@/components/icons';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { PostCard as PostCardType } from '@/lib/types';
 import { PostCard } from './PostCard';
 

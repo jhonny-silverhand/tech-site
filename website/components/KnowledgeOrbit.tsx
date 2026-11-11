@@ -85,7 +85,7 @@ export function KnowledgeOrbit() {
             <Link
               key={n.slug}
               href={`/niche/${n.slug}`}
-              className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center gap-2 border border-line bg-paper px-3.5 py-2 text-[13px] font-medium text-ink-2 shadow-card hover:-translate-y-px hover:border-linestrong hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent dark:border-white/15 dark:bg-elev dark:text-zinc-100 dark:shadow-popover dark:hover:border-white/35 dark:hover:text-white"
+              className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center gap-2 rounded-full border border-line bg-paper px-3.5 py-2 text-[13px] font-medium text-ink-2 shadow-card hover:-translate-y-px hover:border-linestrong hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent dark:border-white/15 dark:bg-elev dark:text-zinc-100 dark:shadow-popover dark:hover:border-white/35 dark:hover:text-white"
               style={{ transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))` }}
             >
               <span className="h-[7px] w-[7px] flex-none rounded-full" style={{ background: n.color }} aria-hidden />

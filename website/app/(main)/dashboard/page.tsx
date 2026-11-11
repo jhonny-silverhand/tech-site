@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
-import { Bookmark, History, PenLine, Plus } from '@/components/icons';
+import { Bookmark, History, PenLine, Plus } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import { isSupabaseConfigured } from '@/lib/supabase/config';
 import { PostCard } from '@/components/PostCard';

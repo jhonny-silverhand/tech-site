@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Trash2 } from '@/components/icons';
+import { Trash2 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 
 export function CollectionActions({

@@ -14,14 +14,14 @@ export default function Icon() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          background: '#0a0b0f',
+          background: '#09090B',
           color: 'white',
           fontSize: 200,
           fontWeight: 800,
           fontFamily: 'monospace',
         }}
       >
-        t<span style={{ color: '#FF6B3D' }}>//</span>s
+        t<span style={{ color: '#4F7DFF' }}>//</span>s
       </div>
     ),
     { ...size }

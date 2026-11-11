@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Scale } from '@/components/icons';
+import { Scale } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Field';
 import { BreadcrumbSlash } from '@/components/BreadcrumbSlash';
@@ -70,7 +70,7 @@ export default function CompareIndexPage() {
       {selected.length > 0 && (
         <div className="card mt-4 flex flex-wrap items-center gap-2 p-3" aria-live="polite">
           {selected.map((s) => (
-            <button key={s.slug} onClick={() => toggle(s)} aria-label={`Remove ${s.name}`} className="inline-flex min-h-[32px] items-center gap-1.5 bg-void px-3 py-1 text-xs font-medium text-white hover:bg-zinc-800 dark:bg-white dark:text-void">{s.name} <span aria-hidden>✕</span></button>
+            <button key={s.slug} onClick={() => toggle(s)} aria-label={`Remove ${s.name}`} className="inline-flex min-h-[32px] items-center gap-1.5 rounded-full bg-void px-3 py-1 text-xs font-medium text-white hover:bg-zinc-800 dark:bg-white dark:text-void">{s.name} <span aria-hidden>✕</span></button>
           ))}
           <span className="t-numeric font-mono text-[11px] text-muted">{selected.length}/3 selected</span>
           <Button onClick={go} disabled={selected.length < 2} size="sm" className="ml-auto">Compare →</Button>

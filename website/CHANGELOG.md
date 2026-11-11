@@ -3,6 +3,40 @@
 All notable changes to tech//site are documented here. Format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [1.4.1] - 2026-11-11
+
+### Revert — Silkscreen skin rolled back; /shopping console layout retained
+*(Owner decision, 2026-11-11: "only keep the current layout, everything else revert to as it was, every little thing." Everything below was restored to its exact 1.3.0/pre-1.4.0 state unless noted.)*
+
+- **Icons**: lucide-react restored at all 35 import sites; `components/icons/`
+  sharp-flat set (69 glyphs) deleted; `lucide-react ^0.454.0` dependency restored.
+- **Typography**: Fraunces Variable / Cormorant Garamond / Inter restored
+  (`app/layout.tsx`, Tailwind config, `@fontsource-variable/*` deps); Archivo
+  removed. `/shopping` suggestion chips get their original per-icon pop colors back.
+- **Geometry**: Tailwind radius scale restored (4–16 px); all `rounded-*`
+  removals across pages/components re-applied (pills, cards, inputs, buttons).
+- **Color**: accent back to `#3d63f2` light / `#7aa2ff` dark (signal
+  `#D9481F`/`#FF6B3D` removed); favicon `//` mark recolored back; `/shopping`
+  back on its hardcoded cream/grape + coral palette (`#FFF8ED`/`#16152E`,
+  `#E85D5D`); homepage hero panel back on site tokens with blue accent.
+- **Motion**: `.snap-in`/`.scanline`/`.flood`/`.icon-nudge`/`.roll`/`.draw`
+  utilities and their usages removed (globals.css restored to v2).
+- **Homepage shopping panel** (`ShoppingIntelligenceHero`) fully restored
+  (layout was never changed by 1.4.0 — restyle only).
+- **`/shopping` console layout — kept from 1.4.0 by owner request**:
+  corner meta strip (status dot, chain/currency readout), two-column hero with
+  labeled query input (`>` prompt + helper line), cycling scan-stage readout +
+  elapsed counter while loading, results as a ranked ledger (rank column /
+  body / price+buy column, top-pick marker), numbered "How it works" cells,
+  numbered tips rows, and the Compare/PC-Builder footer cards. All of the above
+  now rendered in the original cream/coral skin with original texts and lucide
+  icons.
+- **Docs**: `website/DESIGN.md` deleted (described the reverted system);
+  root docs updated with dated revert entries; `package.json` version `1.4.1`.
+- QA: `tsc --noEmit` clean; `next build` clean (54 routes); screenshot review
+  of `/` and `/shopping` in light + dark (`/shopping`: cream bg, gold badge,
+  coral accents, rounded corners, lucide icons, console structure intact).
+
 ## [1.4.0] - 2026-11-09
 
 ### Redesign — "Silkscreen" design system v3 (icons + tokens + /shopping)

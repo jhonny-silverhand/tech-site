@@ -8,7 +8,7 @@ const FONTS: Record<string, { family: string; href: string; note: string }> = {
   windows: { family: 'Manrope', href: 'Manrope:wght@500;700;800', note: 'Clean neo-grotesque' },
   gadgets: { family: 'Outfit', href: 'Outfit:wght@500;700', note: 'Rounded, product-y' },
   gaming: { family: 'Chakra Petch', href: 'Chakra+Petch:wght@500;600;700', note: 'Squared game-UI feel' },
-  career: { family: 'Fraunces', href: 'Fraunces:opsz,wght@9..144,500;700', note: 'Removed from project (v3) — specimen only' },
+  career: { family: 'Fraunces', href: '', note: 'Already in project — editorial serif' },
   finance: { family: 'Archivo', href: 'Archivo:wght@500;700;800', note: 'Strong, trustworthy grotesque' },
   productivity: { family: 'Caveat', href: 'Caveat:wght@500;700', note: 'Handwritten, cheerful notes vibe' },
   'pc-hardware': { family: 'Rajdhani', href: 'Rajdhani:wght@500;600;700', note: 'Condensed techy' },

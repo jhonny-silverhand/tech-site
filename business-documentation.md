@@ -1,6 +1,6 @@
 # Business Documentation — tech//site
 
-**Updated:** 2026-11-09 · Sources: root/website READMEs, live site copy, privacy page, changelogs, session-compaction notes, git history. Items marked *(inferred)* are interpretation of documented behavior, not explicit statements.
+**Updated:** 2026-11-11 · Sources: root/website READMEs, live site copy, privacy page, changelogs, session-compaction notes, git history. Items marked *(inferred)* are interpretation of documented behavior, not explicit statements.
 
 ## 1. Why it exists
 
@@ -9,6 +9,8 @@ tech//site's stated mission (site hero + `website/README.md`): **"Practical answ
 Positioning *(inferred from tagline and editorial rules)*: a quality-first alternative to SEO-spam tech content, where recommendations are transparent about being AI-sourced.
 
 **2026-11-09 — product surface redesign (v3 "Silkscreen", website/CHANGELOG 1.4.0):** site-wide icon/type/color/geometry refresh plus a rebuilt `/shopping` experience (console-style query with live AI status readout, ranked-ledger results). User-visible intent: the shopping tool now *shows its work* — the AI pipeline stages and elapsed time are visible while results load, reinforcing the transparent-AI positioning above. No business rules, pricing sources, or data flows changed.
+
+**2026-11-11 — skin reverted (website/CHANGELOG 1.4.1):** owner rejected the visual changes; all styling/icons/typography/color decisions from 1.4.0 were rolled back to the pre-redesign look. **Business surface impact of the revert:** the `/shopping` console *layout* is retained (status strip, stage readout + elapsed counter, ranked ledger, Compare/PC-Builder footer cards), so the transparency positioning above still holds — the tool still shows its work — but it now presents in the original warm cream/coral design language with lucide icons and serif display type, matching the rest of the site.
 
 ## 2. Users & audiences
 

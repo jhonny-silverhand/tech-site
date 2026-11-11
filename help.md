@@ -1,6 +1,6 @@
 # Help — troubleshooting, FAQ & known gotchas
 
-**Updated:** 2026-11-09. Fast catch-up: read root `compact.md` first.
+**Updated:** 2026-11-11. Fast catch-up: read root `compact.md` first.
 
 ## Quick start
 
@@ -17,8 +17,8 @@ npm run dev                  # http://localhost:3000 — public site works with 
 2. **Restart dev after editing `.env.local`** — Next.js bakes env at boot. Applies to Vercel too: redeploy after changing dashboard env vars.
 3. **Admin login 401** — `ADMIN_PASSWORD_HASH_B64` is empty or malformed. Generate: `npm run hash-password -- "password"` and paste the base64 exactly. It is base64-encoded because raw bcrypt hashes contain `$` that `.env` parsers silently corrupt.
 4. **Admin dev credentials on record: `admin@techsite.com` / `admin123`** — rotate before trusting any deployment (also in Vercel env).
-5. **Icons: never import lucide-react — it was removed (2026-11-09).** Use `import { Sparkles, X } from '@/components/icons'` — same names, same `size`/`className` API. New glyphs: add to `components/icons/{arrows,system,content,shopping}.tsx` in the sharp-flat language (fills only, two-tone via `className="sf-tone2"`), then export from `index.ts`. A throwaway `/icon-test` grid route was used for visual QA and deleted — recreate if needed.
-6. **Display font is Archivo Expanded via the width axis** — `@fontsource-variable/archivo/wdth.css` (not the default `index.css`, which lacks the wdth axis). `.font-display`/`.t-*` classes set `font-stretch: 125 %`; if headings suddenly look narrow/normal, the wdth.css import in `app/layout.tsx` was lost. Fraunces/Cormorant/Inter are gone — don't reference them.
+5. **Icons: lucide-react (restored 2026-11-11).** The 1.4.0 custom `components/icons/` sharp-flat system was deleted with the skin revert. Use `import { Sparkles, X } from 'lucide-react'` — names/API are the standard lucide `size`/`className` props. If a stale import `from '@/components/icons'` fails to resolve, it's a leftover from the reverted redesign — switch it to `lucide-react`.
+6. **Fonts: Fraunces Variable (display) / Cormorant Garamond (tagline) / Inter (body) via Fontsource — restored 2026-11-11.** `app/layout.tsx` imports `@fontsource-variable/fraunces`, `@fontsource-variable/cormorant-garamond`, `@fontsource-variable/inter` + `jetbrains-mono`; Archivo was removed with the revert. If headings/serifs look wrong, check those imports and the Tailwind `fontFamily` map. `/shopping` uses its own hardcoded cream/coral palette, not site tokens (pre-1.4.0 behavior).
 7. **Gemini 429/503 or 10–25 s product pages** — expected on the shared free tier. The router chain (`3.8 → 3.7 → 3.6`, 3 s gaps) then Groq (`GROQ_API_KEY`) handles outages; `/shopping` shows a heavy-load notice; compare has a loading skeleton. Check `GEMINI_API_KEY` first if *everything* AI returns 503 ("AI not configured").
 8. **`featured` schema-cache error (OPEN BUG)** — "Could not find the 'featured' column of 'posts' in the schema cache". The column is in `website/supabase/schema.sql` (line 57) and a live REST probe returned it fine; suspicion is a stale PostgREST schema cache or a query against the wrong table/project. Next steps: diff schema vs live DB columns, run `NOTIFY pgrst, 'reload schema';` (or Supabase dashboard → restart), then re-test. Not yet resolved — don't "fix" by removing the column from queries.
 9. **Supabase confirmation/reset emails linking to `localhost`** — set Supabase → Authentication → URL Configuration → Site URL to the real domain, and add **both** the production URL and `http://localhost:3000` to Redirect URLs (allowlist, not a replacement).

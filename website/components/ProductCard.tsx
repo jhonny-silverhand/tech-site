@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Store, TrendingDown, BarChart3 } from '@/components/icons';
+import { Store, TrendingDown, BarChart3 } from 'lucide-react';
 import type { Product } from '@/lib/types';
 import { formatINR } from '@/lib/utils';
 import { lowestPrice } from '@/lib/products-client';

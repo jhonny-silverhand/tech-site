@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { ExternalLink, X } from '@/components/icons';
+import { ExternalLink, X } from 'lucide-react';
 import { BreadcrumbSlash } from './BreadcrumbSlash';
 import { WishlistButton } from './WishlistButton';
 import { formatINR } from '@/lib/utils';

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight, ArrowUpRight, Sparkles } from '@/components/icons';
+import { ArrowRight, ArrowUpRight, Sparkles } from 'lucide-react';
 import {
   getRecentPosts,
   getFeaturedPosts,
@@ -114,7 +114,7 @@ export default async function HomePage() {
                 <Link
                   key={n.slug}
                   href={`/niche/${n.slug}`}
-                  className="inline-flex min-h-[36px] items-center gap-1.5 border border-line bg-paper px-3 py-1 text-xs text-ink-2 hover:border-linestrong dark:border-white/15 dark:bg-white/[0.03] dark:text-zinc-300 dark:hover:border-white/30"
+                  className="inline-flex min-h-[36px] items-center gap-1.5 rounded-full border border-line bg-paper px-3 py-1 text-xs text-ink-2 hover:border-linestrong dark:border-white/15 dark:bg-white/[0.03] dark:text-zinc-300 dark:hover:border-white/30"
                 >
                   <span className="h-[7px] w-[7px] rounded-full" style={{ background: n.color }} aria-hidden />
                   {n.name}

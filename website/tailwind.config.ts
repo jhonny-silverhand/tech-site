@@ -29,24 +29,18 @@ const config: Config = {
         ring: 'var(--ring)',
       },
       fontFamily: {
-        display: ['"Archivo Variable"', 'system-ui', 'sans-serif'],
-        tagline: ['"Archivo Variable"', 'system-ui', 'sans-serif'],
-        body: ['"Archivo Variable"', 'system-ui', '-apple-system', 'sans-serif'],
+        display: ['"Fraunces Variable"', 'Georgia', 'serif'],
+        tagline: ['"Cormorant Garamond Variable"', 'Georgia', 'serif'],
+        body: ['"Inter Variable"', 'system-ui', '-apple-system', 'sans-serif'],
         mono: ['"JetBrains Mono Variable"', 'ui-monospace', 'monospace'],
       },
-      /* Silkscreen system: every named radius is sharp (0). Only `rounded-full`
-         (true circles: dots, avatars, spinners) keeps curvature. */
       borderRadius: {
-        none: '0px',
-        DEFAULT: '0px',
-        sm: '0px',
-        md: '0px',
-        lg: '0px',
-        xl: '0px',
-        '2xl': '0px',
-        '3xl': '0px',
-        folder: '0px',
-        full: '9999px',
+        folder: '8px',
+        xs: '4px',
+        sm: '6px',
+        md: '8px',
+        lg: '12px',
+        xl: '16px',
       },
       boxShadow: {
         popover: '0 8px 24px -8px rgb(0 0 0 / 0.18), 0 2px 8px -2px rgb(0 0 0 / 0.12)',

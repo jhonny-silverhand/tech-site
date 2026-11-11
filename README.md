@@ -2,9 +2,9 @@
 
 ### https://tech-site-new.vercel.app/
 
-A multi-niche technology publication with a split publishing model: one admin account with full control and an AI drafting tool, and open signup for regular users who write and publish manually — no AI access on that side. Built on Next.js 15 (App Router) + Supabase. Design system v3 "Silkscreen" (2026-11-09): sharp-flat two-tone icons, Archivo Expanded display type, signal-red accent, radius-0 surfaces — concept and rules in `website/DESIGN.md`.
+A multi-niche technology publication with a split publishing model: one admin account with full control and an AI drafting tool, and open signup for regular users who write and publish manually — no AI access on that side. Built on Next.js 15 (App Router) + Supabase, styled distinctly rather than with default templates. Design system v2 (restored 2026-11-11): lucide icons, Fraunces/Cormorant/Inter type, blue accent, rounded surfaces — with the `/shopping` console layout (status strip, stage readout, ranked ledger) retained on the original cream/coral palette.
 
-> **New here?** Read `compact.md` first (one-page catch-up), then this README. Design: `website/DESIGN.md`.
+> **New here?** Read `compact.md` first (one-page catch-up), then this README.
 > Dev reference: `technical-documentation.md` · decisions: `decisions.md` · troubleshooting: `help.md` · why it exists: `business-documentation.md`.
 
 ```
