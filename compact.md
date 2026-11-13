@@ -1,6 +1,6 @@
 # compact — tech//site
 
-**Updated:** 2026-11-11 · **Repo:** github.com/jhonny-silverhand/tech-site · **Branch:** `main` @ 1.4.1 skin-revert of the Silkscreen redesign (2026-11-11) · **Live:** https://tech-site-new.vercel.app/
+**Updated:** 2026-11-14 · **Repo:** github.com/jhonny-silverhand/tech-site · **Branch:** `main` @ 1.5.0 creative-features release (2026-11-14; additive, skin untouched) · **Live:** https://tech-site-new.vercel.app/
 
 Read this file first when cold-starting on this project.
 `website/compact.md` and `compacts/*.md` are **historical** session-compaction summaries (frozen); this root file is the canonical one.
@@ -28,27 +28,29 @@ Maintain and further develop **tech//site** — a hybrid multi-niche technology 
 
 ### Completed
 - Editorial publication (articles, niches, TOC, related posts, cinematic gaming hero), personal Library (bookmarks/history/queue/collections/highlights/private notes), creator platform (profiles, follows, comments, onboarding, editor), admin dashboard overhaul (stats, quick actions, delete), live shopping/compare/pc-builder, `/showcase` marketing page, per-niche cover pools (`lib/cover-pools.ts`), site-wide corner toast (4 s auto-dismiss), desktop-view notice on small displays, mobile overflow fixes, contact form, route loading bar.
+- **Creative features (1.5.0, 2026-11-14 — additive only, v2 skin untouched):** (1) **Article Roulette** — "Surprise me" button (homepage "Keep exploring") + command-palette footer action; slot-machine title flash → random published article via `/api/search-index` (`components/ArticleRoulette.tsx`, `lib/roulette.ts`); (2) **AI TL;DR** — toolbar button on every article → 3 bullets + takeaway card (`components/TldrButton.tsx`, `app/api/articles/tldr/route.ts` — central AI router, 30-min per-slug cache, `maxDuration 60`, AI-generated label); (3) **Time Capsule** — homepage "From the archive" card, one hand-curated documented tech milestone/day, deterministic UTC pick, 35 entries (`components/TimeCapsule.tsx`, `lib/time-capsule.ts`); (4) **Keyboard shortcuts** — `g`+`h/s/p/g/c/w/l` go-to nav, `?` cheat-sheet overlay, Esc close (`components/ShortcutsHelp.tsx`, dynamically mounted in ClientShell; inert in inputs/with modifiers held).
 - **Silkscreen redesign (1.4.0, 2026-11-09) → skin reverted (1.4.1, 2026-11-11):** owner rejected the visual changes ("only keep the current layout, everything else revert"). Reverted: sharp-flat icons → lucide-react (35 import sites), Archivo → Fraunces/Cormorant/Inter, radius-0 → rounded scale, signal accent → `#3d63f2`, favicon recolor, motion utilities, `website/DESIGN.md` deleted. **Kept from 1.4.0:** the `/shopping` console *layout* — corner meta strip, two-column hero with labeled query input (`>` prompt, label, helper line), cycling stage readout + elapsed counter, ranked ledger rows (rank column / body / price+buy column, top-pick marker), numbered How-it-works & tips sections, next-instruments footer cards — now styled in the original cream/coral palette with original texts, lucide icons and Fraunces type.
-- Full history: `website/CHANGELOG.md` 1.0 → 1.4.1 + `decisions.md`.
+- Full history: `website/CHANGELOG.md` 1.0 → 1.5.0 + `decisions.md`.
 
 ### Active
 - **`featured` schema-cache bug (open):** "Could not find the 'featured' column of 'posts' in the schema cache". The column exists in `website/supabase/schema.sql` (line 57) and a live REST probe `GET /rest/v1/posts?select=featured` on the live project returned `200 [{"featured":true}]` (per compaction notes). Suspected stale PostgREST schema cache or a query hitting a different table/project. Unresolved at last session end (2026-09-2x).
 
 ### Blocked
-- None hard. Pending hygiene: rotate Groq/Resend keys (exposed in a past chat session), rotate admin dev password (`admin123`). *(package.json version = `1.4.1`, aligned with the changelog entry documenting the revert; `website/public/version.json` is a build artifact regenerated per build.)*
+- None hard. Pending hygiene: rotate Groq/Resend keys (exposed in a past chat session), rotate admin dev password (`admin123`). *(package.json version = `1.5.0`, aligned with the changelog entry documenting the creative-features release; `website/public/version.json` is a build artifact regenerated per build.)*
 
 ## Next Move
-1. Verify the 1.4.1 skin revert on the live deploy once Vercel rebuilds (spot-check `/` — blue accent, serif headings, rounded pills, lucide icons — and `/shopping` light+dark+mobile: cream/coral skin with the kept console layout). Deploy note: with env vars set, real data replaces seed fallback seen in sandbox.
+1. Verify 1.5.0 on the live deploy once Vercel rebuilds: `/` (capsule card, roulette button), any article (AI TL;DR button — should generate with live keys; sandbox only shows the 503 fallback), `?` overlay + `g`-nav. Deploy note: with env vars set, real data replaces seed fallback seen in sandbox.
 2. Resolve the `featured` schema-cache bug: diff `website/supabase/schema.sql` `posts` columns vs the live DB, identify the failing query/table, reload the PostgREST schema cache (Supabase: `NOTIFY pgrst, 'reload schema';` or dashboard restart), re-run loopbacks (`tsc --noEmit`, key pages, admin/products APIs).
 3. Rotate exposed keys + admin password; update Vercel env vars.
 4. Agree next feature work with the owner.
 
 ## Relevant Files
 - `website/lib/ai-router.ts` — AI chokepoint (chain + Groq) · `website/lib/live-products.ts`, `website/lib/gemini.ts` (shim) · `website/lib/ai.ts` (admin drafts)
+- `website/lib/roulette.ts`, `website/lib/time-capsule.ts` (1.5.0 features) · `website/app/api/articles/tldr/route.ts` · `website/components/ArticleRoulette.tsx` / `TldrButton.tsx` / `TimeCapsule.tsx` / `ShortcutsHelp.tsx`
 - `website/lib/data.ts` (CARD_COLUMNS, seed fallback), `website/lib/niches.ts`, `website/lib/cover-pools.ts`, `website/lib/library.ts`, `website/lib/products.ts`, `website/lib/auth.ts`, `website/lib/with-timeout.ts`
 - `website/supabase/schema.sql` — DB source of truth · `website/middleware.ts` (session refresh only)
 - `website/app/(main)/page.tsx` (homepage, 4-way `Promise.all`) · `website/app/api/**` (admin, products, shopping, pc-builder, compare, contact, wishlist, search-index, currency)
-- `website/components/` — Header/Footer/CommandPalette/ProductCard/ShoppingIntelligenceHero/ThemeToggle/ThemeCelebration/RouteProgress/SiteToast + `ui/` primitives (icon set: `lucide-react`, restored 2026-11-11)
+- `website/components/` — Header/Footer/CommandPalette/ProductCard/ShoppingIntelligenceHero/ThemeToggle/ThemeCelebration/RouteProgress/SiteToast + `ui/` primitives (icon set: `lucide-react`, restored 2026-11-11; ClientShell also mounts ShortcutsHelp since 1.5.0)
 - Docs: this file, `README.md`, `CHANGELOG.md` (legacy), `website/CHANGELOG.md` (current), `technical-documentation.md`, `business-documentation.md`, `decisions.md`, `help.md`
 
 ## Documentation rules (standing, owner-mandated)

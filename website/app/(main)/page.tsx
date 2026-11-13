@@ -12,6 +12,8 @@ import { ShoppingIntelligenceHeroLazy } from '@/components/ShoppingIntelligenceH
 import { BentoGrid } from '@/components/BentoGrid';
 import { HorizontalRail } from '@/components/HorizontalRail';
 import { PostCard } from '@/components/PostCard';
+import { TimeCapsule } from '@/components/TimeCapsule';
+import { ArticleRoulette } from '@/components/ArticleRoulette';
 import { NICHES } from '@/lib/niches';
 
 function SectionHead({
@@ -127,6 +129,9 @@ export default async function HomePage() {
       </section>
 
       <div className="mx-auto max-w-6xl space-y-14 px-4 py-10 sm:px-6 lg:py-14">
+        {/* Time capsule — daily documented tech milestone */}
+        <TimeCapsule />
+
         {/* Shopping hero (lazy, below fold) */}
         {shoppingHero && shoppingHero.products.length > 0 && (
           <ShoppingIntelligenceHeroLazy products={shoppingHero.products} />
@@ -212,6 +217,9 @@ export default async function HomePage() {
         {/* Keep exploring rail */}
         <section aria-label="Keep exploring">
           <SectionHead index="07" title="Keep exploring" meta="Latest" href="/guides" linkLabel="Browse" />
+          <div className="mb-4">
+            <ArticleRoulette />
+          </div>
           <HorizontalRail posts={posts} />
         </section>
       </div>

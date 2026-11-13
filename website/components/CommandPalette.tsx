@@ -2,8 +2,9 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Search, CornerDownLeft, FileText, Package, Compass, ArrowUp, ArrowDown, X } from 'lucide-react';
+import { Search, CornerDownLeft, FileText, Package, Compass, ArrowUp, ArrowDown, X, Dices } from 'lucide-react';
 import type { SearchIndexItem } from '@/lib/types';
+import { pickRandomArticle } from '@/lib/roulette';
 
 function score(query: string, text: string): number {
   const q = query.toLowerCase().trim();
@@ -104,6 +105,11 @@ export function CommandPalette() {
   function go(url: string) {
     setOpen(false);
     router.push(url);
+  }
+
+  async function roll() {
+    const pick = await pickRandomArticle();
+    if (pick) go(pick.url);
   }
 
   return (
@@ -213,6 +219,13 @@ export function CommandPalette() {
           <span className="inline-flex items-center gap-1.5">
             <CornerDownLeft size={11} aria-hidden /> to open
           </span>
+          <button
+            onClick={roll}
+            className="inline-flex items-center gap-1.5 transition-colors hover:text-ink"
+            aria-label="Open a random article"
+          >
+            <Dices size={11} aria-hidden /> surprise me
+          </button>
           <span className="ml-auto">esc to close</span>
         </div>
       </div>

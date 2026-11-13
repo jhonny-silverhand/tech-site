@@ -8,6 +8,9 @@ import { SiteToast } from './SiteToast';
 const CommandPalette = dynamic(() => import('./CommandPalette').then((m) => m.CommandPalette), {
   ssr: false,
 });
+const ShortcutsHelp = dynamic(() => import('./ShortcutsHelp').then((m) => m.ShortcutsHelp), {
+  ssr: false,
+});
 const SpeedInsights = dynamic(() => import('@vercel/speed-insights/next').then((m) => m.SpeedInsights), {
   ssr: false,
 });
@@ -22,6 +25,7 @@ export function ClientShell({ children }: { children: React.ReactNode }) {
       <ThemeCelebration />
       {children}
       <CommandPalette />
+      <ShortcutsHelp />
       <SiteToast />
       {onVercel && <SpeedInsights />}
     </>

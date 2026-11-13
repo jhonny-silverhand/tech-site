@@ -1,6 +1,6 @@
 # Technical Documentation — tech//site
 
-**Updated:** 2026-11-11 · **Repo state:** `main` @ 1.4.1 (skin revert of the 1.4.0 Silkscreen redesign; /shopping console layout kept) · **Live:** https://tech-site-new.vercel.app/
+**Updated:** 2026-11-14 · **Repo state:** `main` @ 1.5.0 (four additive reader features — AI TL;DR, article roulette, time capsule, keyboard shortcuts; v2 skin untouched) · **Live:** https://tech-site-new.vercel.app/
 
 ## 1. What this is
 
@@ -51,17 +51,18 @@ Scripts (`website/package.json`): `dev` (wipes `.next`, then `next dev --turbopa
 ### Route groups (`website/app/`)
 - **`(main)/`** — public site chrome (Header + Footer): home, `articles/[slug]`, `niche/[slug]`, `guides`, `products/[slug]`, `compare` (+ `[slug]` with `loading.tsx`), `shopping`, `pc-builder`, `library` (+ `settings`, `collections/[id]`), `profile/@me` + `profile/[username]`, `dashboard`, `write` (+ `[id]`), `onboarding`, `contact`, `about`, `privacy`, `font-preview` (noindex), and `admin/` (`login` + `(protected)/` dashboard/categories/posts).
 - **`(auth)/`** — chrome-free editorial shell: login, signup, forgot-password, reset-password.
-- **`api/`** — `admin/{login,logout,generate,upload,posts,posts/[id]}`, `user-posts{,/[id]}`, `products/{search,[slug]}`, `shopping/ai-recommend`, `pc-builder/ai-build`, `compare`, `wishlist`, `search-index`, `currency/convert`, `contact`.
+- **`api/`** — `admin/{login,logout,generate,upload,posts,posts/[id]}`, `user-posts{,/[id]}`, `articles/tldr`, `products/{search,[slug]}`, `shopping/ai-recommend`, `pc-builder/ai-build`, `compare`, `wishlist`, `search-index`, `currency/convert`, `contact`.
 - `middleware.ts` refreshes the Supabase session only — no route protection (protection happens in layouts/lib).
 
 ### Rendering & performance patterns
 - Server Components by default (`PostCard`, `ProductCard`, `BentoGrid`, `Header`, `Footer`); interactivity isolated in Client Components.
 - Homepage runs 4 independent fetches via `Promise.all` (`app/(main)/page.tsx`); below-fold sections stream via `<Suspense>`.
 - `CARD_COLUMNS` in `lib/data.ts` excludes the heavy `content` body for card/list queries.
-- Dynamic imports with `ssr: false` through wrapper components (`ClientShell` → CommandPalette + SpeedInsights; `FeatureDiscoveryWrapper`; `ShoppingIntelligenceHeroLazy`).
+- Dynamic imports with `ssr: false` through wrapper components (`ClientShell` → CommandPalette + ShortcutsHelp + SpeedInsights; `FeatureDiscoveryWrapper`; `ShoppingIntelligenceHeroLazy`).
+- **Reader power tools (1.5.0, 2026-11-14):** `components/ArticleRoulette.tsx` + `lib/roulette.ts` (uniform random article from the `/api/search-index` payload, cached per page load, current page excluded); `components/TldrButton.tsx` + `app/api/articles/tldr/route.ts` (POST `{slug}` → 3 bullets + takeaway through the central AI router; module-level per-slug cache, 30-min TTL, max 100 entries; prompt capped to the first 6,000 content chars; `maxDuration = 60`; 503 "AI not configured" without keys); `components/TimeCapsule.tsx` + `lib/time-capsule.ts` (server component, deterministic UTC day-of-year pick over 35 hand-curated documented milestones — static data, no AI); `components/ShortcutsHelp.tsx` (global `g`+key go-to nav and `?` overlay; inert while typing in inputs/textarea/contenteditable or with Ctrl/Cmd/Alt held).
 - Critical-path Supabase calls wrapped in `withTimeout` (2.5 s cap, `lib/with-timeout.ts`) — introduced after a hung Supabase URL made every page take 7.4 s.
 - `recordView` (reading history) is fire-and-forget.
-- Session notes report: clean build of 51 pages, ~103 kB shared First Load JS.
+- Session notes report: clean build of 55 routes (1.5.0), ~103 kB shared First Load JS.
 
 ## 5. Data layer
 
@@ -77,7 +78,7 @@ Scripts (`website/package.json`): `dev` (wipes `.next`, then `next dev --turbopa
 - **`lib/gemini.ts`** — reduced to a compatibility shim re-exporting from the router (`GeminiError`, `geminiJson`).
 - **`lib/live-products.ts`** — product search/detail data synthesized from model JSON at request time: slugified names, up to 24 specs, AI-estimated INR prices (`price_inr` → cents), and Amazon.in/Flipkart **search** links per product (`live: true` flag). No offline catalog (`content/seed-products.ts` and `scripts/seed-supabase.ts` were deleted at the 1.0 rebuild).
 - **`lib/ai.ts`** — admin-only draft generation (prompt + rules array; drafts land in the editor, never auto-publish).
-- **Consumers:** `/api/shopping/ai-recommend`, `/api/products/search`, `/api/products/[slug]`, `/api/compare`, `/api/pc-builder/ai-build`, homepage shopping hero, admin generate.
+- **Consumers:** `/api/shopping/ai-recommend`, `/api/products/search`, `/api/products/[slug]`, `/api/compare`, `/api/pc-builder/ai-build`, `/api/articles/tldr` (1.5.0), homepage shopping hero, admin generate.
 - **Quota reality:** Gemini free tier is shared across all these routes; 429/503 waves are expected — the chain + Groq exist exactly for that. Product pages can take 10–25 s; compare has a dedicated `loading.tsx` skeleton and `/shopping` shows a heavy-load notice.
 
 ## 7. Authentication

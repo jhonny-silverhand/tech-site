@@ -1,6 +1,6 @@
 # Help — troubleshooting, FAQ & known gotchas
 
-**Updated:** 2026-11-11. Fast catch-up: read root `compact.md` first.
+**Updated:** 2026-11-14. Fast catch-up: read root `compact.md` first.
 
 ## Quick start
 
@@ -30,6 +30,11 @@ npm run dev                  # http://localhost:3000 — public site works with 
 15. **Covers** — explicit `cover_image_url` wins; otherwise curated per-niche pools (`lib/cover-pools.ts`); remote image hosts must be allowlisted in `website/next.config.mjs` (`**.cloudinary.net` needed the multi-level wildcard).
 16. **Image uploads need the Supabase Storage bucket `post-images`** (public). Without it, pasting a URL still works.
 17. **Security debt (2026-11-09):** Groq and Resend API keys were exposed in a past chat session — rotation pending. GitHub PAT used for pushing is embedded in the local git remote URL — never print `git remote -v` output publicly.
+18. **1.5.0 reader tools (2026-11-14):**
+    - **AI TL;DR button does nothing / shows "AI not configured"** — the sandbox has no `GEMINI_API_KEY`/`GROQ_API_KEY`; on Vercel it generates for real. The route is `POST /api/articles/tldr` `{"slug": …}` and caches per slug 30 min per instance — after a deploy, the first request per article can take up to the router chain's worst case; `maxDuration` is 60.
+    - **Time capsule content** is static curated data in `lib/time-capsule.ts` (35 entries, deterministic daily pick by UTC day-of-year) — not AI, not scraped. To change the day's entry, edit that file; the pick is stable for the whole UTC day.
+    - **"Surprise me" needs articles to exist** — it picks from `/api/search-index` (type `post`); with an empty DB and no seeds it's a no-op click.
+    - **Shortcuts not firing?** They're inert while typing in any input/textarea/contenteditable or with Ctrl/Cmd/Alt held, and `g` must be followed by the destination key within 1.4 s. `?` toggles the cheat sheet; Esc closes.
 
 ## FAQ
 

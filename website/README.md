@@ -8,6 +8,10 @@ comparisons, and AI tools that respect your time.
 
 - **Articles & guides** — markdown-backed posts, buying guides with product
   recommendations, niche topic pages, table of contents, reading progress.
+- **Reader power tools (1.5.0)** — AI TL;DR on every article (on-demand
+  summary through the central AI router, labeled), "Surprise me" article
+  roulette, daily "From the archive" time capsule on the homepage, and
+  keyboard shortcuts (`g`+key go-to nav, `?` cheat sheet, ⌘K search).
 - **Live product intelligence** — product search, detail pages, and
   side-by-side comparisons are fetched **live from Gemini at request time**.
   No offline catalog: specs, winners per row, pros/cons, verdicts, and

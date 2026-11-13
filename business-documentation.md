@@ -1,6 +1,6 @@
 # Business Documentation — tech//site
 
-**Updated:** 2026-11-11 · Sources: root/website READMEs, live site copy, privacy page, changelogs, session-compaction notes, git history. Items marked *(inferred)* are interpretation of documented behavior, not explicit statements.
+**Updated:** 2026-11-14 · Sources: root/website READMEs, live site copy, privacy page, changelogs, session-compaction notes, git history. Items marked *(inferred)* are interpretation of documented behavior, not explicit statements.
 
 ## 1. Why it exists
 
@@ -12,11 +12,13 @@ Positioning *(inferred from tagline and editorial rules)*: a quality-first alter
 
 **2026-11-11 — skin reverted (website/CHANGELOG 1.4.1):** owner rejected the visual changes; all styling/icons/typography/color decisions from 1.4.0 were rolled back to the pre-redesign look. **Business surface impact of the revert:** the `/shopping` console *layout* is retained (status strip, stage readout + elapsed counter, ranked ledger, Compare/PC-Builder footer cards), so the transparency positioning above still holds — the tool still shows its work — but it now presents in the original warm cream/coral design language with lucide icons and serif display type, matching the rest of the site.
 
+**2026-11-14 — reader power tools added (website/CHANGELOG 1.5.0):** four additive features, no visual/skin changes (context: the owner had just rejected a restyle, so the constraint was features-not-cosmetics). Business surface impact: (1) **AI TL;DR** extends the transparent-AI positioning from shopping into editorial — summaries are generated on demand through the same central AI router, carry an "AI-generated — verify against the article" label, and are cached 30 min per slug to protect the free-tier quota; (2) **Article Roulette ("Surprise me")** adds a zero-cost engagement loop into the article inventory via the existing search index; (3) **Time Capsule ("From the archive")** is a daily homepage hook made of static hand-curated content — deliberately not AI-generated, avoiding hallucination risk and quota spend; (4) **Keyboard shortcuts + `?` cheat sheet** lower friction for power readers. No pricing, data-source, or auth rules changed; the TL;DR route is public (works logged-out like all reading features).
+
 ## 2. Users & audiences
 
 | Audience | What they get | Auth |
 |---|---|---|
-| Anonymous readers | Full public site: articles, niche pages, buying guides, product search/detail/compare, `/shopping` assistant, `/pc-builder` — shopping works logged-out (documented in legacy changelog 4.2) | None |
+| Anonymous readers | Full public site: articles, niche pages, buying guides, product search/detail/compare, `/shopping` assistant, `/pc-builder`, AI TL;DR on articles, article roulette, time capsule, keyboard shortcuts — shopping and all reader tools work logged-out (shopping documented in legacy changelog 4.2) | None |
 | Registered readers | Personal Library (bookmarks, reading history/queue, collections, highlights, private notes), personalized homepage, topic/author follows, comments, public profile, manual article publishing | Supabase email auth |
 | The admin (single operator) | Full content control (CRUD over all posts), AI draft generation, image upload, niche/category management | Separate JWT login `/admin/login` |
 | Supporter | Ko-fi donations at `whysoserious_omik` | — |

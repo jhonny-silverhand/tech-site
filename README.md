@@ -2,7 +2,7 @@
 
 ### https://tech-site-new.vercel.app/
 
-A multi-niche technology publication with a split publishing model: one admin account with full control and an AI drafting tool, and open signup for regular users who write and publish manually — no AI access on that side. Built on Next.js 15 (App Router) + Supabase, styled distinctly rather than with default templates. Design system v2 (restored 2026-11-11): lucide icons, Fraunces/Cormorant/Inter type, blue accent, rounded surfaces — with the `/shopping` console layout (status strip, stage readout, ranked ledger) retained on the original cream/coral palette.
+A multi-niche technology publication with a split publishing model: one admin account with full control and an AI drafting tool, and open signup for regular users who write and publish manually — no AI access on that side. Built on Next.js 15 (App Router) + Supabase, styled distinctly rather than with default templates. Design system v2 (restored 2026-11-11): lucide icons, Fraunces/Cormorant/Inter type, blue accent, rounded surfaces — with the `/shopping` console layout (status strip, stage readout, ranked ledger) retained on the original cream/coral palette. Reader power tools added 2026-11-14 (1.5.0): AI TL;DR on every article, "Surprise me" article roulette, daily "From the archive" time capsule, keyboard shortcuts with a `?` cheat sheet — all additive, skin untouched.
 
 > **New here?** Read `compact.md` first (one-page catch-up), then this README.
 > Dev reference: `technical-documentation.md` · decisions: `decisions.md` · troubleshooting: `help.md` · why it exists: `business-documentation.md`.
@@ -46,6 +46,12 @@ Everything else — connecting a real database, turning on the admin's AI drafti
 - Article pages with table of contents, code syntax highlighting, niche-specific editorial treatments
 - Reading progress bar, related posts, ambient niche color wash
 - Cinematic hero for Gaming niche
+
+### Reader Power Tools (1.5.0, 2026-11-14)
+- **AI TL;DR** — one click on any article expands a 3-bullet summary + takeaway (generated through the central AI router; labeled AI-generated; 30-min per-slug server cache)
+- **Article Roulette** — "Surprise me" button (homepage) and command-palette action that opens a random published article
+- **Time Capsule** — daily "From the archive" card on the homepage: one hand-curated, documented tech-history milestone per day
+- **Keyboard shortcuts** — `g`+`h/s/p/g/c/w/l` go-to navigation, `?` cheat-sheet overlay, Esc to close (⌘K opens search)
 
 ### Personal Knowledge Space (Library)
 - **Saved** — bookmarked articles

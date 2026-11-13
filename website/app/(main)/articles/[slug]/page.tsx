@@ -20,6 +20,7 @@ import { PrivateNotes } from '@/components/PrivateNotes';
 import { BookmarkButton } from '@/components/BookmarkButton';
 import { ReadingQueueButton } from '@/components/ReadingQueueButton';
 import { CollectionPicker } from '@/components/CollectionPicker';
+import { TldrButton } from '@/components/TldrButton';
 import { TopicFollowButton } from '@/components/TopicFollowButton';
 import {
   ReadingProgressProvider,
@@ -166,6 +167,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
             </div>
 
             <div className="mt-4 flex flex-wrap gap-2">
+              <TldrButton slug={post.slug} />
               <BookmarkButton postId={post.id} initialBookmarked={ctx.bookmarked} />
               <ReadingQueueButton postId={post.id} initialInQueue={ctx.inQueue} />
               <CollectionPicker postId={post.id} />
